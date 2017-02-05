@@ -5,8 +5,8 @@
     <description>This is a purely technical blog concerning topics such as Linux, Shell Scripting, Python and open source software.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/sitemap.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 05 Feb 2017 14:23:18 +0100</pubDate>
-    <lastBuildDate>Sun, 05 Feb 2017 14:23:18 +0100</lastBuildDate>
+    <pubDate>Sun, 05 Feb 2017 14:25:26 +0100</pubDate>
+    <lastBuildDate>Sun, 05 Feb 2017 14:25:26 +0100</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
@@ -117,9 +117,11 @@ I = incasecensitive&lt;/p&gt;
 &lt;/div&gt;
 </description>
         <pubDate>Sun, 01 Jul 2012 00:00:00 +0200</pubDate>
-        <link>http://localhost:4000/2012/07/01/SED-10-usefull-commands.html</link>
-        <guid isPermaLink="true">http://localhost:4000/2012/07/01/SED-10-usefull-commands.html</guid>
+        <link>http://localhost:4000/sed/2012/07/01/SED-10-usefull-commands.html</link>
+        <guid isPermaLink="true">http://localhost:4000/sed/2012/07/01/SED-10-usefull-commands.html</guid>
         
+        
+        <category>sed</category>
         
       </item>
     

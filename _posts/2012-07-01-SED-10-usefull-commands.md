@@ -3,6 +3,7 @@ ID: 51
 post_title: 10 Example of SED
 author: Rahul Patil
 post_date: 2012-07-01 15:47:00
+categories: ['sed']
 post_excerpt: ""
 layout: post
 published: true
