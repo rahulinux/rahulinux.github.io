@@ -5,19 +5,19 @@
     <description>This is a purely technical blog concerning topics such as Linux, Shell Scripting, Python and open source software.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 05 Feb 2017 14:25:26 +0100</pubDate>
-    <lastBuildDate>Sun, 05 Feb 2017 14:25:26 +0100</lastBuildDate>
+    <pubDate>Sun, 05 Feb 2017 14:28:14 +0100</pubDate>
+    <lastBuildDate>Sun, 05 Feb 2017 14:28:14 +0100</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
         <title>Sed 10 Usefull Commands</title>
-        <description>&lt;p&gt;when you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.&lt;/p&gt;
+        <description>&lt;p&gt;When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.&lt;/p&gt;
 
-&lt;p&gt;About SED&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;About SED&lt;/strong&gt;&lt;/p&gt;
 
 &lt;p&gt;sed is an Non-interactive stream editor.&lt;/p&gt;
 
-&lt;p&gt;Features&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Features&lt;/strong&gt;&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;scripting languages&lt;/li&gt;
 &lt;li&gt;work primarily with text file.&lt;/li&gt;
@@ -27,10 +27,10 @@
 &lt;li&gt;Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).&lt;/li&gt;
 &lt;li&gt;supports address to indicate to which lines operate on : /^$/d - delete blank lines .&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Usage&lt;/p&gt;
 
-&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-sed &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; Options &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' instruction '&lt;/span&gt; file     | PIPE | STDIN
+&lt;p&gt;&lt;strong&gt;Usage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-shell highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sed &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; Options &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;' instruction '&lt;/span&gt; file     | PIPE | STDIN
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 

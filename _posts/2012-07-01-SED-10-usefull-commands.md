@@ -3,20 +3,21 @@ ID: 51
 post_title: 10 Example of SED
 author: Rahul Patil
 post_date: 2012-07-01 15:47:00
-categories: ['sed']
+categories: [ sed ]
 post_excerpt: ""
 layout: post
 published: true
 dsq_thread_id:
 - "2080350988"
 ---
-when you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
 
-About SED
+When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
+
+**About SED**
 
 sed is an Non-interactive stream editor.
 
-Features
+**Features**
 <ul>
 <li>scripting languages</li>
 <li>work primarily with text file.</li>
@@ -26,10 +27,10 @@ Features
 <li>Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</li>
 <li>supports address to indicate to which lines operate on : /^$/d - delete blank lines .</li>
 </ul>
-Usage
+
+**Usage**
 
 ```shell
-
 sed [ Options ] ' instruction ' file     | PIPE | STDIN
 ```
 
