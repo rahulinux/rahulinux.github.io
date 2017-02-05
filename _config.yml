@@ -1,0 +1,55 @@
+title: Linuxian
+description: This is a purely technical blog concerning topics such as Linux, Shell Scripting, Python and open source software. 
+author: Rahul Patil
+github: https://github.com/rahulinux
+about: I am DevOps engineer. Currently doing more in BigData, focused in Automation,Python and BigData.
+disqus_shortname: rahulinux
+google_analytics: UA-XXXXXXXX-Y
+avatar_url: /static/img/avatar.jpg
+
+enableTags: true
+tagarray: []
+
+collections:
+  project:
+    output: true
+    permalink: /project/:path/
+
+social:
+    - icon: fa-facebook
+      link: "#"
+    - icon: fa-twitter
+      link: "#"
+    - icon: fa-linkedin
+      link: "https://www.linkedin.com/in/rahul-patil-85bb9849"
+    - icon: fa-stack-exchange
+      link: "http://unix.stackexchange.com/users/28434/rahul-patil"
+    - icon: fa-github
+      link: "https://github.com/rahulinux"
+
+share:
+  twitter_username: rahulinux
+  fb_appid: fakefbid
+
+urls:
+    - text: About Me
+      url: /about/
+    - text: My Projects
+      url: /projects/
+    - text: XML Feed
+      url: /feed.xml
+
+url: "https://rahulinux.github.io"
+baseurl: ""
+paginate: 20
+per_page: 20
+paginate_path: "/page:num/"
+markdown: kramdown
+gems:
+  - jekyll-paginate
+  - jekyll-gist
+
+compress_html:
+  clippings: all
+  comments: ["<!-- ", " -->"]
+  endings: all
