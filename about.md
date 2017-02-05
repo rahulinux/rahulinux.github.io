@@ -14,6 +14,3 @@ You can contact me viaEmail –
 tr a-z@. n-za-m.@ <<< ybtvaenuhy90.tznvy@pbz
 ```
 
-{% highlight ruby %}
-echo "test"
-{% endhighlight %}
