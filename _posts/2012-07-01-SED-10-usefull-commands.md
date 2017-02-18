@@ -6,6 +6,7 @@ date: 2012-07-01 15:47:00
 categories: [ sed ]
 post_excerpt: ""
 layout: post
+comments: true
 published: true
 ---
 
