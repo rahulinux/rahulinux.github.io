@@ -5,8 +5,8 @@
     <description>This is a purely technical blog concerning topics such as Linux, Shell Scripting, Python and open source software.</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 19 Feb 2017 00:16:47 +0100</pubDate>
-    <lastBuildDate>Sun, 19 Feb 2017 00:16:47 +0100</lastBuildDate>
+    <pubDate>Sun, 19 Feb 2017 00:18:04 +0100</pubDate>
+    <lastBuildDate>Sun, 19 Feb 2017 00:18:04 +0100</lastBuildDate>
     <generator>Jekyll v3.3.1</generator>
     
       <item>
@@ -27,7 +27,7 @@
 
 &lt;p&gt;this would put ‘/var/log/messages’ as my argument. Keeping pressing &lt;kbd&gt;ALT&lt;/kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt; to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.&lt;/p&gt;
 
-&lt;p&gt;In Mac you can use &lt;kbd&gt;ESC&lt;kbd&gt;&lt;kbd&gt;.&lt;/kbd&gt;&lt;/kbd&gt;&lt;/kbd&gt;&lt;/p&gt;
+&lt;p&gt;In Mac you can use &lt;kbd&gt;ESC&lt;kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt;&lt;/kbd&gt;&lt;/kbd&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;2. Man Pages&lt;/strong&gt;&lt;/p&gt;
 

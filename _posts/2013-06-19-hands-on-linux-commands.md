@@ -25,7 +25,7 @@ For example: tail -f <kbd>ALT</kbd> + <kbd>.</kbd>
 
 this would put '/var/log/messages' as my argument. Keeping pressing <kbd>ALT</kbd>+<kbd>.</kbd> to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.
 
-In Mac you can use <kbd>ESC<kbd><kbd>.</kbd>
+In Mac you can use <kbd>ESC<kbd>+<kbd>.</kbd>
 
 **2. Man Pages**
 
