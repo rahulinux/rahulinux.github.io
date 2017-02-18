@@ -1,15 +1,12 @@
 ---
 ID: 51
-post_title: 10 Example of SED
+title: "10 Example of SED"
 author: Rahul Patil
-post_date: 2012-07-01 15:47:00
+date: 2012-07-01 15:47:00
 categories: [ sed ]
 post_excerpt: ""
 layout: post
 published: true
-comments: true
-dsq_thread_id:
-- "2080350988"
 ---
 
 When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
