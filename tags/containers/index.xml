@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Containers on Linuxian</title>
+    <link>http://rahulinux.github.io/tags/containers/index.xml</link>
+    <description>Recent content in Containers on Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://rahulinux.github.io/tags/containers/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Getting started with Docker Basics</title>
+      <link>http://rahulinux.github.io/posts/getting-started-with-docker/</link>
+      <pubDate>Wed, 08 Feb 2017 10:54:24 +0000</pubDate>
+      
+      <guid>http://rahulinux.github.io/posts/getting-started-with-docker/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In this tutorial we will learn following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;What is Containers&lt;/li&gt;
+&lt;li&gt;Why Containers&lt;/li&gt;
+&lt;li&gt;Containers vs VM&amp;rsquo;s&lt;/li&gt;
+&lt;li&gt;What is Docker&lt;/li&gt;
+&lt;li&gt;Docker component and architecture&lt;/li&gt;
+&lt;li&gt;Docker Installation &amp;amp; Setup on CentOS 7&lt;/li&gt;
+&lt;li&gt;Docker basic commands&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;in-traditional-way-of-virtualization&#34;&gt;In Traditional way of virtualization&lt;/h1&gt;
+
+&lt;p&gt;As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications,
+But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.
+in this scenario you will have to give 1G memory for VM OS then for application.&lt;/p&gt;
+
+&lt;p&gt;But if you use containers then you will save resources and you will utilize for proper application use only.&lt;/p&gt;
+
+&lt;p&gt;Take look at following diagram, it&amp;rsquo;s shows the difference as mention above..&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://windowsitpro.com/site-files/windowsitpro.com/files/uploads/2015/01/docker%20overview.jpg&#34; alt=&#34;VMvsContainer&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s see some basics concept about Containers :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-containers&#34;&gt;What is Containers ?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Containers are similar to hardware virtualization like VMs but instead of partitioned the physical machines
+containers isolate the process in single operating system.&lt;/li&gt;
+&lt;li&gt;To do this docker leverages some features in underlying operating system kernel, to create multiple isolated userspace process.&lt;/li&gt;
+&lt;li&gt;On top of this docker provide features like docker cli&lt;/li&gt;
+&lt;li&gt;Docker also provide imaging system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s compare the containers with VM&amp;rsquo;s, so that you will get more idea&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;containers-vs-virtual-machines&#34;&gt;Containers Vs. Virtual Machines&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;VMs&lt;/th&gt;
+&lt;th&gt;Docker&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Each VM runs its own Operating system&lt;/td&gt;
+&lt;td&gt;All containers share the same kernel of Host&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Host OS can be different than guest OS&lt;/td&gt;
+&lt;td&gt;Host OS and container OS has to be same&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;No such concept in VM&lt;/td&gt;
+&lt;td&gt;Containers stop when the command it is started with completes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VM take few minutes to boot&lt;/td&gt;
+&lt;td&gt;Containers take few milli seconds to start&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VM snapshots are hugh in size&lt;/td&gt;
+&lt;td&gt;Images are built incrementally on top of another like layers&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VMs are not version controlled, can&amp;rsquo;t check diff in two VMs&lt;/td&gt;
+&lt;td&gt;Images can be diffed and can be version controlled using Dockerhub( like github)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;In normal 4 GB laptop we can run 3-4 VMs&lt;/td&gt;
+&lt;td&gt;We can run many docker containers&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;You can run only 1 VM using 1 VMDK file&lt;/td&gt;
+&lt;td&gt;Many docker containers can be started from one docker image&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;why-containers&#34;&gt;Why Containers ?&lt;/h1&gt;
+
+&lt;p&gt;Four key benefits of using containers&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Portable : Image can be ship, it&amp;rsquo;s mutable, image has versions&lt;/li&gt;
+&lt;li&gt;Flexible : You can create clean, reprodusable and moduler environment&lt;/li&gt;
+&lt;li&gt;Fast     : Speed at start quickly containers, Caching layer of docker make faster build container&lt;/li&gt;
+&lt;li&gt;Efficient : we can allocate exactly resource we want like cpu,memory, it does require full operating system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;But where this containers fits in usecase ? hmm.. to understand this we need to know some concept, so lets see that&lt;/p&gt;
+
+&lt;h1 id=&#34;microservices-architecture&#34;&gt;Microservices architecture..&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Previously companies were  building one single web application or any application,
+there will be Hugh downtime for any changes because it&amp;rsquo;s one single application, so now days companies are using
+microservice approaches because smaller services can handle with separate teams and it can scale and manage individual by team.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;continaers-are-natural-for-microservices&#34;&gt;Continaers are natural for microservices&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Simple to model: Dockerfile&lt;/li&gt;
+&lt;li&gt;Any app, any languages&lt;/li&gt;
+&lt;li&gt;Image is the version&lt;/li&gt;
+&lt;li&gt;Test &amp;amp; deploy same artifact&lt;/li&gt;
+&lt;li&gt;stateless servers decrease change risk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;containers-providers&#34;&gt;Containers Providers&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Docker ( We will learn this )&lt;/li&gt;
+&lt;li&gt;AWS ECS&lt;/li&gt;
+&lt;li&gt;LXD&lt;/li&gt;
+&lt;li&gt;LXC&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Docker is supported by almot all the big players in the cloud computing market e.g.(Amazon, Azure, RackSpace , etc.), so we will focus on docker, lets start with basics:&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-docker&#34;&gt;What is Docker?&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications. Consisting of Docker Engine, a portable, lightweight runtime and packaging tool, and Docker Hub, a cloud service for sharing applications and automating workflows, Docker enables apps to be quickly assembled from components and eliminates the friction between development, QA, and production environments. As a result, IT can ship faster and run the same app, unchanged, on laptops, data center VMs, and any cloud.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;docker-architecture&#34;&gt;Docker Architecture&lt;/h1&gt;
+
+&lt;p&gt;Docker uses a client-server architecture. The Docker client talks to the Docker daemon,
+which does the heavy lifting of building, running, and distributing your Docker containers.
+The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.
+The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://docs.docker.com/engine/article-img/architecture.svg&#34; alt=&#34;Docker_Arch&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker daemon ( Engine)&lt;/strong&gt; : The Docker daemon runs on a host machine. The user uses the Docker client to interact with the daemon. The Docker engine is the actual middle-ware that runs, monitors, orchestrate the containers&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker client&lt;/strong&gt; : in the form of the docker binary, is the primary user interface to Docker. It accepts commands and configuration flags from the user and communicates with a Docker daemon. One client can even communicate with multiple unrelated daemons.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker Image&lt;/strong&gt;:  A Docker image is a read-only template with instructions for creating a Docker container. For example, an image might contain an Ubuntu operating system with Apache web server and your web application installed. You can build or update images from scratch or download and use images created by others. An image may be based on, or may extend, one or more other images. A docker image is described in text file called a Dockerfile, which has a simple, well-defined syntax.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker containers&lt;/strong&gt; : A Docker container is a runnable instance of a Docker image. You can run, start, stop, move, or delete a container using Docker API or CLI commands. When you run a container, you can provide configuration metadata such as networking information or environment variables. Each container is an isolated and secure application platform, but can be given access to resources running in a different host or container, as well as persistent storage or databases.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker registries&lt;/strong&gt; :  A docker registry is a library of images. A registry can be public or private, and can be on the same server as the Docker daemon or Docker client, or on a totally separate server. take look at public registry Docker hub at &lt;a href=&#34;https://hub.docker.com/explore/&#34;&gt;https://hub.docker.com/explore/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Docker filesystem&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Docker uses Union File System ( with Storage driver AUFS for Ubuntu and driver devicemapper for RHEL/CentOS )&lt;/p&gt;
+
+&lt;p&gt;UnionFS used because:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it&amp;rsquo;s Avoid duplicating a complete set of files each time you run an image as a new container&lt;/li&gt;
+&lt;li&gt;it&amp;rsquo;s isolate changes to a container filesystem in its own layer, allowing for that same container to be restarted from a known content (since the layer with the changes will have been dismissed when the container is removed)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Read more about filesystem, and &lt;a href=&#34;https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work&#34;&gt;How does docker image work&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;installation&#34;&gt;Installation&lt;/h1&gt;
+
+&lt;h3 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Docker must be installed on 64 bit OS with kernel more than 3.10. The kernel must support an appropriate storage driver.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;installation-on-centos-7&#34;&gt;Installation on CentOS 7&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Add Official docker repo&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cat &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/yum.repos.d/docker.repo&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;[Docker]&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;name=Docker Repository&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;baseurl=https://yum.dockerproject.org/repo/main/centos/7&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;enabled=1&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;gpgcheck=1&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;gpgkey=https://yum.dockerproject.org/gpg&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;EOF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Install docker-engine&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;yum install -y docker-engine
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: if docker is already install, make sure to remove older version using &lt;code&gt;yum remove docker container-selinux docker-common docker-client&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Start service and add in startup&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;systemctl restart docker.service
+chkconfig --level &lt;span style=&#34;color: #ae81ff&#34;&gt;35&lt;/span&gt; docker on
+&lt;span style=&#34;color: #75715e&#34;&gt;# check docker info using&lt;/span&gt;
+docker info
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;4. Testing Docker&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run hello-world
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Output will be like&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Unable to find image &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;hello-world:latest&amp;#39;&lt;/span&gt; locally
+latest: Pulling from library/hello-world
+78445dd45222: Pull &lt;span style=&#34;color: #f8f8f2&#34;&gt;complete&lt;/span&gt;
+Digest: sha256:c5515758d4c5e1e838e9cd307f6c6a0d620b5e07e6f927b07d05f6d12a1ac8d7
+Status: Downloaded newer image &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;. The Docker client contacted the Docker daemon.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;. The Docker daemon pulled the &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;hello-world&amp;quot;&lt;/span&gt; image from the Docker Hub.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt;. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;4&lt;/span&gt;. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://cloud.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In Next tutorial we will see, some usefull handson on docker :)&lt;/p&gt;
+
+&lt;p&gt;Feel free to comment or email if you have any question/suggessions&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

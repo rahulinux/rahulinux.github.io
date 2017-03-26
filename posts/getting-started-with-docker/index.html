@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Getting started with Docker Basics &middot; Linuxian </title>
+
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.13" />
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://rahulinux.github.io/css/nix.css">
+<link rel="stylesheet" href="http://rahulinux.github.io/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'your_google_analytics_id', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+    </head>
+
+    <body>
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://rahulinux.github.io>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://rahulinux.github.io">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+</header>
+
+        <div class="container wrapper">
+            <h1><a href="http://rahulinux.github.io/posts/getting-started-with-docker/">Getting started with Docker Basics</a></h1>
+            <span class="post-date">Feb 8, 2017 </span>
+            <div class="post-content">
+                
+
+<h1 id="introduction">Introduction</h1>
+
+<p>In this tutorial we will learn following things:</p>
+
+<ul>
+<li>What is Containers</li>
+<li>Why Containers</li>
+<li>Containers vs VM&rsquo;s</li>
+<li>What is Docker</li>
+<li>Docker component and architecture</li>
+<li>Docker Installation &amp; Setup on CentOS 7</li>
+<li>Docker basic commands</li>
+</ul>
+
+<h1 id="in-traditional-way-of-virtualization">In Traditional way of virtualization</h1>
+
+<p>As we used lot of VMs for dev testing or any R &amp; D purpose or may be for different different VMs for applications,
+But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.
+in this scenario you will have to give 1G memory for VM OS then for application.</p>
+
+<p>But if you use containers then you will save resources and you will utilize for proper application use only.</p>
+
+<p>Take look at following diagram, it&rsquo;s shows the difference as mention above..</p>
+
+<p><img src="http://windowsitpro.com/site-files/windowsitpro.com/files/uploads/2015/01/docker%20overview.jpg" alt="VMvsContainer" /></p>
+
+<hr />
+
+<p><strong>Let&rsquo;s see some basics concept about Containers :</strong></p>
+
+<h1 id="what-is-containers">What is Containers ?</h1>
+
+<ul>
+<li>Containers are similar to hardware virtualization like VMs but instead of partitioned the physical machines
+containers isolate the process in single operating system.</li>
+<li>To do this docker leverages some features in underlying operating system kernel, to create multiple isolated userspace process.</li>
+<li>On top of this docker provide features like docker cli</li>
+<li>Docker also provide imaging system.</li>
+</ul>
+
+<p><strong>Let&rsquo;s compare the containers with VM&rsquo;s, so that you will get more idea</strong></p>
+
+<h1 id="containers-vs-virtual-machines">Containers Vs. Virtual Machines</h1>
+
+<table>
+<thead>
+<tr>
+<th>VMs</th>
+<th>Docker</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Each VM runs its own Operating system</td>
+<td>All containers share the same kernel of Host</td>
+</tr>
+
+<tr>
+<td>Host OS can be different than guest OS</td>
+<td>Host OS and container OS has to be same</td>
+</tr>
+
+<tr>
+<td>No such concept in VM</td>
+<td>Containers stop when the command it is started with completes</td>
+</tr>
+
+<tr>
+<td>VM take few minutes to boot</td>
+<td>Containers take few milli seconds to start</td>
+</tr>
+
+<tr>
+<td>VM snapshots are hugh in size</td>
+<td>Images are built incrementally on top of another like layers</td>
+</tr>
+
+<tr>
+<td>VMs are not version controlled, can&rsquo;t check diff in two VMs</td>
+<td>Images can be diffed and can be version controlled using Dockerhub( like github)</td>
+</tr>
+
+<tr>
+<td>In normal 4 GB laptop we can run 3-4 VMs</td>
+<td>We can run many docker containers</td>
+</tr>
+
+<tr>
+<td>You can run only 1 VM using 1 VMDK file</td>
+<td>Many docker containers can be started from one docker image</td>
+</tr>
+</tbody>
+</table>
+
+<hr />
+
+<h1 id="why-containers">Why Containers ?</h1>
+
+<p>Four key benefits of using containers</p>
+
+<ul>
+<li>Portable : Image can be ship, it&rsquo;s mutable, image has versions</li>
+<li>Flexible : You can create clean, reprodusable and moduler environment</li>
+<li>Fast     : Speed at start quickly containers, Caching layer of docker make faster build container</li>
+<li>Efficient : we can allocate exactly resource we want like cpu,memory, it does require full operating system.</li>
+</ul>
+
+<hr />
+
+<p>But where this containers fits in usecase ? hmm.. to understand this we need to know some concept, so lets see that</p>
+
+<h1 id="microservices-architecture">Microservices architecture..</h1>
+
+<blockquote>
+<p>Previously companies were  building one single web application or any application,
+there will be Hugh downtime for any changes because it&rsquo;s one single application, so now days companies are using
+microservice approaches because smaller services can handle with separate teams and it can scale and manage individual by team.</p>
+</blockquote>
+
+<h1 id="continaers-are-natural-for-microservices">Continaers are natural for microservices</h1>
+
+<ul>
+<li>Simple to model: Dockerfile</li>
+<li>Any app, any languages</li>
+<li>Image is the version</li>
+<li>Test &amp; deploy same artifact</li>
+<li>stateless servers decrease change risk</li>
+</ul>
+
+<h1 id="containers-providers">Containers Providers</h1>
+
+<ul>
+<li>Docker ( We will learn this )</li>
+<li>AWS ECS</li>
+<li>LXD</li>
+<li>LXC</li>
+</ul>
+
+<hr />
+
+<p>Docker is supported by almot all the big players in the cloud computing market e.g.(Amazon, Azure, RackSpace , etc.), so we will focus on docker, lets start with basics:</p>
+
+<h1 id="what-is-docker">What is Docker?</h1>
+
+<blockquote>
+<p>Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications. Consisting of Docker Engine, a portable, lightweight runtime and packaging tool, and Docker Hub, a cloud service for sharing applications and automating workflows, Docker enables apps to be quickly assembled from components and eliminates the friction between development, QA, and production environments. As a result, IT can ship faster and run the same app, unchanged, on laptops, data center VMs, and any cloud.</p>
+</blockquote>
+
+<h1 id="docker-architecture">Docker Architecture</h1>
+
+<p>Docker uses a client-server architecture. The Docker client talks to the Docker daemon,
+which does the heavy lifting of building, running, and distributing your Docker containers.
+The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.
+The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface.</p>
+
+<p><img src="https://docs.docker.com/engine/article-img/architecture.svg" alt="Docker_Arch" /></p>
+
+<ul>
+<li><p><strong>Docker daemon ( Engine)</strong> : The Docker daemon runs on a host machine. The user uses the Docker client to interact with the daemon. The Docker engine is the actual middle-ware that runs, monitors, orchestrate the containers</p></li>
+
+<li><p><strong>Docker client</strong> : in the form of the docker binary, is the primary user interface to Docker. It accepts commands and configuration flags from the user and communicates with a Docker daemon. One client can even communicate with multiple unrelated daemons.</p></li>
+
+<li><p><strong>Docker Image</strong>:  A Docker image is a read-only template with instructions for creating a Docker container. For example, an image might contain an Ubuntu operating system with Apache web server and your web application installed. You can build or update images from scratch or download and use images created by others. An image may be based on, or may extend, one or more other images. A docker image is described in text file called a Dockerfile, which has a simple, well-defined syntax.</p></li>
+
+<li><p><strong>Docker containers</strong> : A Docker container is a runnable instance of a Docker image. You can run, start, stop, move, or delete a container using Docker API or CLI commands. When you run a container, you can provide configuration metadata such as networking information or environment variables. Each container is an isolated and secure application platform, but can be given access to resources running in a different host or container, as well as persistent storage or databases.</p></li>
+
+<li><p><strong>Docker registries</strong> :  A docker registry is a library of images. A registry can be public or private, and can be on the same server as the Docker daemon or Docker client, or on a totally separate server. take look at public registry Docker hub at <a href="https://hub.docker.com/explore/">https://hub.docker.com/explore/</a></p></li>
+</ul>
+
+<p><strong>Docker filesystem</strong></p>
+
+<p>Docker uses Union File System ( with Storage driver AUFS for Ubuntu and driver devicemapper for RHEL/CentOS )</p>
+
+<p>UnionFS used because:</p>
+
+<ul>
+<li>it&rsquo;s Avoid duplicating a complete set of files each time you run an image as a new container</li>
+<li>it&rsquo;s isolate changes to a container filesystem in its own layer, allowing for that same container to be restarted from a known content (since the layer with the changes will have been dismissed when the container is removed)</li>
+</ul>
+
+<p>Read more about filesystem, and <a href="https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work">How does docker image work</a></p>
+
+<hr />
+
+<h1 id="installation">Installation</h1>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<p><strong>Docker must be installed on 64 bit OS with kernel more than 3.10. The kernel must support an appropriate storage driver.</strong></p>
+
+<h3 id="installation-on-centos-7">Installation on CentOS 7</h3>
+
+<p><strong>1. Add Official docker repo</strong></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>cat <span style="color: #e6db74">&lt;&lt; EOF &gt; /etc/yum.repos.d/docker.repo</span>
+<span style="color: #e6db74">[Docker]</span>
+<span style="color: #e6db74">name=Docker Repository</span>
+<span style="color: #e6db74">baseurl=https://yum.dockerproject.org/repo/main/centos/7</span>
+<span style="color: #e6db74">enabled=1</span>
+<span style="color: #e6db74">gpgcheck=1</span>
+<span style="color: #e6db74">gpgkey=https://yum.dockerproject.org/gpg</span>
+<span style="color: #e6db74">EOF</span>
+</pre></div>
+
+<p><strong>2. Install docker-engine</strong></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>yum install -y docker-engine
+</pre></div>
+
+<p>Note: if docker is already install, make sure to remove older version using <code>yum remove docker container-selinux docker-common docker-client</code></p>
+
+<p><strong>3. Start service and add in startup</strong></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>systemctl restart docker.service
+chkconfig --level <span style="color: #ae81ff">35</span> docker on
+<span style="color: #75715e"># check docker info using</span>
+docker info
+</pre></div>
+
+<p><strong>4. Testing Docker</strong></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run hello-world
+</pre></div>
+
+<p><strong>Output will be like</strong></p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>Unable to find image <span style="color: #e6db74">&#39;hello-world:latest&#39;</span> locally
+latest: Pulling from library/hello-world
+78445dd45222: Pull <span style="color: #f8f8f2">complete</span>
+Digest: sha256:c5515758d4c5e1e838e9cd307f6c6a0d620b5e07e6f927b07d05f6d12a1ac8d7
+Status: Downloaded newer image <span style="color: #66d9ef">for</span> hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ <span style="color: #ae81ff">1</span>. The Docker client contacted the Docker daemon.
+ <span style="color: #ae81ff">2</span>. The Docker daemon pulled the <span style="color: #e6db74">&quot;hello-world&quot;</span> image from the Docker Hub.
+ <span style="color: #ae81ff">3</span>. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ <span style="color: #ae81ff">4</span>. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://cloud.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+</pre></div>
+
+<p>In Next tutorial we will see, some usefull handson on docker :)</p>
+
+<p>Feel free to comment or email if you have any question/suggessions</p>
+
+            </div>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'rahulinux-github-io';
+    var disqus_identifier = 'http:\/\/rahulinux.github.io\/posts\/getting-started-with-docker\/';
+    var disqus_title = 'Getting started with Docker Basics';
+    var disqus_url = 'http:\/\/rahulinux.github.io\/posts\/getting-started-with-docker\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>
