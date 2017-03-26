@@ -7,6 +7,11 @@
   </url>
   
   <url>
+    <loc>http://rahulinux.github.io/posts/getting-started-with-docker/</loc>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://rahulinux.github.io/posts/hands-on-linux-commands/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
   </url>
@@ -23,6 +28,30 @@
   
   <url>
     <loc>http://rahulinux.github.io/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/tags/containers/</loc>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/categories/containers/</loc>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/tags/docker/</loc>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/categories/docker/</loc>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -52,7 +81,7 @@
   
   <url>
     <loc>http://rahulinux.github.io/posts/</loc>
-    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <lastmod>2017-02-08T14:01:09+01:00</lastmod>
     <priority>0</priority>
   </url>
   
