@@ -2,18 +2,18 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Sed on Linuxian</title>
-    <link>http://rahulinux.github.io/categories/sed/index.xml</link>
+    <link>http://www.linuxian.com/categories/sed/index.xml</link>
     <description>Recent content in Sed on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://rahulinux.github.io/categories/sed/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://www.linuxian.com/categories/sed/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>SED 10 useful commands</title>
-      <link>http://rahulinux.github.io/posts/SED-10-useful-commands/</link>
+      <link>http://www.linuxian.com/posts/SED-10-useful-commands/</link>
       <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
       
-      <guid>http://rahulinux.github.io/posts/SED-10-useful-commands/</guid>
+      <guid>http://www.linuxian.com/posts/SED-10-useful-commands/</guid>
       <description>&lt;p&gt;When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;About SED&lt;/strong&gt;&lt;/p&gt;
