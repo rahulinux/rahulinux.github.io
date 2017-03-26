@@ -19,6 +19,221 @@
     </item>
     
     <item>
+      <title>Hands on docker commands</title>
+      <link>http://rahulinux.github.io/posts/hands-on-docker-commands/</link>
+      <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
+      
+      <guid>http://rahulinux.github.io/posts/hands-on-docker-commands/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In the previous tutorial, we have learn about docker and containers and Installation of docker.
+now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.&lt;/p&gt;
+
+&lt;h2 id=&#34;1-run-command&#34;&gt;1. RUN command&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run hello-world
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Whats just happend?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically once you run above command, it&amp;rsquo;s do following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Check &amp;ldquo;hello-world&amp;rdquo; image is exists or not locally, that&amp;rsquo;s why you see first msg &amp;ldquo;Unable to find..&amp;rdquo; in first ran&lt;/li&gt;
+&lt;li&gt;Pullimage from docker hub if not exists in local&lt;/li&gt;
+&lt;li&gt;Create container from downloaded image with some random name&lt;/li&gt;
+&lt;li&gt;Start the container in forground mode ( all output on TTY ) from downloaded image&lt;/li&gt;
+&lt;li&gt;Once process is finished then it will stop the container, in our case it was just print hello-world message.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you want to run container in background then you can simply pass &lt;code&gt;-d&lt;/code&gt; flag to run command as below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -d centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It will run container in detached mode.&lt;/p&gt;
+
+&lt;p&gt;Another command for interactive mode:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -i -t centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Run command has many option, you can check &lt;code&gt;man docker-run&lt;/code&gt; for more info, some basic overview as below:&lt;/p&gt;
+
+&lt;p&gt;The run options control the image’s runtime behavior in a container. These settings affect:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;detached or foreground running&lt;/li&gt;
+&lt;li&gt;container identification and name&lt;/li&gt;
+&lt;li&gt;network settings and host name&lt;/li&gt;
+&lt;li&gt;runtime constraints on CPU and memory&lt;/li&gt;
+&lt;li&gt;privileges and LXC configuration&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;2-create-command&#34;&gt;2. Create command&lt;/h2&gt;
+
+&lt;p&gt;Create command only create container with settings you provided, it does not start container.&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;p&gt;To create :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker create --name test-cn -i -t centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;d63f927cf1c9cc7899389dfddb52fd104b4f2ed7a211e11cf994ea7a644fdd7d
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The output you see, it&amp;rsquo;s a container ID, every container has uniq id, we have provided name (test-cn) to container, if you do not provided name then you can use container id, which is output of above command&lt;/p&gt;
+
+&lt;p&gt;To start :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker start -a -i test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;OR&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker start -a -i d63f927cf1c
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;3-start-stop-and-restart-command&#34;&gt;3. Start, Stop and Restart command&lt;/h2&gt;
+
+&lt;p&gt;To change the container state, you can use thise command like our init script.&lt;/p&gt;
+
+&lt;p&gt;When you fire stop command, docker actually sends signal -15 ( SIGTERM), to the process. The SIGTERM signal requests the process to terminate itself gracefully. once signal sends,
+docker will wait for some timeout&amp;hellip; if its does not stop, then after timeout, docker will send SIGTERM signal ( -9 ) to kill the process forcefully.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker stop | start| restart [OPTIONS] CONTAINER [CONTAINER...]
+
+[Options]
+-t, --time=10      Seconds to wait for stop before killing it
+
+[Container]
+Control the container either by Name or ID
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;4-exec-command&#34;&gt;4. Exec command&lt;/h2&gt;
+
+&lt;p&gt;Now let say you have runing container, and you want to run some commands in runing container, in this case you can use &lt;code&gt;exec&lt;/code&gt; command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span style=&#34;color: #f8f8f2&#34;&gt;exec&lt;/span&gt; -t test-cn bash -c &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;cat /etc/hosts&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span style=&#34;color: #f8f8f2&#34;&gt;exec&lt;/span&gt; -it test-cn bash
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will create new bash session in the running container.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;5-cp-command&#34;&gt;5. cp command&lt;/h2&gt;
+
+&lt;p&gt;Copy data from/to running container&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker cp test-cn:/etc/hosts test-cn-hosts-file
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will copy hosts file from test-cn container to local path with name test-cn-hosts-file&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker cp &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; CONTAINER:PATH LOCALPATH
+docker cp &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; LOCALPATH&lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;- CONTAINER:PATH
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;6-attach-command&#34;&gt;6. attach command&lt;/h2&gt;
+
+&lt;p&gt;This commands brings a container to the foreground. The container must be running to be attached.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker attach &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; CONTAINER
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker attach test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once you run exit command or after attaching container you kill process inside container, it will go to stop mode.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;7-inspect-command&#34;&gt;7. Inspect command&lt;/h2&gt;
+
+&lt;p&gt;It will gives you all container system information like network,os,driver etc&amp;hellip; in json format.&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker inspect test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;8-rm-command&#34;&gt;8. rm command&lt;/h2&gt;
+
+&lt;p&gt;This command is used to delete any container either by name or ID. Put Make sure that the container is stopped before you remove it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker rm CONTAINER-ID
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;9-ps-command&#34;&gt;9. ps command&lt;/h2&gt;
+
+&lt;p&gt;Shows the current running containers on the system and with -a flag list all containers that has been created&lt;/p&gt;
+
+&lt;p&gt;To check running containers&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker ps
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;for checking all containers&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker ps -a
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;10-search-and-pull-image&#34;&gt;10. Search and pull image&lt;/h2&gt;
+
+&lt;p&gt;If you want to search any ready image let say for java then you can simply use search and pull&lt;/p&gt;
+
+&lt;p&gt;To search all java images:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker search java
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To pull on java image:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker pull java
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;11-docker-save-and-load-image-and-list-images&#34;&gt;11. Docker save and load image and list images&lt;/h2&gt;
+
+&lt;p&gt;Lets say you have created your custom image, now you want to export in file and copy to another server then you can simply use this option, its just for portable version of docker images.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker save -o test-cn.tar test-cn
+docker load --input test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To list downloaded images&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker images
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;mix-command&#34;&gt;Mix command&lt;/h2&gt;
+
+&lt;p&gt;To stop all container in one single command&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker stop &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;docker ps -aq&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I hope this is useful for you, feel free to email/comment if any quires.&lt;/p&gt;
+
+&lt;p&gt;In next tutorial we will learn about building docker images.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Getting started with Docker Basics</title>
       <link>http://rahulinux.github.io/posts/getting-started-with-docker/</link>
       <pubDate>Wed, 08 Feb 2017 10:54:24 +0000</pubDate>
