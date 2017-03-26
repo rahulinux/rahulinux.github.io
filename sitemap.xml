@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://localhost:8000/public/post/SED-10-useful-commands/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/posts/SED-10-useful-commands/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/post/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/posts/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/tags/sed/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/categories/sed/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://localhost:8000/public/categories/tips/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+</urlset>
