@@ -2,57 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://localhost:8000/public/post/SED-10-useful-commands/</loc>
+    <loc>http://rahulinux.github.io/post/SED-10-useful-commands/</loc>
     <lastmod>2017-03-25T13:37:17+01:00</lastmod>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/posts/SED-10-useful-commands/</loc>
+    <loc>http://rahulinux.github.io/posts/SED-10-useful-commands/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/categories/</loc>
+    <loc>http://rahulinux.github.io/categories/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/</loc>
-    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://localhost:8000/public/post/</loc>
+    <loc>http://rahulinux.github.io/</loc>
     <lastmod>2017-03-25T13:37:17+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/posts/</loc>
+    <loc>http://rahulinux.github.io/post/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/posts/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/tags/sed/</loc>
+    <loc>http://rahulinux.github.io/tags/sed/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/categories/sed/</loc>
+    <loc>http://rahulinux.github.io/categories/sed/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/tags/</loc>
+    <loc>http://rahulinux.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://localhost:8000/public/categories/tips/</loc>
+    <loc>http://rahulinux.github.io/categories/tips/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
     <priority>0</priority>
   </url>
