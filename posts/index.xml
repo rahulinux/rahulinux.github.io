@@ -109,6 +109,164 @@ now just run&lt;/p&gt;
     </item>
     
     <item>
+      <title>Send password expiry notification to *nix users using Python script</title>
+      <link>http://rahulinux.github.io/posts/python-script-display-and-mail-users-account-expiry-details/</link>
+      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
+      
+      <guid>http://rahulinux.github.io/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
+      <description>&lt;p&gt;Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?&lt;/p&gt;
+
+&lt;p&gt;Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Name          :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :)&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Pupose        :- To check the user account expire status in Linux, unix, BSD etc&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Author        :- Rahul Patil&amp;lt;http://www.linuxian.com&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Created       :- 12 Jun 2013&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Version       :- 0.1&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# License       :- free&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Report `checkUsrAccount_Expiry.py` bugs to loginrahul90@gmail.com&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;socket&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;smtplib&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Specify Mail Login Credencial&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;host_name&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;socket&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;gethostname()&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;sender&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;your_mail_id@gmail.com&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;password&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;yourpassword&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;loginrahul90@gmail.com&amp;#39;&lt;/span&gt;   &lt;span style=&#34;color: #75715e&#34;&gt;# set admin email ID&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;subject&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;Account Expiry Details of {!r}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(host_name)&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;20&lt;/span&gt;   &lt;span style=&#34;color: #75715e&#34;&gt;# set min days&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Specify SMTP Server&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;smtp.gmail.com&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;port&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;587&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;body1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;{:&amp;lt;8s} :: {:&amp;lt;2n} days || Last date :: {:3s}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;body2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;{:&amp;lt;8s} :: Expired on {:3s}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[]&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Sent Mail&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;mailIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(body):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;lt;br&amp;gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(body)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;From: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;sender,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Subject: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;subject,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;To: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;MIME-Version: 1.0&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Content-Type: text/html&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(headers)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;smtplib&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;SMTP(server,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;port)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;ehlo()&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;starttls()&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;ehlo&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;login(sender,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;password)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;Sending Mail...&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;sendmail(sender,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;body)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Sent Successfullly !!&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;quit()&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#  Convert Unix timestamp to Readable Date/time&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;convUnixTime&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(t):&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;fromtimestamp(t&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;60&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;60&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;24&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Read shadow file and check for account expriry&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;open(&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/etc/shadow&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;shadow:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;aLine&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;shadow:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;filed&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;aLine&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;split(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;filed[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;try&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;int(Ac)&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;exprdate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;convUnixTime(Ac)&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;exprdate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;today())&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;days&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;[Ac,exprdate]&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;ValueError&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;pass&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list[filed[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]]&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;l&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Check Account Expry days and format it Properly Output&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;AccountExprDetails&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;t2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;append(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;====&amp;gt;&amp;gt;Following {!r} Account has been Expired&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(t1))&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;index&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;index&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;usr,days&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;iteritems():&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;dt&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;str(days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;])&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;   &lt;span style=&#34;color: #f8f8f2&#34;&gt;days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;insert(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,body2&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(usr,dt))&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;elif&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;extend([body1&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(usr,days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;],dt)])&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;insert(index&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;====&amp;gt;&amp;gt;Following {0} Account will be Expire in {1} Days&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(t2,min_days))&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+
+
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;AccountExprDetails()&lt;/span&gt;
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;__name__&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;len(msg):&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(msg)&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailIt(msg)&lt;/span&gt;
+       &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;No User Account has been Expire&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Sample Output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;====&amp;gt;&amp;gt;Following 3 Account has been Expired
+test     :: Expired on 2013-06-01 05:30:00
+vinayak  :: Expired on 1970-01-01 05:30:00
+ram      :: Expired on 2013-06-14 05:30:00
+====&amp;gt;&amp;gt;Following 4 Account will be Expire in 20 Days
+suraj    :: 1  days || Last date :: 2013-06-15 05:30:00
+javed    :: 1  days || Last date :: 2013-06-15 05:30:00
+shyam    :: 1  days || Last date :: 2013-06-15 05:30:00
+
+Sending Mail...
+Sent Successfully !!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find Updated Script from [this](&amp;ldquo;&lt;a href=&#34;https://github.com/rahulinux/checkUsrAccount_Expiry.py/blob/master/checkUsrAccount_Expiry.py&amp;quot;&#34;&gt;https://github.com/rahulinux/checkUsrAccount_Expiry.py/blob/master/checkUsrAccount_Expiry.py&amp;quot;&lt;/a&gt;) page&lt;/p&gt;
+
+&lt;p&gt;Have fun :-)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>SED 10 useful commands</title>
       <link>http://rahulinux.github.io/posts/SED-10-useful-commands/</link>
       <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>

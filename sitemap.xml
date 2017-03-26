@@ -12,6 +12,11 @@
   </url>
   
   <url>
+    <loc>http://rahulinux.github.io/posts/python-script-display-and-mail-users-account-expiry-details/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://rahulinux.github.io/posts/SED-10-useful-commands/</loc>
     <lastmod>2012-07-01T08:47:00-07:00</lastmod>
   </url>
@@ -22,13 +27,13 @@
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/tags/linux/</loc>
+    <loc>http://rahulinux.github.io/categories/linux/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/categories/linux/</loc>
+    <loc>http://rahulinux.github.io/tags/linux/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -40,20 +45,26 @@
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/post/</loc>
-    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://rahulinux.github.io/posts/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/tags/sed/</loc>
-    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <loc>http://rahulinux.github.io/post/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/tags/python/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/tags/scripting/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -64,18 +75,24 @@
   </url>
   
   <url>
+    <loc>http://rahulinux.github.io/tags/sed/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://rahulinux.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/tags/tips/</loc>
+    <loc>http://rahulinux.github.io/categories/tips/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://rahulinux.github.io/categories/tips/</loc>
+    <loc>http://rahulinux.github.io/tags/tips/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
