@@ -22,6 +22,12 @@
   </url>
   
   <url>
+    <loc>http://rahulinux.github.io/tags/linux/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://rahulinux.github.io/categories/linux/</loc>
     <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
@@ -59,6 +65,12 @@
   
   <url>
     <loc>http://rahulinux.github.io/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://rahulinux.github.io/tags/tips/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
     <priority>0</priority>
   </url>
   
