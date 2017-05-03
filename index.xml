@@ -6,8 +6,72 @@
     <description>Recent content on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Mar 2017 13:37:17 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 02 May 2017 20:57:21 +0200</lastBuildDate>
     <atom:link href="http://www.linuxian.com/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>AWS volume script</title>
+      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
+      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
+      <description>&lt;p&gt;Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can
+change PrivateIpAddress to PublicIp&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Create and Attach Volume to Instace using IP Address&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;us-east-1
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_DEFAULT_REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;VPC&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;VPC_ID
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;[[&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$#&lt;/span&gt; -ne &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;]]&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Usage: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$0&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; &amp;lt;hostname|IP&amp;gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;exit&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+
+msg&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;=========={&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$@&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}==========&amp;quot;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+get_instance_data&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+    &lt;span style=&#34;color: #75715e&#34;&gt;# returns ZONE STATUS IP INSTANCE_ID DEVICE&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; ! &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -qE &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+         &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;dig +short &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 describe-instances &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --query &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name,PrivateIpAddress,InstanceId,BlockDeviceMappings[*].DeviceName]&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --output text &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -A1 &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}\t&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; head -1 &lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -o &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;sd.&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; sort &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; uniq &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tail -1 &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; cut -c &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt;- &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tr &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;0-9a-z&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;1-9a-z_&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/dev/sd${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Fetching Instance Data&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;read&lt;/span&gt; ZONE STATUS IP INSTANCE_ID DEVICE &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;get_instance_data &lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Done&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Creating Volume in Zone &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; for IP &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$IP&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; [ID: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;]&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;volume_id&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 create-volume --size &lt;span style=&#34;color: #ae81ff&#34;&gt;20&lt;/span&gt; --region &lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt; --availability-zone &lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt; --volume-type standard &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; jq -r .VolumeId&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Volume has been created with ID:&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Waiting for Volume availability&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sleep &lt;span style=&#34;color: #ae81ff&#34;&gt;30&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Attaching to Instance&amp;quot;&lt;/span&gt;
+aws ec2 attach-volume --volume-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;  --instance-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt; --device &lt;span style=&#34;color: #f8f8f2&#34;&gt;$DEVICE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+    </item>
     
     <item>
       <title>SED 10 useful commands</title>
@@ -497,6 +561,302 @@ For more examples and ideas, visit:
     </item>
     
     <item>
+      <title>ansible_basics</title>
+      <link>http://www.linuxian.com/posts/ansible_basics/</link>
+      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/ansible_basics/</guid>
+      <description>
+
+&lt;p&gt;This Guid will help you to learn Ansible basics and some practical stuff.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-is-ansible&#34;&gt;What is Ansible ?&lt;/h2&gt;
+
+&lt;p&gt;Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications— automate in a language that approaches plain English, using SSH, with no agents to install on remote systems&lt;/p&gt;
+
+&lt;h2 id=&#34;in-summery&#34;&gt;In Summery:&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Simple IT Automation tool&lt;/li&gt;
+&lt;li&gt;It&amp;rsquo;s Configuration Management tool&lt;/li&gt;
+&lt;li&gt;Provision tool &amp;ndash;&amp;gt; Create New VM/(AWS)Instance&lt;/li&gt;
+&lt;li&gt;Package Installations&lt;/li&gt;
+&lt;li&gt;Deployment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;why-ansible&#34;&gt;Why Ansible ?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;YAMAL Based configuration, which is easy to read and understand&lt;/li&gt;
+&lt;li&gt;Agentless ( no need to install any package on remote machine because it&amp;rsquo;s uses SSH )&lt;/li&gt;
+&lt;li&gt;Batteries included ( inbuilt modules &lt;a href=&#34;http://docs.ansible.com/ansible/modules_by_category.html&#34;&gt;available&lt;/a&gt; )&lt;/li&gt;
+&lt;li&gt;Secure ( it&amp;rsquo;s uses SSH protocol )&lt;/li&gt;
+&lt;li&gt;It&amp;rsquo;s supports &lt;a href=&#34;http://docs.ansible.com/ansible/developing_api.html#detailed-api-example&#34;&gt;API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;where-we-need-to-ansible&#34;&gt;Where we need to Ansible ?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Manage multiple nodes from Single machine&lt;/li&gt;
+&lt;li&gt;Setup Infra like Prod/UAT/DEV ( in Cloud like AWS, Rackspace, Google Cloud )&lt;/li&gt;
+&lt;li&gt;Integrate with Deployment tools like Jenkins for deploying applications (paid versions - bamboos)&lt;/li&gt;
+&lt;li&gt;Package managment, OS Hardening, User managment etc.&lt;/li&gt;
+&lt;li&gt;Ansible uses Push model, we need to push to apply any new changes every single time there is
+new update to remote machine.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;terminology&#34;&gt;Terminology&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Playbook&lt;/strong&gt; : Plain YAML which where you defined list of action/tasks which we are going to performed&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Tasks&lt;/strong&gt;    : Action you are going to perform like package installation or command etc&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Roles&lt;/strong&gt;    : We can create our roles like webserver or database server which include the Playbook&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Facts&lt;/strong&gt;    : There are other places where variables can come from, but these are a type of variable that
+          are discovered, not set by the user. Facts are information derived from speaking with
+          your remote systems. Example like get OS name, or IP adddress or hostname&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Templates&lt;/strong&gt; : It&amp;rsquo;s like dynamic file which will store in remote machine with updating variable value. templates are processed by the Jinja2 templating language&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Vars&lt;/strong&gt; : There are 2 types of Variables in Ansible&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Playbook variable&lt;/strong&gt; : which we defined in Playbook or while running playbook, it&amp;rsquo;s globally use everywhere in playbook and it&amp;rsquo;s also override the other varible which has same name.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;# Following way to define variable in playbook&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;vars&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+  &lt;span style=&#34;color: #ae81ff&#34;&gt;test&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;abc&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Inside tasks ( Runtime variable )&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;set_fact&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;test=&amp;quot;abc&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or we can specify while running command, ( Runtime variable )&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible-playbook -e test=abc playbook.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Defualt variable&lt;/strong&gt;   : When we run playbook, it&amp;rsquo;s try to search variable in some default
+location which not found in playbook book variable.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/hostname&lt;/strong&gt; : this is hostbased variable, so first ansible
+  will try to search in hostbased variable, let say ansible is trying to configure host1 then it will look for &lt;code&gt;group_vars/host1&lt;/code&gt; file for variable&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/groupname&lt;/strong&gt; : this is groupbased variable, if variable not
+  found in hostbased variable then it will try search in groupbased.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/all&lt;/strong&gt; : at the last it&amp;rsquo;s try to search in &amp;ldquo;all&amp;rdquo; which
+  is plain YAML variable file&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;vars_file&lt;/strong&gt;: or you can include your custom variable file.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Inventory&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;There are two types of inventory in ansible&lt;/p&gt;
+
+&lt;p&gt;1) Static Inventory: plain text file where your all hosts defined with groups
+  Example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Hosts it&#39;s comments
+192.168.0.2  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.3  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.10  ansible_ssh_user=root ansible_ssh_pass=redhat name=blabla
+
+
+# Groups it&#39;s comments
+[webservers]
+192.168.0.1
+192.168.0.3
+
+[dbservers]
+192.168.0.10
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;To check hosts:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file all --list-host
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;it will return all ips from inventory&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file webservers --list-host
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;it will return all ips from webservers groups&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;To run uptime command on all hosts ( this is add-hoc command )&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file all -a &#39;uptime&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2) Dynamic Invenotory: it&amp;rsquo;s script which will return the hosts/groups details from any host providers like AWS, Docker, Rackspace etc.&lt;/p&gt;
+
+&lt;h3 id=&#34;lets-do-some-practical-stuff&#34;&gt;Lets do some practical stuff&lt;/h3&gt;
+
+&lt;h1 id=&#34;goal&#34;&gt;Goal&lt;/h1&gt;
+
+&lt;p&gt;We will install ansible on your local machine and setup following things in remote machine
+&lt;ul&gt;
+    &lt;li&gt;OS Hardening&lt;/li&gt;
+    &lt;li&gt;Install base packages&lt;/li&gt;
+&lt;/ul&gt;
+&lt;strong&gt;Install Ansible on local machine&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install -y ansible
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Create Playbook&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;We will create one common role, which will do following things&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;os_hardening : All things related to OS hardening&lt;/li&gt;
+&lt;li&gt;base_package : Install or compile required packages&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Also there will be one single file to manage global variables, like in future if we need to change version of any application or links etc.&lt;/p&gt;
+
+&lt;p&gt;Now create one dir and cd into it then create yml files&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir deploy-nodes &amp;amp;amp;&amp;amp;amp; cd deploy-nodes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Create playbook structure&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p roles/common/tasks
+touch site.yml
+touch roles/common/tasks/main.yml
+touch roles/common/tasks/os_hardening.yml
+touch roles/common/tasks/base_packages.yml
+touch group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So our final structure as below :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;|-- ansible_hosts
+|-- group_vars
+|  &#39;-- all
+|-- roles
+| &#39;-- common
+|  &#39;-- tasks
+|    |-- base_packages.yml
+|    |-- main.yml
+|    &#39;-- os_hardening.yml
+&#39;-- site.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s configure the os_hardening.yml&lt;/p&gt;
+
+&lt;p&gt;There are many things you can do to secure your OS but for learning ansible, we will do basic things, like disable root user in ssh and adding MaxAuthTries 3&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s first defined ssh related variables in vars.yml file&lt;/p&gt;
+
+&lt;p&gt;Edit &amp;ldquo;&lt;code&gt;group_vars/all&lt;/code&gt;&amp;rdquo; and configure as below :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;sshd_config&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/etc/ssh/sshd_config&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: file started with &amp;ldquo;&lt;code&gt;---&lt;/code&gt;&amp;rdquo;, because it YML file, so every YML file, should have this entry.&lt;/p&gt;
+
+&lt;p&gt;Configure the &amp;ldquo;&lt;code&gt;roles/common/tasks/os_hardening.yml&lt;/code&gt;&amp;ldquo;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Disable Root login&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;lineinfile&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;backup=yes&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;state=present&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;dest={{ sshd_config }}&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;regexp=&amp;#39;^PermitRootLogin&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;line=&amp;#39;PermitRootLogin no&amp;#39;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Updating MaxAuthTries to 3&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;lineinfile&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;backup=yes&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;state=present&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;dest={{ sshd_config }}&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;regexp=&amp;#39;^MaxAuthTries&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;line=&amp;#39;MaxAuthTries 3&amp;#39;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Restarting ssh service&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;service&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+      &lt;span style=&#34;color: #ae81ff&#34;&gt;name=ssh&lt;/span&gt;
+      &lt;span style=&#34;color: #ae81ff&#34;&gt;state=restarted&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Explanation :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First it will take backup destination file then search line starting with &amp;ldquo;PermitRootLogin&amp;rdquo; and replace with &amp;ldquo;PermitRootLogin no&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Again search and replace but if search not found then it will add &amp;ldquo;MaxAuthTries 3&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Finally it will restart ssh to affect the changes.
+Configure &amp;ldquo;roles/common/tasks/base_package.yml&amp;rdquo;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;Install list of packages&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;action&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;apt&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;update_cache=yes&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;cache_valid_time=600&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;pkg={{item}}&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;state=installed&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;with_items&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;unzip&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;build-essential&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;openssl&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;sudo&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;when&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;ansible_distribution == &amp;#39;Debian&amp;#39; or&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;ansible_distribution == &amp;#39;Ubuntu&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Explanation :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;It will first do apt-get update if it is not run last 10 min ( cache_valid_time=600 ), then it will install mention packages.&lt;/p&gt;
+
+&lt;p&gt;Configure &amp;ldquo;&lt;code&gt;roles/common/tasks/main.yml&lt;/code&gt;&amp;rdquo; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+ &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;include&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;os_hardening.yml&lt;/span&gt;
+ &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;include&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;base_packages.yml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Configure &amp;ldquo;site.yml&amp;rdquo; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;hosts&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;all&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;sudo&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;roles&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;common&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Add your hosts to ansible_hosts file&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[servers]
+remote-ip-address ansible_ssh_user=remote-user ansible_sudo_pass=password ansible_ssh_pass=password
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: if there is any special character in your password then you need to escape it Ex. if password is: p@ssw1rd then use: p\@ssw1rd&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s run the ansible command to setup remote host&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible-playbook -vvv -i ansible_hosts site.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you face &amp;ldquo;ssh fingerprint&amp;rdquo; issue then do following thing and run above command again:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo sed -i.bkp &#39;s/^#host_key_checking = False/host_key_checking = False/&#39; /etc/ansible/ansible.cfg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find this playbook on github, check &lt;a href=&#34;https://github.com/rahulinux/ansible&#34; target=&#34;_blank&#34;&gt;this page&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Useful Linux Commands</title>
       <link>http://www.linuxian.com/posts/hands-on-linux-commands/</link>
       <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
@@ -857,7 +1217,9 @@ I = incasecensitive&lt;/p&gt;
 
 &lt;p&gt;Currently Working as Big Data DevOps Engineer.&lt;/p&gt;
 
-&lt;p&gt;You reach me at : &lt;code&gt;tr a-z@. n-za-m.@ &amp;lt;&amp;lt;&amp;lt; ybtvaenuhy90.tznvy@pbz&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;You reach me at :&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt; tr a-z@. n-za-m.@ &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt; ybtvaenuhy90.tznvy@pbz 
+&lt;/pre&gt;&lt;/div&gt;
+
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://linkd.in/1bjn7dy&#34;&gt;Linkedin&lt;/a&gt;&lt;/li&gt;

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Script on Linuxian</title>
+    <link>http://www.linuxian.com/tags/script/index.xml</link>
+    <description>Recent content in Script on Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://www.linuxian.com/tags/script/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>AWS volume script</title>
+      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
+      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
+      <description>&lt;p&gt;Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can
+change PrivateIpAddress to PublicIp&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Create and Attach Volume to Instace using IP Address&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;us-east-1
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_DEFAULT_REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;VPC&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;VPC_ID
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;[[&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$#&lt;/span&gt; -ne &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;]]&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Usage: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$0&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; &amp;lt;hostname|IP&amp;gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;exit&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+
+msg&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;=========={&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$@&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}==========&amp;quot;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+get_instance_data&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+    &lt;span style=&#34;color: #75715e&#34;&gt;# returns ZONE STATUS IP INSTANCE_ID DEVICE&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; ! &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -qE &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+         &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;dig +short &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 describe-instances &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --query &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name,PrivateIpAddress,InstanceId,BlockDeviceMappings[*].DeviceName]&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --output text &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -A1 &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}\t&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; head -1 &lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -o &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;sd.&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; sort &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; uniq &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tail -1 &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; cut -c &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt;- &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tr &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;0-9a-z&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;1-9a-z_&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/dev/sd${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Fetching Instance Data&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;read&lt;/span&gt; ZONE STATUS IP INSTANCE_ID DEVICE &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;get_instance_data &lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Done&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Creating Volume in Zone &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; for IP &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$IP&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; [ID: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;]&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;volume_id&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 create-volume --size &lt;span style=&#34;color: #ae81ff&#34;&gt;20&lt;/span&gt; --region &lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt; --availability-zone &lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt; --volume-type standard &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; jq -r .VolumeId&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Volume has been created with ID:&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Waiting for Volume availability&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sleep &lt;span style=&#34;color: #ae81ff&#34;&gt;30&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Attaching to Instance&amp;quot;&lt;/span&gt;
+aws ec2 attach-volume --volume-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;  --instance-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt; --device &lt;span style=&#34;color: #f8f8f2&#34;&gt;$DEVICE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+    </item>
+    
+  </channel>
+</rss>
