@@ -88,24 +88,27 @@ ga('create', 'your_google_analytics_id', 'auto');
             <span class="post-date">May 2, 2017 </span>
             
             <div class="post-content">
-                <p>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.</p>
+                
+
+<p>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.</p>
 
 <p>I&rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can
 change PrivateIpAddress to PublicIp</p>
 
 <div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">#!/bin/bash</span>
 
+<span style="color: #f8f8f2">set</span> -e
+
 <span style="color: #75715e"># Create and Attach Volume to Instace using IP Address</span>
 
-<span style="color: #f8f8f2">AWS_ACCESS_KEY_ID</span><span style="color: #f92672">=</span>XXXX
-<span style="color: #f8f8f2">AWS_SECRET_ACCESS_KEY</span><span style="color: #f92672">=</span>XXXX
-<span style="color: #f8f8f2">REGION</span><span style="color: #f92672">=</span>us-east-1
-<span style="color: #f8f8f2">AWS_DEFAULT_REGION</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">$REGION</span>
-<span style="color: #f8f8f2">VPC</span><span style="color: #f92672">=</span>VPC_ID
+<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_ACCESS_KEY_ID</span><span style="color: #f92672">=</span>XXX
+<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_SECRET_ACCESS_KEY</span><span style="color: #f92672">=</span>XXXXXX
+<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">REGION</span><span style="color: #f92672">=</span>us-east-1
+<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_DEFAULT_REGION</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">$REGION</span>
 
-<span style="color: #66d9ef">if</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">$#</span> -ne <span style="color: #ae81ff">1</span> <span style="color: #f92672">]]</span>
+<span style="color: #66d9ef">if</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">$#</span> -ne <span style="color: #ae81ff">2</span> <span style="color: #f92672">]]</span>
 <span style="color: #66d9ef">then</span>
-    <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;Usage: </span><span style="color: #f8f8f2">$0</span><span style="color: #e6db74"> &lt;hostname|IP&gt;&quot;</span>
+    <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;Usage: </span><span style="color: #f8f8f2">$0</span><span style="color: #e6db74"> &lt;hostname|IP&gt; &lt;size&gt;&quot;</span>
     <span style="color: #f8f8f2">exit</span> <span style="color: #ae81ff">1</span>
 <span style="color: #66d9ef">fi</span>
 
@@ -135,7 +138,7 @@ msg <span style="color: #e6db74">&quot;Fetching Instance Data&quot;</span>
 msg <span style="color: #e6db74">&quot;Done&quot;</span>
 
 msg <span style="color: #e6db74">&quot;Creating Volume in Zone </span><span style="color: #f8f8f2">$ZONE</span><span style="color: #e6db74"> for IP </span><span style="color: #f8f8f2">$IP</span><span style="color: #e6db74"> [ID: </span><span style="color: #f8f8f2">$INSTANCE_ID</span><span style="color: #e6db74">]&quot;</span>
-<span style="color: #f8f8f2">volume_id</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>aws ec2 create-volume --size <span style="color: #ae81ff">20</span> --region <span style="color: #f8f8f2">$REGION</span> --availability-zone <span style="color: #f8f8f2">$ZONE</span> --volume-type standard <span style="color: #f8f8f2">|</span> jq -r .VolumeId<span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
+<span style="color: #f8f8f2">volume_id</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>aws ec2 create-volume --size <span style="color: #e6db74">${</span><span style="color: #f8f8f2">2</span><span style="color: #66d9ef">:-</span><span style="color: #f8f8f2">10</span><span style="color: #e6db74">}</span> --region <span style="color: #f8f8f2">$REGION</span> --availability-zone <span style="color: #f8f8f2">$ZONE</span> --volume-type standard <span style="color: #f8f8f2">|</span> jq -r .VolumeId<span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
 
 msg <span style="color: #e6db74">&quot;Volume has been created with ID:</span><span style="color: #f8f8f2">$volume_id</span><span style="color: #e6db74">&quot;</span>
 <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;Waiting for Volume availability&quot;</span> <span style="color: #f92672">&amp;&amp;</span> sleep <span style="color: #ae81ff">30</span>
@@ -143,6 +146,22 @@ msg <span style="color: #e6db74">&quot;Attaching to Instance&quot;</span>
 aws ec2 attach-volume --volume-id <span style="color: #f8f8f2">$volume_id</span>  --instance-id <span style="color: #f8f8f2">$INSTANCE_ID</span> --device <span style="color: #f8f8f2">$DEVICE</span>
 </pre></div>
 
+
+<h3 id="output">Output</h3>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">=========={</span>Fetching Instance Data<span style="color: #f92672">}==========</span>
+<span style="color: #f92672">=========={</span>Done<span style="color: #f92672">}==========</span>
+<span style="color: #f92672">=========={</span>Creating Volume in Zone us-east-1b <span style="color: #66d9ef">for</span> IP <span style="color: #ae81ff">172</span>.31.19.121 <span style="color: #f92672">[</span>ID: i-07208ea25a760e769<span style="color: #f92672">]}==========</span>
+<span style="color: #f92672">=========={</span>Volume has been created with ID:vol-04b537f936fe0c0e9<span style="color: #f92672">}==========</span>
+Waiting <span style="color: #66d9ef">for</span> Volume <span style="color: #f8f8f2">availability</span>
+<span style="color: #f92672">=========={</span>Attaching to Instance<span style="color: #f92672">}==========</span>
+<span style="color: #f92672">{</span>
+    <span style="color: #e6db74">&quot;AttachTime&quot;</span>: <span style="color: #e6db74">&quot;2017-05-03T07:55:00.921Z&quot;</span>,
+    <span style="color: #e6db74">&quot;InstanceId&quot;</span>: <span style="color: #e6db74">&quot;i-07208ea25a760e769&quot;</span>,
+    <span style="color: #e6db74">&quot;VolumeId&quot;</span>: <span style="color: #e6db74">&quot;vol-04b537f936fe0c0e9&quot;</span>,
+    <span style="color: #e6db74">&quot;State&quot;</span>: <span style="color: #e6db74">&quot;attaching&quot;</span>,
+    <span style="color: #e6db74">&quot;Device&quot;</span>: <span style="color: #e6db74">&quot;/dev/sdd&quot;</span>
+<span style="color: #f92672">}</span>
+</pre></div>
 
             </div>
             
