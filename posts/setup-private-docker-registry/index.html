@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Setup Private Docker Registry &middot; Linuxian </title>
+
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.13" />
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'your_google_analytics_id', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+    </head>
+
+    <body>
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+</header>
+
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/posts/setup-private-docker-registry/">Setup Private Docker Registry</a></h1>
+             
+            <span class="post-date">May 5, 2017 </span>
+            
+            <div class="post-content">
+                
+
+<h1 id="introduction">Introduction</h1>
+
+<p>In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.</p>
+
+<p>I hope you have read previous posts on docker basics and it&rsquo;s concepts.</p>
+
+<h1 id="what-is-docker-registry">What is Docker Registry?</h1>
+
+<p>A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.</p>
+
+<p>There are to types of Registry:</p>
+
+<ul>
+<li><strong>Public Registry</strong> : The default registry for all images. <a href="https://hub.docker.com">Docker hub</a>  which provides a free-to-use, hosted Registry, plus additional features (organization accounts, automated builds, and more)</li>
+<li><strong>Private Registry</strong> : In case if you don&rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&rsquo;s a great solution to integrate with and complement your CI/CD system. Example like <a href="https://www.sonatype.com/docker"><strong>Nexus</strong></a> or <a href="https://docs.docker.com/registry/"><strong>Docker registry</strong></a></li>
+</ul>
+
+<h1 id="how-it-works">How it works?</h1>
+
+<p>When you run <strong>docker run -it centos bash</strong> or <strong>docker pull centos</strong>  command, it&rsquo;s first checks the image exists locally or not, if not then it pulls from the <a href="https://hub.docker.com">Docker hub</a>. imagine if you are pulling image on multiple servers, you will have to download the image from docker hub, multiple times. this process will take huge time if your internet connection is slow, So to avoid this we can build our private repository where we can store our private images. that is use case one but other use like you tightly control where your images are being stored, fully own your images distribution pipeline.</p>
+
+<h1 id="setup-private-registry">Setup Private Registry</h1>
+
+<p>There are two ways of setting up your private registry:</p>
+
+<ol>
+<li>Using self-sign certificates, Quick and dirty way</li>
+<li>Register Certificates for your domain: For production setup</li>
+</ol>
+
+<h1 id="method-1">Method 1</h1>
+
+<p>Let&rsquo;s try with self-sign certificates</p>
+
+<ol>
+<li>Create directory for hosting registry and registry storage.</li>
+</ol>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>mkdir /opt/docker-registry
+<span style="color: #f8f8f2">cd</span> /opt/docker-registry/
+mkdir data
+mkdir certs
+</pre></div>
+
+<ol>
+<li>Generate self-sign certificates</li>
+</ol>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days <span style="color: #ae81ff">365</span> -out certs/domain.crt
+</pre></div>
+
+<ol>
+<li>Start your registry</li>
+</ol>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run -d -p <span style="color: #ae81ff">5000</span>:5000 --restart<span style="color: #f92672">=</span>always <span style="color: #ae81ff">\</span>
+   --name registry -v <span style="color: #f8f8f2">$PWD</span>/data:/var/lib/registry <span style="color: #ae81ff">\</span>
+   -v <span style="color: #f8f8f2">$PWD</span>/certs:/certs -e <span style="color: #f8f8f2">REGISTRY_HTTP_TLS_CERTIFICATE</span><span style="color: #f92672">=</span>/certs/domain.crt <span style="color: #ae81ff">\</span>
+   -e <span style="color: #f8f8f2">REGISTRY_HTTP_TLS_KEY</span><span style="color: #f92672">=</span>/certs/domain.key registry:2
+</pre></div>
+
+<h3 id="testing">Testing</h3>
+
+<p>We can test from same host but since we are using self-sign certificates, we need to install in docker client, for that you need to copy certificate file in <strong>/etc/docker/conf.d/<hostname>:5000/ca.crt</strong></p>
+
+<p>let&rsquo;s assume that your FQDN is <strong>registry.linuxian.com</strong></p>
+
+<h3 id="instaling-linux-client-certificates">Instaling Linux client certificates</h3>
+
+<pre><code>mkdir /etc/docker/certs.d/registry.linuxian.com:5000
+cp certs/domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+</code></pre>
+
+<p>Now try to push any local image to your registry server</p>
+
+<pre><code>docker images
+</code></pre>
+
+<p>Copy any image id from about command output</p>
+
+<pre><code>docker tag &lt;IMAGE_ID&gt; registry.linuxian.com:5000/testimage
+docker push registry.linuxian.com:5000/testimage
+</code></pre>
+
+<p><strong>Bingo !!!</strong></p>
+
+<p>Congrantulation, you just setup your private registry.</p>
+
+<h3 id="instaling-mac-os-client-certificates">Instaling Mac OS client certificates</h3>
+
+<pre><code>mkdir /etc/docker/certs.d/registry.linuxian.com:5000
+cp domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+sudo security add-trusted-cert -d \
+   -r trustRoot -k /Library/Keychains/System.keychain \
+   /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+</code></pre>
+
+<p>Now you can push/pull from your registry server.</p>
+
+<hr />
+
+<h1 id="method-2">Method 2</h1>
+
+<p>Following things require to run in production :</p>
+
+<ul>
+<li>Registered Domain</li>
+<li>SSL certificates</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/rahulinux/test/master/docker-registry.png" height="500" width="900"></p>
+
+<p>As you can see in above picture, you can use Load Balanacer like HAproxy, Nginx or ELB ( in AWS ) which handle SSL and proxy request to your registry server.</p>
+
+            </div>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'linuxian';
+    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/setup-private-docker-registry\/';
+    var disqus_title = 'Setup Private Docker Registry';
+    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/setup-private-docker-registry\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>
