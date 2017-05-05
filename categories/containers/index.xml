@@ -33,7 +33,7 @@
 &lt;li&gt;&lt;strong&gt;Private Registry&lt;/strong&gt; : In case if you don&amp;rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&amp;rsquo;s a great solution to integrate with and complement your CI/CD system. Example like &lt;a href=&#34;https://www.sonatype.com/docker&#34;&gt;&lt;strong&gt;Nexus&lt;/strong&gt;&lt;/a&gt; or &lt;a href=&#34;https://docs.docker.com/registry/&#34;&gt;&lt;strong&gt;Docker registry&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h1 id=&#34;how-it-works&#34;&gt;How it works?&lt;/h1&gt;
+&lt;h1 id=&#34;how-it-s-works&#34;&gt;How it&amp;rsquo;s works?&lt;/h1&gt;
 
 &lt;p&gt;When you run &lt;strong&gt;docker run -it centos bash&lt;/strong&gt; or &lt;strong&gt;docker pull centos&lt;/strong&gt;  command, it&amp;rsquo;s first checks the image exists locally or not, if not then it pulls from the &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker hub&lt;/a&gt;. imagine if you are pulling image on multiple servers, you will have to download the image from docker hub, multiple times. this process will take huge time if your internet connection is slow, So to avoid this we can build our private repository where we can store our private images. that is use case one but other use like you tightly control where your images are being stored, fully own your images distribution pipeline.&lt;/p&gt;
 

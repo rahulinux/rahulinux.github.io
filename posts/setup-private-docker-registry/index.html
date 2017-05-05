@@ -107,7 +107,7 @@ ga('create', 'your_google_analytics_id', 'auto');
 <li><strong>Private Registry</strong> : In case if you don&rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&rsquo;s a great solution to integrate with and complement your CI/CD system. Example like <a href="https://www.sonatype.com/docker"><strong>Nexus</strong></a> or <a href="https://docs.docker.com/registry/"><strong>Docker registry</strong></a></li>
 </ul>
 
-<h1 id="how-it-works">How it works?</h1>
+<h1 id="how-it-s-works">How it&rsquo;s works?</h1>
 
 <p>When you run <strong>docker run -it centos bash</strong> or <strong>docker pull centos</strong>  command, it&rsquo;s first checks the image exists locally or not, if not then it pulls from the <a href="https://hub.docker.com">Docker hub</a>. imagine if you are pulling image on multiple servers, you will have to download the image from docker hub, multiple times. this process will take huge time if your internet connection is slow, So to avoid this we can build our private repository where we can store our private images. that is use case one but other use like you tightly control where your images are being stored, fully own your images distribution pipeline.</p>
 
