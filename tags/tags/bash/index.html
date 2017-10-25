@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 	<head>
-		<title> Linuxian </title> 
+		<title> Bash &middot; Linuxian </title>
 
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -21,8 +22,8 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 
 
-<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
-<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+<link rel="stylesheet" href="css/nix.css">
+<link rel="stylesheet" href="/css/override.css">
 
  
 <link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
@@ -41,8 +42,8 @@ ga('create', 'your_google_analytics_id', 'auto');
 </script>
 
 
-
 	</head>
+
 	<body>
 		<header>
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
@@ -54,14 +55,14 @@ ga('create', 'your_google_analytics_id', 'auto');
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+			<a class="navbar-brand" id="green-terminal" href=>rahulinux@web ~ $</a>
 		</div>
 
 		
 		<div class="collapse navbar-collapse" id="navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li>
-					<a href="http://www.linuxian.com">/home/rahulinux</a>
+					<a href="">/home/rahulinux</a>
 				</li>
 				
 				
@@ -83,48 +84,29 @@ ga('create', 'your_google_analytics_id', 'auto');
 
 		<div class="container wrapper">
 			<div class="row">
-				<div class="col-sm-3 col-centered">
-					<img alt="profile-picture" class="img-responsive img-circle user-picture" src="https://cdn.rawgit.com/rahulinux/scripts/master/pengi.svg">
+				<div class="col-xs-12 text-center">
+					<h1 id=>Bash</h1>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-xs-12 user-profile text-center">
+			<ul id="post-list">
+				
+				<li>
+					<div class="post-list-item">
+						<div class="post-header">
+							<h4 class="post-link"><a href="/posts/aws-volume-script/">AWS volume script</a></h4>
+							<h4 class="post-date">May 2, 2017</h4>
+						</div>
+						<div class="post-summary"><p>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
+I&rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
+#!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &#34;Usage: $0&lt;hostname|IP&gt; &lt;size&gt;&#34; exit 1 fi msg(){ echo &#34;=========={$@}==========&#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</p></div>
+						<div class="post-list-footer text-center">
+							<a href="/posts/aws-volume-script/">Read More</a>
+						</div>
+					</div>
+				</li>
+				
 
-					<h1 id="user-name">RAHUL PATIL</h1>
-
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-xs-12 user-social text-center">
-
-					
-					<a href="https://twitter.com/rahul__patil" title="Twitter"><i class="fa fa-twitter fa-3x" aria-hidden="true"></i></a>
-					
-					
-					<a href="https://plus.google.com/105163854440895315940/about" title="Google+"><i class="fa fa-google-plus fa-3x" aria-hidden="true"></i></a>
-					
-					
-					<a href="https://facebook.com/Mr.Rahul.Patil" title="Facebook"><i class="fa fa-facebook fa-3x" aria-hidden="true"></i></a>
-					
-					
-					<a href="https://github.com/rahulinux" title="GitHub"><i class="fa fa-github fa-3x" aria-hidden="true"></i></a>
-					
-					
-					
-					<a href="http://linkedin.com/in/rahul-patil-85bb9849" title="LinkedIn"><i class="fa fa-linkedin fa-3x" aria-hidden="true"></i></a>
-					
-					
-					<a href="mailto:loginrahul90@gmail.com" title="Email"><i class="fa fa-envelope fa-3x" aria-hidden="true"></i></a>
-					
-
-
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-4 col-md-offset-4 user-description text-center">
-					<p>I’m Rahul Patil, and this is my personal geek blog. I simply like scripting,coding and helping others is a fulfilling way to stay up to date and give something back to the community and the web from which I learned so much.</p>
-				</div>
-			</div>
+			</ul>
 			<div class="push"></div>
 		</div>
 		<footer class="footer text-center">
@@ -135,4 +117,3 @@ ga('create', 'your_google_analytics_id', 'auto');
 
 	</body>
 </html>
-

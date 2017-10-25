@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Linuxian</title>
+    <link>/categories/</link>
+    <description>Recent content in Categories on Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 02 May 2017 20:57:21 +0200</lastBuildDate>
+    
+	<atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bash</title>
+      <link>/categories/bash/</link>
+      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      
+      <guid>/categories/bash/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Containers</title>
+      <link>/categories/containers/</link>
+      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      
+      <guid>/categories/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>/categories/docker/</link>
+      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      
+      <guid>/categories/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker Cli</title>
+      <link>/categories/docker-cli/</link>
+      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      
+      <guid>/categories/docker-cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker Registry</title>
+      <link>/categories/docker-registry/</link>
+      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      
+      <guid>/categories/docker-registry/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Linux</title>
+      <link>/categories/linux/</link>
+      <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
+      
+      <guid>/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>/categories/python/</link>
+      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
+      
+      <guid>/categories/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Script</title>
+      <link>/categories/script/</link>
+      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      
+      <guid>/categories/script/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Scripting</title>
+      <link>/categories/scripting/</link>
+      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
+      
+      <guid>/categories/scripting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sed</title>
+      <link>/categories/sed/</link>
+      <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
+      
+      <guid>/categories/sed/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tips</title>
+      <link>/categories/tips/</link>
+      <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
+      
+      <guid>/categories/tips/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

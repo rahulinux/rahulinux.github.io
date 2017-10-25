@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> ansible_basics &middot; Linuxian </title>
+
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<meta name="generator" content="Hugo 0.13" />
+
+
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'your_google_analytics_id', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+    </head>
+
+    <body>
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+</header>
+
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/posts/ansible_basics/">ansible_basics</a></h1>
+             
+            <span class="post-date">Jan 13, 2015 </span>
+            
+            <div class="post-content">
+                
+
+<p>This Guid will help you to learn Ansible basics and some practical stuff.</p>
+
+<h2 id="what-is-ansible">What is Ansible ?</h2>
+
+<p>Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications— automate in a language that approaches plain English, using SSH, with no agents to install on remote systems</p>
+
+<h2 id="in-summery">In Summery:</h2>
+
+<ul>
+<li>Simple IT Automation tool</li>
+<li>It&rsquo;s Configuration Management tool</li>
+<li>Provision tool &ndash;&gt; Create New VM/(AWS)Instance</li>
+<li>Package Installations</li>
+<li>Deployment</li>
+</ul>
+
+<h2 id="why-ansible">Why Ansible ?</h2>
+
+<ul>
+<li>YAMAL Based configuration, which is easy to read and understand</li>
+<li>Agentless ( no need to install any package on remote machine because it&rsquo;s uses SSH )</li>
+<li>Batteries included ( inbuilt modules <a href="http://docs.ansible.com/ansible/modules_by_category.html">available</a> )</li>
+<li>Secure ( it&rsquo;s uses SSH protocol )</li>
+<li>It&rsquo;s supports <a href="http://docs.ansible.com/ansible/developing_api.html#detailed-api-example">API</a></li>
+</ul>
+
+<h2 id="where-we-need-to-ansible">Where we need to Ansible ?</h2>
+
+<ul>
+<li>Manage multiple nodes from Single machine</li>
+<li>Setup Infra like Prod/UAT/DEV ( in Cloud like AWS, Rackspace, Google Cloud )</li>
+<li>Integrate with Deployment tools like Jenkins for deploying applications (paid versions - bamboos)</li>
+<li>Package managment, OS Hardening, User managment etc.</li>
+<li>Ansible uses Push model, we need to push to apply any new changes every single time there is
+new update to remote machine.</li>
+</ul>
+
+<h2 id="terminology">Terminology</h2>
+
+<ul>
+<li><p><strong>Playbook</strong> : Plain YAML which where you defined list of action/tasks which we are going to performed</p></li>
+
+<li><p><strong>Tasks</strong>    : Action you are going to perform like package installation or command etc</p></li>
+
+<li><p><strong>Roles</strong>    : We can create our roles like webserver or database server which include the Playbook</p></li>
+
+<li><p><strong>Facts</strong>    : There are other places where variables can come from, but these are a type of variable that
+          are discovered, not set by the user. Facts are information derived from speaking with
+          your remote systems. Example like get OS name, or IP adddress or hostname</p></li>
+
+<li><p><strong>Templates</strong> : It&rsquo;s like dynamic file which will store in remote machine with updating variable value. templates are processed by the Jinja2 templating language</p></li>
+
+<li><p><strong>Vars</strong> : There are 2 types of Variables in Ansible</p></li>
+</ul>
+
+<ol>
+<li><strong>Playbook variable</strong> : which we defined in Playbook or while running playbook, it&rsquo;s globally use everywhere in playbook and it&rsquo;s also override the other varible which has same name.</li>
+</ol>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e"># Following way to define variable in playbook</span>
+<span style="color: #ae81ff">vars</span><span style="color: #f8f8f2">:</span>
+  <span style="color: #ae81ff">test</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&#39;abc&#39;</span>
+
+<span style="color: #75715e"># Inside tasks ( Runtime variable )</span>
+<span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">set_fact</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">test=&quot;abc&quot;</span>
+</pre></div>
+
+<p>Or we can specify while running command, ( Runtime variable )</p>
+
+<pre><code>ansible-playbook -e test=abc playbook.yaml
+</code></pre>
+
+<ol>
+<li><p><strong>Defualt variable</strong>   : When we run playbook, it&rsquo;s try to search variable in some default
+location which not found in playbook book variable.</p></li>
+
+<li><p><strong>group_vars/hostname</strong> : this is hostbased variable, so first ansible
+  will try to search in hostbased variable, let say ansible is trying to configure host1 then it will look for <code>group_vars/host1</code> file for variable</p></li>
+
+<li><p><strong>group_vars/groupname</strong> : this is groupbased variable, if variable not
+  found in hostbased variable then it will try search in groupbased.</p></li>
+
+<li><p><strong>group_vars/all</strong> : at the last it&rsquo;s try to search in &ldquo;all&rdquo; which
+  is plain YAML variable file</p></li>
+
+<li><p><strong>vars_file</strong>: or you can include your custom variable file.</p></li>
+</ol>
+
+<p><strong>Inventory</strong>:</p>
+
+<p>There are two types of inventory in ansible</p>
+
+<p>1) Static Inventory: plain text file where your all hosts defined with groups
+  Example:</p>
+
+<pre><code># Hosts it's comments
+192.168.0.2  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.3  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.10  ansible_ssh_user=root ansible_ssh_pass=redhat name=blabla
+
+
+# Groups it's comments
+[webservers]
+192.168.0.1
+192.168.0.3
+
+[dbservers]
+192.168.0.10
+
+</code></pre>
+
+<p><strong>To check hosts:</strong></p>
+
+<pre><code>ansible -i inv_file all --list-host
+</code></pre>
+
+<p>it will return all ips from inventory</p>
+
+<pre><code>ansible -i inv_file webservers --list-host
+</code></pre>
+
+<p>it will return all ips from webservers groups</p>
+
+<p><strong>To run uptime command on all hosts ( this is add-hoc command )</strong></p>
+
+<pre><code>ansible -i inv_file all -a 'uptime'
+</code></pre>
+
+<p>2) Dynamic Invenotory: it&rsquo;s script which will return the hosts/groups details from any host providers like AWS, Docker, Rackspace etc.</p>
+
+<h3 id="lets-do-some-practical-stuff">Lets do some practical stuff</h3>
+
+<h1 id="goal">Goal</h1>
+
+<p>We will install ansible on your local machine and setup following things in remote machine
+<ul>
+    <li>OS Hardening</li>
+    <li>Install base packages</li>
+</ul>
+<strong>Install Ansible on local machine</strong></p>
+
+<pre><code>sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install -y ansible
+</code></pre>
+
+<p><strong>Create Playbook</strong></p>
+
+<p>We will create one common role, which will do following things</p>
+
+<ol>
+<li>os_hardening : All things related to OS hardening</li>
+<li>base_package : Install or compile required packages</li>
+</ol>
+
+<p>Also there will be one single file to manage global variables, like in future if we need to change version of any application or links etc.</p>
+
+<p>Now create one dir and cd into it then create yml files</p>
+
+<pre><code>mkdir deploy-nodes &amp;amp;&amp;amp; cd deploy-nodes
+</code></pre>
+
+<p><strong>Create playbook structure</strong></p>
+
+<pre><code>mkdir -p roles/common/tasks
+touch site.yml
+touch roles/common/tasks/main.yml
+touch roles/common/tasks/os_hardening.yml
+touch roles/common/tasks/base_packages.yml
+touch group_vars/all
+</code></pre>
+
+<p>So our final structure as below :</p>
+
+<pre><code>|-- ansible_hosts
+|-- group_vars
+|  '-- all
+|-- roles
+| '-- common
+|  '-- tasks
+|    |-- base_packages.yml
+|    |-- main.yml
+|    '-- os_hardening.yml
+'-- site.yml
+</code></pre>
+
+<p>Now let&rsquo;s configure the os_hardening.yml</p>
+
+<p>There are many things you can do to secure your OS but for learning ansible, we will do basic things, like disable root user in ssh and adding MaxAuthTries 3</p>
+
+<p>Let&rsquo;s first defined ssh related variables in vars.yml file</p>
+
+<p>Edit &ldquo;<code>group_vars/all</code>&rdquo; and configure as below :</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">---</span>
+<span style="color: #ae81ff">sshd_config</span><span style="color: #f8f8f2">:</span> <span style="color: #e6db74">&#39;/etc/ssh/sshd_config&#39;</span>
+</pre></div>
+
+<p>Note: file started with &ldquo;<code>---</code>&rdquo;, because it YML file, so every YML file, should have this entry.</p>
+
+<p>Configure the &ldquo;<code>roles/common/tasks/os_hardening.yml</code>&ldquo;</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">---</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">name</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">SSHD# Disable Root login</span>
+    <span style="color: #ae81ff">lineinfile</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #ae81ff">backup=yes</span>
+        <span style="color: #ae81ff">state=present</span>
+        <span style="color: #ae81ff">dest={{ sshd_config }}</span>
+        <span style="color: #ae81ff">regexp=&#39;^PermitRootLogin&#39;</span>
+        <span style="color: #ae81ff">line=&#39;PermitRootLogin no&#39;</span>
+
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">name</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">SSHD# Updating MaxAuthTries to 3</span>
+    <span style="color: #ae81ff">lineinfile</span><span style="color: #f8f8f2">:</span>
+        <span style="color: #ae81ff">backup=yes</span>
+        <span style="color: #ae81ff">state=present</span>
+        <span style="color: #ae81ff">dest={{ sshd_config }}</span>
+        <span style="color: #ae81ff">regexp=&#39;^MaxAuthTries&#39;</span>
+        <span style="color: #ae81ff">line=&#39;MaxAuthTries 3&#39;</span>
+
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">name</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">SSHD# Restarting ssh service</span>
+    <span style="color: #ae81ff">service</span><span style="color: #f8f8f2">:</span>
+      <span style="color: #ae81ff">name=ssh</span>
+      <span style="color: #ae81ff">state=restarted</span>
+</pre></div>
+
+<p><strong>Explanation :</strong></p>
+
+<ol>
+<li>First it will take backup destination file then search line starting with &ldquo;PermitRootLogin&rdquo; and replace with &ldquo;PermitRootLogin no&rdquo;</li>
+<li>Again search and replace but if search not found then it will add &ldquo;MaxAuthTries 3&rdquo;</li>
+<li>Finally it will restart ssh to affect the changes.
+Configure &ldquo;roles/common/tasks/base_package.yml&rdquo;</li>
+</ol>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">---</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">name</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">Install list of packages</span>
+    <span style="color: #ae81ff">action</span><span style="color: #f8f8f2">:</span>
+       <span style="color: #ae81ff">apt</span>
+       <span style="color: #ae81ff">update_cache=yes</span>
+       <span style="color: #ae81ff">cache_valid_time=600</span>
+       <span style="color: #ae81ff">pkg={{item}}</span>
+       <span style="color: #ae81ff">state=installed</span>
+    <span style="color: #ae81ff">with_items</span><span style="color: #f8f8f2">:</span>
+    <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">unzip</span>
+    <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">build-essential</span>
+    <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">openssl</span>
+    <span style="color: #ae81ff">sudo</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">true</span>
+    <span style="color: #ae81ff">when</span><span style="color: #f8f8f2">:</span>
+       <span style="color: #ae81ff">ansible_distribution == &#39;Debian&#39; or</span>
+       <span style="color: #ae81ff">ansible_distribution == &#39;Ubuntu&#39;</span>
+</pre></div>
+
+<p><strong>Explanation :</strong></p>
+
+<p>It will first do apt-get update if it is not run last 10 min ( cache_valid_time=600 ), then it will install mention packages.</p>
+
+<p>Configure &ldquo;<code>roles/common/tasks/main.yml</code>&rdquo; file</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">---</span>
+ <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">include</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">os_hardening.yml</span>
+ <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">include</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">base_packages.yml</span>
+</pre></div>
+
+<p>Configure &ldquo;site.yml&rdquo; file</p>
+<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">---</span>
+  <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">hosts</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">all</span>
+    <span style="color: #ae81ff">sudo</span><span style="color: #f8f8f2">:</span> <span style="color: #ae81ff">true</span>
+    <span style="color: #ae81ff">roles</span><span style="color: #f8f8f2">:</span>
+       <span style="color: #f8f8f2">-</span> <span style="color: #ae81ff">common</span>
+</pre></div>
+
+<p>Add your hosts to ansible_hosts file</p>
+
+<pre><code>[servers]
+remote-ip-address ansible_ssh_user=remote-user ansible_sudo_pass=password ansible_ssh_pass=password
+</code></pre>
+
+<p>Note: if there is any special character in your password then you need to escape it Ex. if password is: p@ssw1rd then use: p\@ssw1rd</p>
+
+<p>Now let&rsquo;s run the ansible command to setup remote host</p>
+
+<pre><code>ansible-playbook -vvv -i ansible_hosts site.yml
+</code></pre>
+
+<p>If you face &ldquo;ssh fingerprint&rdquo; issue then do following thing and run above command again:</p>
+
+<pre><code>sudo sed -i.bkp 's/^#host_key_checking = False/host_key_checking = False/' /etc/ansible/ansible.cfg
+</code></pre>
+
+<p>You can find this playbook on github, check <a href="https://github.com/rahulinux/ansible" target="_blank">this page</a></p>
+
+            </div>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'linuxian';
+    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/ansible_basics\/';
+    var disqus_title = 'ansible_basics';
+    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/ansible_basics\/';
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>

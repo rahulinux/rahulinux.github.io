@@ -1,0 +1,1344 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Linuxian</title>
+    <link>http://www.linuxian.com/posts/index.xml</link>
+    <description>Recent content in Posts on Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
+    <atom:link href="http://www.linuxian.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Setup Private Docker Registry</title>
+      <link>http://www.linuxian.com/posts/setup-private-docker-registry/</link>
+      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.&lt;/p&gt;
+
+&lt;p&gt;I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;what-is-docker-registry&#34;&gt;What is Docker Registry?&lt;/h1&gt;
+
+&lt;p&gt;A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.&lt;/p&gt;
+
+&lt;p&gt;There are to types of Registry:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Public Registry&lt;/strong&gt; : The default registry for all images. &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker hub&lt;/a&gt;  which provides a free-to-use, hosted Registry, plus additional features (organization accounts, automated builds, and more)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Private Registry&lt;/strong&gt; : In case if you don&amp;rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&amp;rsquo;s a great solution to integrate with and complement your CI/CD system. Example like &lt;a href=&#34;https://www.sonatype.com/docker&#34;&gt;&lt;strong&gt;Nexus&lt;/strong&gt;&lt;/a&gt; or &lt;a href=&#34;https://docs.docker.com/registry/&#34;&gt;&lt;strong&gt;Docker registry&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;how-it-s-works&#34;&gt;How it&amp;rsquo;s works?&lt;/h1&gt;
+
+&lt;p&gt;When you run &lt;strong&gt;docker run -it centos bash&lt;/strong&gt; or &lt;strong&gt;docker pull centos&lt;/strong&gt;  command, it&amp;rsquo;s first checks the image exists locally or not, if not then it pulls from the &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker hub&lt;/a&gt;. imagine if you are pulling image on multiple servers, you will have to download the image from docker hub, multiple times. this process will take huge time if your internet connection is slow, So to avoid this we can build our private repository where we can store our private images. that is use case one but other use like you tightly control where your images are being stored, fully own your images distribution pipeline.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;setup-private-registry&#34;&gt;Setup Private Registry&lt;/h1&gt;
+
+&lt;p&gt;There are two ways of setting up your private registry:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Using self-sign certificates, Quick and dirty way&lt;/li&gt;
+&lt;li&gt;Register Certificates for your domain: For production setup&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;method-1&#34;&gt;Method 1&lt;/h1&gt;
+
+&lt;p&gt;Let&amp;rsquo;s try with self-sign certificates&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create directory for hosting registry and registry storage.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;mkdir /opt/docker-registry
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;cd&lt;/span&gt; /opt/docker-registry/
+mkdir data
+mkdir certs
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Generate self-sign certificates&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days &lt;span style=&#34;color: #ae81ff&#34;&gt;365&lt;/span&gt; -out certs/domain.crt
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Start your registry&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -d -p &lt;span style=&#34;color: #ae81ff&#34;&gt;5000&lt;/span&gt;:5000 --restart&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;always &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+   --name registry -v &lt;span style=&#34;color: #f8f8f2&#34;&gt;$PWD&lt;/span&gt;/data:/var/lib/registry &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+   -v &lt;span style=&#34;color: #f8f8f2&#34;&gt;$PWD&lt;/span&gt;/certs:/certs -e &lt;span style=&#34;color: #f8f8f2&#34;&gt;REGISTRY_HTTP_TLS_CERTIFICATE&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;/certs/domain.crt &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+   -e &lt;span style=&#34;color: #f8f8f2&#34;&gt;REGISTRY_HTTP_TLS_KEY&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;/certs/domain.key registry:2
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
+
+&lt;p&gt;We can test from same host but since we are using self-sign certificates, we need to install in docker client, for that you need to copy certificate file in &lt;strong&gt;/etc/docker/conf.d/&lt;hostname&gt;:5000/ca.crt&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;let&amp;rsquo;s assume that your FQDN is &lt;strong&gt;registry.linuxian.com&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;instaling-linux-client-certificates&#34;&gt;Instaling Linux client certificates&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir /etc/docker/certs.d/registry.linuxian.com:5000
+cp certs/domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now try to push any local image to your registry server&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker images
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Copy any image id from about command output&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker tag &amp;lt;IMAGE_ID&amp;gt; registry.linuxian.com:5000/testimage
+docker push registry.linuxian.com:5000/testimage
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Bingo !!!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Congrantulation, you just setup your private registry.&lt;/p&gt;
+
+&lt;h3 id=&#34;instaling-mac-os-client-certificates&#34;&gt;Instaling Mac OS client certificates&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir /etc/docker/certs.d/registry.linuxian.com:5000
+cp domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+sudo security add-trusted-cert -d \
+   -r trustRoot -k /Library/Keychains/System.keychain \
+   /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now you can push/pull from your registry server.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;method-2&#34;&gt;Method 2&lt;/h1&gt;
+
+&lt;p&gt;Following things require to run in production :&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Registered Domain&lt;/li&gt;
+&lt;li&gt;SSL certificates&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/rahulinux/test/master/docker-registry.png&#34; height=&#34;500&#34; width=&#34;900&#34;&gt;&lt;/p&gt;
+
+&lt;p&gt;As you can see in above picture, you can use Load Balanacer like HAproxy, Nginx or ELB ( in AWS ) which handle SSL and proxy request to your registry server.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>AWS volume script</title>
+      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
+      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
+      <description>
+
+&lt;p&gt;Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can
+change PrivateIpAddress to PublicIp&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;set&lt;/span&gt; -e
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Create and Attach Volume to Instace using IP Address&lt;/span&gt;
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_ACCESS_KEY_ID&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;XXXXXX
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;us-east-1
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;export&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;AWS_DEFAULT_REGION&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt;
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;[[&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$#&lt;/span&gt; -ne &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;]]&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Usage: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$0&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; &amp;lt;hostname|IP&amp;gt; &amp;lt;size&amp;gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;exit&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+
+msg&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;=========={&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$@&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}==========&amp;quot;&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+get_instance_data&lt;span style=&#34;color: #f92672&#34;&gt;(){&lt;/span&gt;
+    &lt;span style=&#34;color: #75715e&#34;&gt;# returns ZONE STATUS IP INSTANCE_ID DEVICE&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;local&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; ! &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -qE &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;then&lt;/span&gt;
+         &lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;dig +short &lt;span style=&#34;color: #f8f8f2&#34;&gt;$host&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #66d9ef&#34;&gt;fi&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 describe-instances &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --query &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name,PrivateIpAddress,InstanceId,BlockDeviceMappings[*].DeviceName]&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
+        --output text &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -A1 &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;host&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}\t&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; head -1 &lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;raw_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; grep -o &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;sd.&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; sort &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; uniq &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tail -1 &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; cut -c &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt;- &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; tr &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;0-9a-z&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;1-9a-z_&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;instance_data&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/dev/sd${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;vid&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Fetching Instance Data&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;read&lt;/span&gt; ZONE STATUS IP INSTANCE_ID DEVICE &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;get_instance_data &lt;span style=&#34;color: #f8f8f2&#34;&gt;$1&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Done&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Creating Volume in Zone &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; for IP &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$IP&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt; [ID: &lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;]&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;volume_id&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;aws ec2 create-volume --size &lt;span style=&#34;color: #e6db74&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;2&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;:-&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;10&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;}&lt;/span&gt; --region &lt;span style=&#34;color: #f8f8f2&#34;&gt;$REGION&lt;/span&gt; --availability-zone &lt;span style=&#34;color: #f8f8f2&#34;&gt;$ZONE&lt;/span&gt; --volume-type standard &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt; jq -r .VolumeId&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Volume has been created with ID:&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Waiting for Volume availability&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sleep &lt;span style=&#34;color: #ae81ff&#34;&gt;30&lt;/span&gt;
+msg &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Attaching to Instance&amp;quot;&lt;/span&gt;
+aws ec2 attach-volume --volume-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$volume_id&lt;/span&gt;  --instance-id &lt;span style=&#34;color: #f8f8f2&#34;&gt;$INSTANCE_ID&lt;/span&gt; --device &lt;span style=&#34;color: #f8f8f2&#34;&gt;$DEVICE&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3 id=&#34;output&#34;&gt;Output&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=========={&lt;/span&gt;Fetching Instance Data&lt;span style=&#34;color: #f92672&#34;&gt;}==========&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;=========={&lt;/span&gt;Done&lt;span style=&#34;color: #f92672&#34;&gt;}==========&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;=========={&lt;/span&gt;Creating Volume in Zone us-east-1b &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; IP &lt;span style=&#34;color: #ae81ff&#34;&gt;172&lt;/span&gt;.31.19.121 &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;ID: i-07208ea25a760e769&lt;span style=&#34;color: #f92672&#34;&gt;]}==========&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;=========={&lt;/span&gt;Volume has been created with ID:vol-04b537f936fe0c0e9&lt;span style=&#34;color: #f92672&#34;&gt;}==========&lt;/span&gt;
+Waiting &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; Volume &lt;span style=&#34;color: #f8f8f2&#34;&gt;availability&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;=========={&lt;/span&gt;Attaching to Instance&lt;span style=&#34;color: #f92672&#34;&gt;}==========&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;AttachTime&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;2017-05-03T07:55:00.921Z&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;InstanceId&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;i-07208ea25a760e769&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;VolumeId&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;vol-04b537f936fe0c0e9&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;State&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;attaching&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Device&amp;quot;&lt;/span&gt;: &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/dev/sdd&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Hands on docker commands</title>
+      <link>http://www.linuxian.com/posts/hands-on-docker-commands/</link>
+      <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/hands-on-docker-commands/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In the previous tutorial, we have learn about docker and containers and Installation of docker.
+now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.&lt;/p&gt;
+
+&lt;h2 id=&#34;1-run-command&#34;&gt;1. RUN command&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run hello-world
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Whats just happend?&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Basically once you run above command, it&amp;rsquo;s do following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Check &amp;ldquo;hello-world&amp;rdquo; image is exists or not locally, that&amp;rsquo;s why you see first msg &amp;ldquo;Unable to find..&amp;rdquo; in first ran&lt;/li&gt;
+&lt;li&gt;Pullimage from docker hub if not exists in local&lt;/li&gt;
+&lt;li&gt;Create container from downloaded image with some random name&lt;/li&gt;
+&lt;li&gt;Start the container in forground mode ( all output on TTY ) from downloaded image&lt;/li&gt;
+&lt;li&gt;Once process is finished then it will stop the container, in our case it was just print hello-world message.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you want to run container in background then you can simply pass &lt;code&gt;-d&lt;/code&gt; flag to run command as below:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -d centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It will run container in detached mode.&lt;/p&gt;
+
+&lt;p&gt;Another command for interactive mode:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -i -t centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Run command has many option, you can check &lt;code&gt;man docker-run&lt;/code&gt; for more info, some basic overview as below:&lt;/p&gt;
+
+&lt;p&gt;The run options control the image’s runtime behavior in a container. These settings affect:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;detached or foreground running&lt;/li&gt;
+&lt;li&gt;container identification and name&lt;/li&gt;
+&lt;li&gt;network settings and host name&lt;/li&gt;
+&lt;li&gt;runtime constraints on CPU and memory&lt;/li&gt;
+&lt;li&gt;privileges and LXC configuration&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;2-create-command&#34;&gt;2. Create command&lt;/h2&gt;
+
+&lt;p&gt;Create command only create container with settings you provided, it does not start container.&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+
+&lt;p&gt;To create :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker create --name test-cn -i -t centos &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/bin/bash&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Output:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;d63f927cf1c9cc7899389dfddb52fd104b4f2ed7a211e11cf994ea7a644fdd7d
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The output you see, it&amp;rsquo;s a container ID, every container has uniq id, we have provided name (test-cn) to container, if you do not provided name then you can use container id, which is output of above command&lt;/p&gt;
+
+&lt;p&gt;To start :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker start -a -i test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;OR&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker start -a -i d63f927cf1c
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;3-start-stop-and-restart-command&#34;&gt;3. Start, Stop and Restart command&lt;/h2&gt;
+
+&lt;p&gt;To change the container state, you can use thise command like our init script.&lt;/p&gt;
+
+&lt;p&gt;When you fire stop command, docker actually sends signal -15 ( SIGTERM), to the process. The SIGTERM signal requests the process to terminate itself gracefully. once signal sends,
+docker will wait for some timeout&amp;hellip; if its does not stop, then after timeout, docker will send SIGTERM signal ( -9 ) to kill the process forcefully.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker stop | start| restart [OPTIONS] CONTAINER [CONTAINER...]
+
+[Options]
+-t, --time=10      Seconds to wait for stop before killing it
+
+[Container]
+Control the container either by Name or ID
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;4-exec-command&#34;&gt;4. Exec command&lt;/h2&gt;
+
+&lt;p&gt;Now let say you have runing container, and you want to run some commands in runing container, in this case you can use &lt;code&gt;exec&lt;/code&gt; command:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span style=&#34;color: #f8f8f2&#34;&gt;exec&lt;/span&gt; -t test-cn bash -c &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;cat /etc/hosts&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker &lt;span style=&#34;color: #f8f8f2&#34;&gt;exec&lt;/span&gt; -it test-cn bash
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will create new bash session in the running container.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;5-cp-command&#34;&gt;5. cp command&lt;/h2&gt;
+
+&lt;p&gt;Copy data from/to running container&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker cp test-cn:/etc/hosts test-cn-hosts-file
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will copy hosts file from test-cn container to local path with name test-cn-hosts-file&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker cp &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; CONTAINER:PATH LOCALPATH
+docker cp &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; LOCALPATH&lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;- CONTAINER:PATH
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;6-attach-command&#34;&gt;6. attach command&lt;/h2&gt;
+
+&lt;p&gt;This commands brings a container to the foreground. The container must be running to be attached.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker attach &lt;span style=&#34;color: #f92672&#34;&gt;[&lt;/span&gt;OPTIONS&lt;span style=&#34;color: #f92672&#34;&gt;]&lt;/span&gt; CONTAINER
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker attach test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once you run exit command or after attaching container you kill process inside container, it will go to stop mode.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;7-inspect-command&#34;&gt;7. Inspect command&lt;/h2&gt;
+
+&lt;p&gt;It will gives you all container system information like network,os,driver etc&amp;hellip; in json format.&lt;/p&gt;
+
+&lt;p&gt;Example:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker inspect test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;8-rm-command&#34;&gt;8. rm command&lt;/h2&gt;
+
+&lt;p&gt;This command is used to delete any container either by name or ID. Put Make sure that the container is stopped before you remove it.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker rm CONTAINER-ID
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;9-ps-command&#34;&gt;9. ps command&lt;/h2&gt;
+
+&lt;p&gt;Shows the current running containers on the system and with -a flag list all containers that has been created&lt;/p&gt;
+
+&lt;p&gt;To check running containers&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker ps
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;for checking all containers&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker ps -a
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;10-search-and-pull-image&#34;&gt;10. Search and pull image&lt;/h2&gt;
+
+&lt;p&gt;If you want to search any ready image let say for java then you can simply use search and pull&lt;/p&gt;
+
+&lt;p&gt;To search all java images:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker search java
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To pull on java image:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker pull java
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;11-docker-save-and-load-image-and-list-images&#34;&gt;11. Docker save and load image and list images&lt;/h2&gt;
+
+&lt;p&gt;Lets say you have created your custom image, now you want to export in file and copy to another server then you can simply use this option, its just for portable version of docker images.&lt;/p&gt;
+
+&lt;p&gt;Usage:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker save -o test-cn.tar test-cn
+docker load --input test-cn
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To list downloaded images&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker images
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;mix-command&#34;&gt;Mix command&lt;/h2&gt;
+
+&lt;p&gt;To stop all container in one single command&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker stop &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;docker ps -aq&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I hope this is useful for you, feel free to email/comment if any quires.&lt;/p&gt;
+
+&lt;p&gt;In next tutorial we will learn about building docker images.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Getting started with Docker Basics</title>
+      <link>http://www.linuxian.com/posts/getting-started-with-docker/</link>
+      <pubDate>Wed, 08 Feb 2017 10:54:24 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
+      <description>
+
+&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
+
+&lt;p&gt;In this tutorial we will learn following things:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;What is Containers&lt;/li&gt;
+&lt;li&gt;Why Containers&lt;/li&gt;
+&lt;li&gt;Containers vs VM&amp;rsquo;s&lt;/li&gt;
+&lt;li&gt;What is Docker&lt;/li&gt;
+&lt;li&gt;Docker component and architecture&lt;/li&gt;
+&lt;li&gt;Docker Installation &amp;amp; Setup on CentOS 7&lt;/li&gt;
+&lt;li&gt;Docker basic commands&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;in-traditional-way-of-virtualization&#34;&gt;In Traditional way of virtualization&lt;/h1&gt;
+
+&lt;p&gt;As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications,
+But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.
+in this scenario you will have to give 1G memory for VM OS then for application.&lt;/p&gt;
+
+&lt;p&gt;But if you use containers then you will save resources and you will utilize for proper application use only.&lt;/p&gt;
+
+&lt;p&gt;Take look at following diagram, it&amp;rsquo;s shows the difference as mention above..&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://windowsitpro.com/site-files/windowsitpro.com/files/uploads/2015/01/docker%20overview.jpg&#34; alt=&#34;VMvsContainer&#34; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s see some basics concept about Containers :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-containers&#34;&gt;What is Containers ?&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Containers are similar to hardware virtualization like VMs but instead of partitioned the physical machines
+containers isolate the process in single operating system.&lt;/li&gt;
+&lt;li&gt;To do this docker leverages some features in underlying operating system kernel, to create multiple isolated userspace process.&lt;/li&gt;
+&lt;li&gt;On top of this docker provide features like docker cli&lt;/li&gt;
+&lt;li&gt;Docker also provide imaging system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Let&amp;rsquo;s compare the containers with VM&amp;rsquo;s, so that you will get more idea&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;containers-vs-virtual-machines&#34;&gt;Containers Vs. Virtual Machines&lt;/h1&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;VMs&lt;/th&gt;
+&lt;th&gt;Docker&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Each VM runs its own Operating system&lt;/td&gt;
+&lt;td&gt;All containers share the same kernel of Host&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Host OS can be different than guest OS&lt;/td&gt;
+&lt;td&gt;Host OS and container OS has to be same&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;No such concept in VM&lt;/td&gt;
+&lt;td&gt;Containers stop when the command it is started with completes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VM take few minutes to boot&lt;/td&gt;
+&lt;td&gt;Containers take few milli seconds to start&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VM snapshots are hugh in size&lt;/td&gt;
+&lt;td&gt;Images are built incrementally on top of another like layers&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;VMs are not version controlled, can&amp;rsquo;t check diff in two VMs&lt;/td&gt;
+&lt;td&gt;Images can be diffed and can be version controlled using Dockerhub( like github)&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;In normal 4 GB laptop we can run 3-4 VMs&lt;/td&gt;
+&lt;td&gt;We can run many docker containers&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;You can run only 1 VM using 1 VMDK file&lt;/td&gt;
+&lt;td&gt;Many docker containers can be started from one docker image&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;why-containers&#34;&gt;Why Containers ?&lt;/h1&gt;
+
+&lt;p&gt;Four key benefits of using containers&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Portable : Image can be ship, it&amp;rsquo;s mutable, image has versions&lt;/li&gt;
+&lt;li&gt;Flexible : You can create clean, reprodusable and moduler environment&lt;/li&gt;
+&lt;li&gt;Fast     : Speed at start quickly containers, Caching layer of docker make faster build container&lt;/li&gt;
+&lt;li&gt;Efficient : we can allocate exactly resource we want like cpu,memory, it does require full operating system.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;But where this containers fits in usecase ? hmm.. to understand this we need to know some concept, so lets see that&lt;/p&gt;
+
+&lt;h1 id=&#34;microservices-architecture&#34;&gt;Microservices architecture..&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Previously companies were  building one single web application or any application,
+there will be Hugh downtime for any changes because it&amp;rsquo;s one single application, so now days companies are using
+microservice approaches because smaller services can handle with separate teams and it can scale and manage individual by team.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;continaers-are-natural-for-microservices&#34;&gt;Continaers are natural for microservices&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Simple to model: Dockerfile&lt;/li&gt;
+&lt;li&gt;Any app, any languages&lt;/li&gt;
+&lt;li&gt;Image is the version&lt;/li&gt;
+&lt;li&gt;Test &amp;amp; deploy same artifact&lt;/li&gt;
+&lt;li&gt;stateless servers decrease change risk&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;containers-providers&#34;&gt;Containers Providers&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Docker ( We will learn this )&lt;/li&gt;
+&lt;li&gt;AWS ECS&lt;/li&gt;
+&lt;li&gt;LXD&lt;/li&gt;
+&lt;li&gt;LXC&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Docker is supported by almot all the big players in the cloud computing market e.g.(Amazon, Azure, RackSpace , etc.), so we will focus on docker, lets start with basics:&lt;/p&gt;
+
+&lt;h1 id=&#34;what-is-docker&#34;&gt;What is Docker?&lt;/h1&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Docker is an open platform for developers and sysadmins to build, ship, and run distributed applications. Consisting of Docker Engine, a portable, lightweight runtime and packaging tool, and Docker Hub, a cloud service for sharing applications and automating workflows, Docker enables apps to be quickly assembled from components and eliminates the friction between development, QA, and production environments. As a result, IT can ship faster and run the same app, unchanged, on laptops, data center VMs, and any cloud.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&#34;docker-architecture&#34;&gt;Docker Architecture&lt;/h1&gt;
+
+&lt;p&gt;Docker uses a client-server architecture. The Docker client talks to the Docker daemon,
+which does the heavy lifting of building, running, and distributing your Docker containers.
+The Docker client and daemon can run on the same system, or you can connect a Docker client to a remote Docker daemon.
+The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://docs.docker.com/engine/article-img/architecture.svg&#34; alt=&#34;Docker_Arch&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker daemon ( Engine)&lt;/strong&gt; : The Docker daemon runs on a host machine. The user uses the Docker client to interact with the daemon. The Docker engine is the actual middle-ware that runs, monitors, orchestrate the containers&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker client&lt;/strong&gt; : in the form of the docker binary, is the primary user interface to Docker. It accepts commands and configuration flags from the user and communicates with a Docker daemon. One client can even communicate with multiple unrelated daemons.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker Image&lt;/strong&gt;:  A Docker image is a read-only template with instructions for creating a Docker container. For example, an image might contain an Ubuntu operating system with Apache web server and your web application installed. You can build or update images from scratch or download and use images created by others. An image may be based on, or may extend, one or more other images. A docker image is described in text file called a Dockerfile, which has a simple, well-defined syntax.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker containers&lt;/strong&gt; : A Docker container is a runnable instance of a Docker image. You can run, start, stop, move, or delete a container using Docker API or CLI commands. When you run a container, you can provide configuration metadata such as networking information or environment variables. Each container is an isolated and secure application platform, but can be given access to resources running in a different host or container, as well as persistent storage or databases.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Docker registries&lt;/strong&gt; :  A docker registry is a library of images. A registry can be public or private, and can be on the same server as the Docker daemon or Docker client, or on a totally separate server. take look at public registry Docker hub at &lt;a href=&#34;https://hub.docker.com/explore/&#34;&gt;https://hub.docker.com/explore/&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Docker filesystem&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Docker uses Union File System ( with Storage driver AUFS for Ubuntu and driver devicemapper for RHEL/CentOS )&lt;/p&gt;
+
+&lt;p&gt;UnionFS used because:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;it&amp;rsquo;s Avoid duplicating a complete set of files each time you run an image as a new container&lt;/li&gt;
+&lt;li&gt;it&amp;rsquo;s isolate changes to a container filesystem in its own layer, allowing for that same container to be restarted from a known content (since the layer with the changes will have been dismissed when the container is removed)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Read more about filesystem, and &lt;a href=&#34;https://docs.docker.com/engine/understanding-docker/#/how-does-a-docker-image-work&#34;&gt;How does docker image work&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;installation&#34;&gt;Installation&lt;/h1&gt;
+
+&lt;h3 id=&#34;prerequisites&#34;&gt;Prerequisites&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Docker must be installed on 64 bit OS with kernel more than 3.10. The kernel must support an appropriate storage driver.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;installation-on-centos-7&#34;&gt;Installation on CentOS 7&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Add Official docker repo&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cat &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;lt;&amp;lt; EOF &amp;gt; /etc/yum.repos.d/docker.repo&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;[Docker]&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;name=Docker Repository&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;baseurl=https://yum.dockerproject.org/repo/main/centos/7&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;enabled=1&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;gpgcheck=1&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;gpgkey=https://yum.dockerproject.org/gpg&lt;/span&gt;
+&lt;span style=&#34;color: #e6db74&#34;&gt;EOF&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Install docker-engine&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;yum install -y docker-engine
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: if docker is already install, make sure to remove older version using &lt;code&gt;yum remove docker container-selinux docker-common docker-client&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Start service and add in startup&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;systemctl restart docker.service
+chkconfig --level &lt;span style=&#34;color: #ae81ff&#34;&gt;35&lt;/span&gt; docker on
+&lt;span style=&#34;color: #75715e&#34;&gt;# check docker info using&lt;/span&gt;
+docker info
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;4. Testing Docker&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run hello-world
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Output will be like&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;Unable to find image &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;hello-world:latest&amp;#39;&lt;/span&gt; locally
+latest: Pulling from library/hello-world
+78445dd45222: Pull &lt;span style=&#34;color: #f8f8f2&#34;&gt;complete&lt;/span&gt;
+Digest: sha256:c5515758d4c5e1e838e9cd307f6c6a0d620b5e07e6f927b07d05f6d12a1ac8d7
+Status: Downloaded newer image &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;. The Docker client contacted the Docker daemon.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;2&lt;/span&gt;. The Docker daemon pulled the &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;hello-world&amp;quot;&lt;/span&gt; image from the Docker Hub.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;3&lt;/span&gt;. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ &lt;span style=&#34;color: #ae81ff&#34;&gt;4&lt;/span&gt;. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://cloud.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/engine/userguide/
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In Next tutorial we will see, some usefull handson on docker :)&lt;/p&gt;
+
+&lt;p&gt;Feel free to comment or email if you have any question/suggessions&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>ansible_basics</title>
+      <link>http://www.linuxian.com/posts/ansible_basics/</link>
+      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/ansible_basics/</guid>
+      <description>
+
+&lt;p&gt;This Guid will help you to learn Ansible basics and some practical stuff.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-is-ansible&#34;&gt;What is Ansible ?&lt;/h2&gt;
+
+&lt;p&gt;Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications— automate in a language that approaches plain English, using SSH, with no agents to install on remote systems&lt;/p&gt;
+
+&lt;h2 id=&#34;in-summery&#34;&gt;In Summery:&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Simple IT Automation tool&lt;/li&gt;
+&lt;li&gt;It&amp;rsquo;s Configuration Management tool&lt;/li&gt;
+&lt;li&gt;Provision tool &amp;ndash;&amp;gt; Create New VM/(AWS)Instance&lt;/li&gt;
+&lt;li&gt;Package Installations&lt;/li&gt;
+&lt;li&gt;Deployment&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;why-ansible&#34;&gt;Why Ansible ?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;YAMAL Based configuration, which is easy to read and understand&lt;/li&gt;
+&lt;li&gt;Agentless ( no need to install any package on remote machine because it&amp;rsquo;s uses SSH )&lt;/li&gt;
+&lt;li&gt;Batteries included ( inbuilt modules &lt;a href=&#34;http://docs.ansible.com/ansible/modules_by_category.html&#34;&gt;available&lt;/a&gt; )&lt;/li&gt;
+&lt;li&gt;Secure ( it&amp;rsquo;s uses SSH protocol )&lt;/li&gt;
+&lt;li&gt;It&amp;rsquo;s supports &lt;a href=&#34;http://docs.ansible.com/ansible/developing_api.html#detailed-api-example&#34;&gt;API&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;where-we-need-to-ansible&#34;&gt;Where we need to Ansible ?&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Manage multiple nodes from Single machine&lt;/li&gt;
+&lt;li&gt;Setup Infra like Prod/UAT/DEV ( in Cloud like AWS, Rackspace, Google Cloud )&lt;/li&gt;
+&lt;li&gt;Integrate with Deployment tools like Jenkins for deploying applications (paid versions - bamboos)&lt;/li&gt;
+&lt;li&gt;Package managment, OS Hardening, User managment etc.&lt;/li&gt;
+&lt;li&gt;Ansible uses Push model, we need to push to apply any new changes every single time there is
+new update to remote machine.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;terminology&#34;&gt;Terminology&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Playbook&lt;/strong&gt; : Plain YAML which where you defined list of action/tasks which we are going to performed&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Tasks&lt;/strong&gt;    : Action you are going to perform like package installation or command etc&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Roles&lt;/strong&gt;    : We can create our roles like webserver or database server which include the Playbook&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Facts&lt;/strong&gt;    : There are other places where variables can come from, but these are a type of variable that
+          are discovered, not set by the user. Facts are information derived from speaking with
+          your remote systems. Example like get OS name, or IP adddress or hostname&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Templates&lt;/strong&gt; : It&amp;rsquo;s like dynamic file which will store in remote machine with updating variable value. templates are processed by the Jinja2 templating language&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Vars&lt;/strong&gt; : There are 2 types of Variables in Ansible&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Playbook variable&lt;/strong&gt; : which we defined in Playbook or while running playbook, it&amp;rsquo;s globally use everywhere in playbook and it&amp;rsquo;s also override the other varible which has same name.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;# Following way to define variable in playbook&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;vars&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+  &lt;span style=&#34;color: #ae81ff&#34;&gt;test&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;abc&amp;#39;&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Inside tasks ( Runtime variable )&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;set_fact&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;test=&amp;quot;abc&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Or we can specify while running command, ( Runtime variable )&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible-playbook -e test=abc playbook.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;Defualt variable&lt;/strong&gt;   : When we run playbook, it&amp;rsquo;s try to search variable in some default
+location which not found in playbook book variable.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/hostname&lt;/strong&gt; : this is hostbased variable, so first ansible
+  will try to search in hostbased variable, let say ansible is trying to configure host1 then it will look for &lt;code&gt;group_vars/host1&lt;/code&gt; file for variable&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/groupname&lt;/strong&gt; : this is groupbased variable, if variable not
+  found in hostbased variable then it will try search in groupbased.&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;group_vars/all&lt;/strong&gt; : at the last it&amp;rsquo;s try to search in &amp;ldquo;all&amp;rdquo; which
+  is plain YAML variable file&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;vars_file&lt;/strong&gt;: or you can include your custom variable file.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Inventory&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;p&gt;There are two types of inventory in ansible&lt;/p&gt;
+
+&lt;p&gt;1) Static Inventory: plain text file where your all hosts defined with groups
+  Example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# Hosts it&#39;s comments
+192.168.0.2  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.3  ansible_ssh_user=root ansible_ssh_pass=redhat var1=test
+192.168.0.10  ansible_ssh_user=root ansible_ssh_pass=redhat name=blabla
+
+
+# Groups it&#39;s comments
+[webservers]
+192.168.0.1
+192.168.0.3
+
+[dbservers]
+192.168.0.10
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;To check hosts:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file all --list-host
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;it will return all ips from inventory&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file webservers --list-host
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;it will return all ips from webservers groups&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;To run uptime command on all hosts ( this is add-hoc command )&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible -i inv_file all -a &#39;uptime&#39;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;2) Dynamic Invenotory: it&amp;rsquo;s script which will return the hosts/groups details from any host providers like AWS, Docker, Rackspace etc.&lt;/p&gt;
+
+&lt;h3 id=&#34;lets-do-some-practical-stuff&#34;&gt;Lets do some practical stuff&lt;/h3&gt;
+
+&lt;h1 id=&#34;goal&#34;&gt;Goal&lt;/h1&gt;
+
+&lt;p&gt;We will install ansible on your local machine and setup following things in remote machine
+&lt;ul&gt;
+    &lt;li&gt;OS Hardening&lt;/li&gt;
+    &lt;li&gt;Install base packages&lt;/li&gt;
+&lt;/ul&gt;
+&lt;strong&gt;Install Ansible on local machine&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo apt-add-repository -y ppa:ansible/ansible
+sudo apt-get update
+sudo apt-get install -y ansible
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Create Playbook&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;We will create one common role, which will do following things&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;os_hardening : All things related to OS hardening&lt;/li&gt;
+&lt;li&gt;base_package : Install or compile required packages&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Also there will be one single file to manage global variables, like in future if we need to change version of any application or links etc.&lt;/p&gt;
+
+&lt;p&gt;Now create one dir and cd into it then create yml files&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir deploy-nodes &amp;amp;amp;&amp;amp;amp; cd deploy-nodes
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Create playbook structure&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mkdir -p roles/common/tasks
+touch site.yml
+touch roles/common/tasks/main.yml
+touch roles/common/tasks/os_hardening.yml
+touch roles/common/tasks/base_packages.yml
+touch group_vars/all
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;So our final structure as below :&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;|-- ansible_hosts
+|-- group_vars
+|  &#39;-- all
+|-- roles
+| &#39;-- common
+|  &#39;-- tasks
+|    |-- base_packages.yml
+|    |-- main.yml
+|    &#39;-- os_hardening.yml
+&#39;-- site.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s configure the os_hardening.yml&lt;/p&gt;
+
+&lt;p&gt;There are many things you can do to secure your OS but for learning ansible, we will do basic things, like disable root user in ssh and adding MaxAuthTries 3&lt;/p&gt;
+
+&lt;p&gt;Let&amp;rsquo;s first defined ssh related variables in vars.yml file&lt;/p&gt;
+
+&lt;p&gt;Edit &amp;ldquo;&lt;code&gt;group_vars/all&lt;/code&gt;&amp;rdquo; and configure as below :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+&lt;span style=&#34;color: #ae81ff&#34;&gt;sshd_config&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/etc/ssh/sshd_config&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note: file started with &amp;ldquo;&lt;code&gt;---&lt;/code&gt;&amp;rdquo;, because it YML file, so every YML file, should have this entry.&lt;/p&gt;
+
+&lt;p&gt;Configure the &amp;ldquo;&lt;code&gt;roles/common/tasks/os_hardening.yml&lt;/code&gt;&amp;ldquo;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Disable Root login&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;lineinfile&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;backup=yes&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;state=present&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;dest={{ sshd_config }}&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;regexp=&amp;#39;^PermitRootLogin&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;line=&amp;#39;PermitRootLogin no&amp;#39;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Updating MaxAuthTries to 3&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;lineinfile&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;backup=yes&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;state=present&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;dest={{ sshd_config }}&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;regexp=&amp;#39;^MaxAuthTries&amp;#39;&lt;/span&gt;
+        &lt;span style=&#34;color: #ae81ff&#34;&gt;line=&amp;#39;MaxAuthTries 3&amp;#39;&lt;/span&gt;
+
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;SSHD# Restarting ssh service&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;service&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+      &lt;span style=&#34;color: #ae81ff&#34;&gt;name=ssh&lt;/span&gt;
+      &lt;span style=&#34;color: #ae81ff&#34;&gt;state=restarted&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Explanation :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;First it will take backup destination file then search line starting with &amp;ldquo;PermitRootLogin&amp;rdquo; and replace with &amp;ldquo;PermitRootLogin no&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Again search and replace but if search not found then it will add &amp;ldquo;MaxAuthTries 3&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Finally it will restart ssh to affect the changes.
+Configure &amp;ldquo;roles/common/tasks/base_package.yml&amp;rdquo;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;Install list of packages&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;action&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;apt&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;update_cache=yes&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;cache_valid_time=600&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;pkg={{item}}&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;state=installed&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;with_items&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;unzip&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;build-essential&lt;/span&gt;
+    &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;openssl&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;sudo&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;when&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;ansible_distribution == &amp;#39;Debian&amp;#39; or&lt;/span&gt;
+       &lt;span style=&#34;color: #ae81ff&#34;&gt;ansible_distribution == &amp;#39;Ubuntu&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;Explanation :&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;It will first do apt-get update if it is not run last 10 min ( cache_valid_time=600 ), then it will install mention packages.&lt;/p&gt;
+
+&lt;p&gt;Configure &amp;ldquo;&lt;code&gt;roles/common/tasks/main.yml&lt;/code&gt;&amp;rdquo; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+ &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;include&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;os_hardening.yml&lt;/span&gt;
+ &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;include&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;base_packages.yml&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Configure &amp;ldquo;site.yml&amp;rdquo; file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;---&lt;/span&gt;
+  &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;hosts&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;all&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;sudo&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;true&lt;/span&gt;
+    &lt;span style=&#34;color: #ae81ff&#34;&gt;roles&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #f8f8f2&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;common&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Add your hosts to ansible_hosts file&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[servers]
+remote-ip-address ansible_ssh_user=remote-user ansible_sudo_pass=password ansible_ssh_pass=password
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note: if there is any special character in your password then you need to escape it Ex. if password is: p@ssw1rd then use: p\@ssw1rd&lt;/p&gt;
+
+&lt;p&gt;Now let&amp;rsquo;s run the ansible command to setup remote host&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ansible-playbook -vvv -i ansible_hosts site.yml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you face &amp;ldquo;ssh fingerprint&amp;rdquo; issue then do following thing and run above command again:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sudo sed -i.bkp &#39;s/^#host_key_checking = False/host_key_checking = False/&#39; /etc/ansible/ansible.cfg
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find this playbook on github, check &lt;a href=&#34;https://github.com/rahulinux/ansible&#34; target=&#34;_blank&#34;&gt;this page&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Useful Linux Commands</title>
+      <link>http://www.linuxian.com/posts/hands-on-linux-commands/</link>
+      <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/hands-on-linux-commands/</guid>
+      <description>&lt;p&gt;In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Place the argument of the most recent command on the shell&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;When typing out long arguments, such as&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;tail -f /var/log/messages
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You can put that argument on your command line by holding down the &lt;kbd&gt;ALT&lt;/kbd&gt; key and pressing the period &lt;kbd&gt;.&lt;/kbd&gt; or by pressing &lt;kbd&gt;ESC&lt;/kbd&gt; then the period &lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
+
+&lt;p&gt;For example: tail -f &lt;kbd&gt;ALT&lt;/kbd&gt; + &lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
+
+&lt;p&gt;this would put &amp;lsquo;/var/log/messages&amp;rsquo; as my argument. Keeping pressing &lt;kbd&gt;ALT&lt;/kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt; to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.&lt;/p&gt;
+
+&lt;p&gt;In Mac you can use &lt;kbd&gt;ESC&lt;kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;2. Man Pages&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Command &lt;code&gt;man&lt;/code&gt; is your friend, Before googling , you should check man pages to solve issue yourself. here is simple Example, if want to understand File System Hierarchy, then simply use :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;man hier
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;3. SSH&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If ServerB is Not accessible but you can access ServerA , and ServerA can access ServerB , then you can use .&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;ssh -t ServerA  ssh  ServerB
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Directly ssh to ServerB that is only accessible through ServerA&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;4. RPM, DPKG&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to Check which file belongs to which package.&lt;/p&gt;
+
+&lt;p&gt;In RHEL/CentOS&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;rpm -qf   /path/of/file
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In Ubuntu&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;dpkg -S  /path/of/file
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that if package installed using source code, then it will never show , only apply for files those are installed through package manager.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;5. Get absolute Path of file&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;This trick very useful in Shell Script.&lt;/p&gt;
+
+&lt;p&gt;if you want to check absolute path of file which is in your current directory :&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;readlink  -f  filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you want to get absolute path of script it self&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;This_Script&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;readlink -f &lt;span style=&#34;color: #f8f8f2&#34;&gt;$0&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;6. Backup/Rename File&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to Backup file with current date name.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cp  filename&lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;,-bkp-&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;date +%F&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you want to rename file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;mv filename&lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;,-old&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;7. Fast, built-in pipe-based data sink&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt; Yourcommand   &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;:
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is shorter and actually much faster than &amp;gt;/dev/null (see sample output for timings)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;8. Save Command in History Without Executing it.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Type your command and Simple Press &lt;kbd&gt;ALT&lt;/kbd&gt;+&lt;kbd&gt;#&lt;/kbd&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;9. Search and Execute Recent commands from your history&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Simply Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;r&lt;/kbd&gt; and type some word to search your Command, Simply do Next using &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;r&lt;/kbd&gt;  to cycle through commands.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;10. Fast Execute recent command.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Suppose you have Open file using vim then you save file and run some other command,
+now just run&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;!vim
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;this will execute last command start with vim from your history.&lt;/p&gt;
+
+&lt;p&gt;If you want to share any command line tips &amp;amp; tricks, just post in comments.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Send password expiry notification to nix users using Python script</title>
+      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
+      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
+      <description>&lt;p&gt;Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?&lt;/p&gt;
+
+&lt;p&gt;Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #75715e&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Name          :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :)&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Pupose        :- To check the user account expire status in Linux, unix, BSD etc&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Author        :- Rahul Patil&amp;lt;http://www.linuxian.com&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Created       :- 12 Jun 2013&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Version       :- 0.1&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# License       :- free&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;# Report `checkUsrAccount_Expiry.py` bugs to loginrahul90@gmail.com&lt;/span&gt;
+
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;re&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;socket&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;smtplib&lt;/span&gt;
+&lt;span style=&#34;color: #f92672&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Specify Mail Login Credencial&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;host_name&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;socket&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;gethostname()&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;sender&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;your_mail_id@gmail.com&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;password&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;yourpassword&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;loginrahul90@gmail.com&amp;#39;&lt;/span&gt;   &lt;span style=&#34;color: #75715e&#34;&gt;# set admin email ID&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;subject&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;Account Expiry Details of {!r}&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(host_name)&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;20&lt;/span&gt;   &lt;span style=&#34;color: #75715e&#34;&gt;# set min days&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Specify SMTP Server&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;server&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;smtp.gmail.com&amp;#39;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;port&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;587&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;body1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;{:&amp;lt;8s} :: {:&amp;lt;2n} days || Last date :: {:3s}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;body2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;{:&amp;lt;8s} :: Expired on {:3s}&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[]&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Sent Mail&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;mailIt&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(body):&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;lt;br&amp;gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(body)&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;From: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;sender,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Subject: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;subject,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;To: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;MIME-Version: 1.0&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;
+                    &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Content-Type: text/html&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(headers)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;smtplib&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;SMTP(server,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;port)&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;ehlo()&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;starttls()&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;ehlo&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;login(sender,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;password)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\n\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;Sending Mail...&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;sendmail(sender,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;recipient,&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;headers&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\r\n\r\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;body)&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;Sent Successfullly !!&amp;quot;&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;session&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;quit()&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;{}&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#  Convert Unix timestamp to Readable Date/time&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;convUnixTime&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(t):&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;fromtimestamp(t&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;60&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;60&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;*&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;24&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Read shadow file and check for account expriry&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;open(&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;/etc/shadow&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;shadow:&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;aLine&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;shadow:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;filed&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;aLine&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;split(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;:&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;)&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;filed[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;7&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;try&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;int(Ac)&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;exprdate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;convUnixTime(Ac)&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;(&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;exprdate&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;datetime&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;today())&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;days&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;l&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;[Ac,exprdate]&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;ValueError&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;pass&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list[filed[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]]&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;l&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;Ac&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+                        &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                                &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;# Check Account Expry days and format it Properly Output&lt;/span&gt;
+&lt;span style=&#34;color: #75715e&#34;&gt;#---------------------------------------------------------&lt;/span&gt;
+&lt;span style=&#34;color: #66d9ef&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #a6e22e&#34;&gt;AccountExprDetails&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;():&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;[]&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expired_users&lt;/span&gt;
+        &lt;span style=&#34;color: #f8f8f2&#34;&gt;t2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;total_expring_users&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;append(&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;====&amp;gt;&amp;gt;Following {!r} Account has been Expired&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(t1))&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;index&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t1&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;index&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;usr,days&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;expr_list&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;iteritems():&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;dt&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;str(days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;])&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt;   &lt;span style=&#34;color: #f8f8f2&#34;&gt;days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;insert(&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,body2&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(usr,dt))&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;elif&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;]&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;&amp;lt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;min_days:&lt;/span&gt;
+                        &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;extend([body1&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(usr,days[&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;],dt)])&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;t2&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color: #ae81ff&#34;&gt;0&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;insert(index&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;1&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;,&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;====&amp;gt;&amp;gt;Following {0} Account will be Expire in {1} Days&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;format(t2,min_days))&lt;/span&gt;
+        &lt;span style=&#34;color: #66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt;
+
+
+
+&lt;span style=&#34;color: #f8f8f2&#34;&gt;msg&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;AccountExprDetails()&lt;/span&gt;
+
+&lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;__name__&lt;/span&gt; &lt;span style=&#34;color: #f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+       &lt;span style=&#34;color: #66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;len(msg):&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #ae81ff&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;join(msg)&lt;/span&gt;
+                &lt;span style=&#34;color: #f8f8f2&#34;&gt;mailIt(msg)&lt;/span&gt;
+       &lt;span style=&#34;color: #66d9ef&#34;&gt;else&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;:&lt;/span&gt;
+                &lt;span style=&#34;color: #66d9ef&#34;&gt;print&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;quot;No User Account has been Expire&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Sample Output:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;====&amp;gt;&amp;gt;Following 3 Account has been Expired
+test     :: Expired on 2013-06-01 05:30:00
+vinayak  :: Expired on 1970-01-01 05:30:00
+ram      :: Expired on 2013-06-14 05:30:00
+====&amp;gt;&amp;gt;Following 4 Account will be Expire in 20 Days
+suraj    :: 1  days || Last date :: 2013-06-15 05:30:00
+javed    :: 1  days || Last date :: 2013-06-15 05:30:00
+shyam    :: 1  days || Last date :: 2013-06-15 05:30:00
+
+Sending Mail...
+Sent Successfully !!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You can find Updated Script from [this](&amp;ldquo;&lt;a href=&#34;https://github.com/rahulinux/checkUsrAccount_Expiry.py/blob/master/checkUsrAccount_Expiry.py&amp;quot;&#34;&gt;https://github.com/rahulinux/checkUsrAccount_Expiry.py/blob/master/checkUsrAccount_Expiry.py&amp;quot;&lt;/a&gt;) page&lt;/p&gt;
+
+&lt;p&gt;Have fun :-)&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>SED 10 useful commands</title>
+      <link>http://www.linuxian.com/posts/SED-10-useful-commands/</link>
+      <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/SED-10-useful-commands/</guid>
+      <description>&lt;p&gt;When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;About SED&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;sed is an Non-interactive stream editor.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Features&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;scripting languages&lt;/li&gt;
+&lt;li&gt;work primarily with text file.&lt;/li&gt;
+&lt;li&gt;programmable editor.&lt;/li&gt;
+&lt;li&gt;accept command-line option and can be scripted ( sed -f script_name )&lt;/li&gt;
+&lt;li&gt;GNU versions supports POSIX (Grep) and (Egrep) regexes&lt;/li&gt;
+&lt;li&gt;Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).&lt;/li&gt;
+&lt;li&gt;supports address to indicate to which lines operate on : /^$/d - delete blank lines .&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Usage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sed [ Options ] &#39; instruction &#39; file     | PIPE | STDIN
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some examples&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Print line no. from file (it will print line 1 to 5 .)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -n &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1,5p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; &lt;strong&gt;Print lines except  1 to 6 line.&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -n &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1,6!p&amp;#39;&lt;/span&gt;  filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Print below two lines from matches word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/word/,+2p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;4. Delete two lines with matches word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/word/,+2d&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;5. Delete below 2 lines from match word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/5/{n;N;d}&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;6. search two words&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/monkey/,/donkey/p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;7. delete blank file (-i = edit source file and backup sourch file (filename.bak))&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -i.bak &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;8. delete second line after first line&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1~2p&amp;#39;&lt;/span&gt;  filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;9. Search and Replace&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;g = Global
+s = search
+I = incasecensitive&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/find/replace/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;10. Multiple instruction&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;it will delete blank lines then search RAM and replace SHYAM (only print not change in source file )&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;the line contain &amp;ldquo;NAME&amp;rdquo; in the same line search RAM and replace SHYAM.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/NAME/s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

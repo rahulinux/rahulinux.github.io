@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sed on Linuxian</title>
+    <link>http://www.linuxian.com/categories/sed/index.xml</link>
+    <description>Recent content in Sed on Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <atom:link href="http://www.linuxian.com/categories/sed/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SED 10 useful commands</title>
+      <link>http://www.linuxian.com/posts/SED-10-useful-commands/</link>
+      <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/SED-10-useful-commands/</guid>
+      <description>&lt;p&gt;When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;About SED&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;sed is an Non-interactive stream editor.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Features&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;scripting languages&lt;/li&gt;
+&lt;li&gt;work primarily with text file.&lt;/li&gt;
+&lt;li&gt;programmable editor.&lt;/li&gt;
+&lt;li&gt;accept command-line option and can be scripted ( sed -f script_name )&lt;/li&gt;
+&lt;li&gt;GNU versions supports POSIX (Grep) and (Egrep) regexes&lt;/li&gt;
+&lt;li&gt;Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).&lt;/li&gt;
+&lt;li&gt;supports address to indicate to which lines operate on : /^$/d - delete blank lines .&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Usage&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;sed [ Options ] &#39; instruction &#39; file     | PIPE | STDIN
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Some examples&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;1. Print line no. from file (it will print line 1 to 5 .)&lt;/strong&gt;&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -n &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1,5p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;2.&lt;/strong&gt; &lt;strong&gt;Print lines except  1 to 6 line.&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -n &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1,6!p&amp;#39;&lt;/span&gt;  filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;3. Print below two lines from matches word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/word/,+2p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;4. Delete two lines with matches word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/word/,+2d&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;5. Delete below 2 lines from match word&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/5/{n;N;d}&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;6. search two words&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/monkey/,/donkey/p&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;7. delete blank file (-i = edit source file and backup sourch file (filename.bak))&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -i.bak &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;8. delete second line after first line&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -ne &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;1~2p&amp;#39;&lt;/span&gt;  filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;9. Search and Replace&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;g = Global
+s = search
+I = incasecensitive&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/find/replace/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;10. Multiple instruction&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;it will delete blank lines then search RAM and replace SHYAM (only print not change in source file )&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;or&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/^$/d&amp;#39;&lt;/span&gt; &lt;span style=&#34;color: #f8f8f2&#34;&gt;;&lt;/span&gt; &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;the line contain &amp;ldquo;NAME&amp;rdquo; in the same line search RAM and replace SHYAM.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;sed -e &lt;span style=&#34;color: #e6db74&#34;&gt;&amp;#39;/NAME/s/RAM/SHYAM/g&amp;#39;&lt;/span&gt; filename
+&lt;/pre&gt;&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

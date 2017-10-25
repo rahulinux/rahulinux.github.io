@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>/posts/setup-private-docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/aws-volume-script/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/sed-10-useful-commands/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/hands-on-docker-commands/</loc>
+    <lastmod>2017-02-09T17:06:58+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/getting-started-with-docker/</loc>
+    <lastmod>2017-02-08T10:54:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/ansible_basics/</loc>
+    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/hands-on-linux-commands/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/python-script-display-and-mail-users-account-expiry-details/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/posts/sed-10-useful-commands/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/bash/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/bash/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/containers/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/containers/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/docker/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/docker/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/docker-cli/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/docker-cli/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/linux/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/linux/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/posts/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2017-03-25T13:37:17+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/python/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/python/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/script/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/script/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/scripting/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/scripting/</loc>
+    <lastmod>2013-06-14T10:54:24+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/sed/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/sed/</loc>
+    <lastmod>2012-07-01T08:47:00-07:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
+    <lastmod>2017-05-02T20:57:21+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/tips/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/categories/tips/</loc>
+    <lastmod>2013-06-19T16:57:35+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/aboute-me/</loc>
+  </url>
+  
+</urlset>
