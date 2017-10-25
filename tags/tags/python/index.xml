@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Python on Linuxian</title>
-    <link>/tags/python/</link>
+    <link>http://www.linuxian.com/tags/python/</link>
     <description>Recent content in Python on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 14 Jun 2013 10:54:24 +0000</lastBuildDate>
     
-	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.linuxian.com/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Send password expiry notification to nix users using Python script</title>
-      <link>/posts/python-script-display-and-mail-users-account-expiry-details/</link>
+      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
       <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
       
-      <guid>/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
+      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
       <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
 Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.
 #!/usr/bin/env python #--------------------------------------------------------- # Name :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :) # Pupose :- To check the user account expire status in Linux, unix, BSD etc # Author :- Rahul Patil&amp;lt;http://www.</description>

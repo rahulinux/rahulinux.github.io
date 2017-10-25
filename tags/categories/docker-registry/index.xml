@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker Registry on Linuxian</title>
-    <link>/categories/docker-registry/</link>
+    <link>http://www.linuxian.com/categories/docker-registry/</link>
     <description>Recent content in Docker Registry on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
     
-	<atom:link href="/categories/docker-registry/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.linuxian.com/categories/docker-registry/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Setup Private Docker Registry</title>
-      <link>/posts/setup-private-docker-registry/</link>
+      <link>http://www.linuxian.com/posts/setup-private-docker-registry/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/posts/setup-private-docker-registry/</guid>
+      <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
       <description>Introduction In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.
 I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.
 What is Docker Registry? A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.

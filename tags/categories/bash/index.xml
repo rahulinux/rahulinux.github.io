@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Bash on Linuxian</title>
-    <link>/categories/bash/</link>
+    <link>http://www.linuxian.com/categories/bash/</link>
     <description>Recent content in Bash on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 02 May 2017 20:57:21 +0200</lastBuildDate>
     
-	<atom:link href="/categories/bash/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.linuxian.com/categories/bash/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>AWS volume script</title>
-      <link>/posts/aws-volume-script/</link>
+      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
       <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
       
-      <guid>/posts/aws-volume-script/</guid>
+      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
       <description>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
 I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
 #!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &amp;#34;Usage: $0&amp;lt;hostname|IP&amp;gt; &amp;lt;size&amp;gt;&amp;#34; exit 1 fi msg(){ echo &amp;#34;=========={$@}==========&amp;#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</description>

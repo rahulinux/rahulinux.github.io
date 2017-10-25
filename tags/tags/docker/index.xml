@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker on Linuxian</title>
-    <link>/tags/docker/</link>
+    <link>http://www.linuxian.com/tags/docker/</link>
     <description>Recent content in Docker on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
     
-	<atom:link href="/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.linuxian.com/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Setup Private Docker Registry</title>
-      <link>/posts/setup-private-docker-registry/</link>
+      <link>http://www.linuxian.com/posts/setup-private-docker-registry/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/posts/setup-private-docker-registry/</guid>
+      <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
       <description>Introduction In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.
 I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.
 What is Docker Registry? A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.
@@ -26,10 +26,10 @@ There are to types of Registry:
     
     <item>
       <title>Hands on docker commands</title>
-      <link>/posts/hands-on-docker-commands/</link>
+      <link>http://www.linuxian.com/posts/hands-on-docker-commands/</link>
       <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
       
-      <guid>/posts/hands-on-docker-commands/</guid>
+      <guid>http://www.linuxian.com/posts/hands-on-docker-commands/</guid>
       <description>Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
 1. RUN command docker run hello-world Whats just happend?
 Basically once you run above command, it&amp;rsquo;s do following things:
@@ -38,10 +38,10 @@ Basically once you run above command, it&amp;rsquo;s do following things:
     
     <item>
       <title>Getting started with Docker Basics</title>
-      <link>/posts/getting-started-with-docker/</link>
+      <link>http://www.linuxian.com/posts/getting-started-with-docker/</link>
       <pubDate>Wed, 08 Feb 2017 10:54:24 +0000</pubDate>
       
-      <guid>/posts/getting-started-with-docker/</guid>
+      <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
       <description>Introduction In this tutorial we will learn following things:
  What is Containers Why Containers Containers vs VM&amp;rsquo;s What is Docker Docker component and architecture Docker Installation &amp;amp; Setup on CentOS 7 Docker basic commands  In Traditional way of virtualization As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications, But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.</description>
     </item>

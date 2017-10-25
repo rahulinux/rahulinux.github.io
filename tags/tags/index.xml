@@ -2,111 +2,111 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Linuxian</title>
-    <link>/tags/</link>
+    <link>http://www.linuxian.com/tags/</link>
     <description>Recent content in Tags on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 02 May 2017 20:57:21 +0200</lastBuildDate>
     
-	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://www.linuxian.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Bash</title>
-      <link>/tags/bash/</link>
+      <link>http://www.linuxian.com/tags/bash/</link>
       <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
       
-      <guid>/tags/bash/</guid>
+      <guid>http://www.linuxian.com/tags/bash/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Containers</title>
-      <link>/tags/containers/</link>
+      <link>http://www.linuxian.com/tags/containers/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/tags/containers/</guid>
+      <guid>http://www.linuxian.com/tags/containers/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>/tags/docker/</link>
+      <link>http://www.linuxian.com/tags/docker/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/tags/docker/</guid>
+      <guid>http://www.linuxian.com/tags/docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker Cli</title>
-      <link>/tags/docker-cli/</link>
+      <link>http://www.linuxian.com/tags/docker-cli/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/tags/docker-cli/</guid>
+      <guid>http://www.linuxian.com/tags/docker-cli/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker Registry</title>
-      <link>/tags/docker-registry/</link>
+      <link>http://www.linuxian.com/tags/docker-registry/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>/tags/docker-registry/</guid>
+      <guid>http://www.linuxian.com/tags/docker-registry/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux</title>
-      <link>/tags/linux/</link>
+      <link>http://www.linuxian.com/tags/linux/</link>
       <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
       
-      <guid>/tags/linux/</guid>
+      <guid>http://www.linuxian.com/tags/linux/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python</title>
-      <link>/tags/python/</link>
+      <link>http://www.linuxian.com/tags/python/</link>
       <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
       
-      <guid>/tags/python/</guid>
+      <guid>http://www.linuxian.com/tags/python/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Script</title>
-      <link>/tags/script/</link>
+      <link>http://www.linuxian.com/tags/script/</link>
       <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
       
-      <guid>/tags/script/</guid>
+      <guid>http://www.linuxian.com/tags/script/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Scripting</title>
-      <link>/tags/scripting/</link>
+      <link>http://www.linuxian.com/tags/scripting/</link>
       <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
       
-      <guid>/tags/scripting/</guid>
+      <guid>http://www.linuxian.com/tags/scripting/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Sed</title>
-      <link>/tags/sed/</link>
+      <link>http://www.linuxian.com/tags/sed/</link>
       <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
       
-      <guid>/tags/sed/</guid>
+      <guid>http://www.linuxian.com/tags/sed/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tips</title>
-      <link>/tags/tips/</link>
+      <link>http://www.linuxian.com/tags/tips/</link>
       <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
       
-      <guid>/tags/tips/</guid>
+      <guid>http://www.linuxian.com/tags/tips/</guid>
       <description></description>
     </item>
     
