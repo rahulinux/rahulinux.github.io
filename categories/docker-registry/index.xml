@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Docker Registry on Linuxian</title>
-    <link>http://www.linuxian.com/categories/docker-registry/index.xml</link>
+    <link>http://www.linuxian.com/categories/docker-registry/</link>
     <description>Recent content in Docker Registry on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://www.linuxian.com/categories/docker-registry/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
+    
+	<atom:link href="http://www.linuxian.com/categories/docker-registry/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Setup Private Docker Registry</title>
@@ -14,127 +17,11 @@
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
       <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
-      <description>
-
-&lt;h1 id=&#34;introduction&#34;&gt;Introduction&lt;/h1&gt;
-
-&lt;p&gt;In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.&lt;/p&gt;
-
-&lt;p&gt;I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;what-is-docker-registry&#34;&gt;What is Docker Registry?&lt;/h1&gt;
-
-&lt;p&gt;A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.&lt;/p&gt;
-
-&lt;p&gt;There are to types of Registry:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Public Registry&lt;/strong&gt; : The default registry for all images. &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker hub&lt;/a&gt;  which provides a free-to-use, hosted Registry, plus additional features (organization accounts, automated builds, and more)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Private Registry&lt;/strong&gt; : In case if you don&amp;rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&amp;rsquo;s a great solution to integrate with and complement your CI/CD system. Example like &lt;a href=&#34;https://www.sonatype.com/docker&#34;&gt;&lt;strong&gt;Nexus&lt;/strong&gt;&lt;/a&gt; or &lt;a href=&#34;https://docs.docker.com/registry/&#34;&gt;&lt;strong&gt;Docker registry&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;how-it-s-works&#34;&gt;How it&amp;rsquo;s works?&lt;/h1&gt;
-
-&lt;p&gt;When you run &lt;strong&gt;docker run -it centos bash&lt;/strong&gt; or &lt;strong&gt;docker pull centos&lt;/strong&gt;  command, it&amp;rsquo;s first checks the image exists locally or not, if not then it pulls from the &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker hub&lt;/a&gt;. imagine if you are pulling image on multiple servers, you will have to download the image from docker hub, multiple times. this process will take huge time if your internet connection is slow, So to avoid this we can build our private repository where we can store our private images. that is use case one but other use like you tightly control where your images are being stored, fully own your images distribution pipeline.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;setup-private-registry&#34;&gt;Setup Private Registry&lt;/h1&gt;
-
-&lt;p&gt;There are two ways of setting up your private registry:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Using self-sign certificates, Quick and dirty way&lt;/li&gt;
-&lt;li&gt;Register Certificates for your domain: For production setup&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;method-1&#34;&gt;Method 1&lt;/h1&gt;
-
-&lt;p&gt;Let&amp;rsquo;s try with self-sign certificates&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create directory for hosting registry and registry storage.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;mkdir /opt/docker-registry
-&lt;span style=&#34;color: #f8f8f2&#34;&gt;cd&lt;/span&gt; /opt/docker-registry/
-mkdir data
-mkdir certs
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Generate self-sign certificates&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days &lt;span style=&#34;color: #ae81ff&#34;&gt;365&lt;/span&gt; -out certs/domain.crt
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Start your registry&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;docker run -d -p &lt;span style=&#34;color: #ae81ff&#34;&gt;5000&lt;/span&gt;:5000 --restart&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;always &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
-   --name registry -v &lt;span style=&#34;color: #f8f8f2&#34;&gt;$PWD&lt;/span&gt;/data:/var/lib/registry &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
-   -v &lt;span style=&#34;color: #f8f8f2&#34;&gt;$PWD&lt;/span&gt;/certs:/certs -e &lt;span style=&#34;color: #f8f8f2&#34;&gt;REGISTRY_HTTP_TLS_CERTIFICATE&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;/certs/domain.crt &lt;span style=&#34;color: #ae81ff&#34;&gt;\&lt;/span&gt;
-   -e &lt;span style=&#34;color: #f8f8f2&#34;&gt;REGISTRY_HTTP_TLS_KEY&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;/certs/domain.key registry:2
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&#34;testing&#34;&gt;Testing&lt;/h3&gt;
-
-&lt;p&gt;We can test from same host but since we are using self-sign certificates, we need to install in docker client, for that you need to copy certificate file in &lt;strong&gt;/etc/docker/conf.d/&lt;hostname&gt;:5000/ca.crt&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;let&amp;rsquo;s assume that your FQDN is &lt;strong&gt;registry.linuxian.com&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;instaling-linux-client-certificates&#34;&gt;Instaling Linux client certificates&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;mkdir /etc/docker/certs.d/registry.linuxian.com:5000
-cp certs/domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now try to push any local image to your registry server&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;docker images
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Copy any image id from about command output&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;docker tag &amp;lt;IMAGE_ID&amp;gt; registry.linuxian.com:5000/testimage
-docker push registry.linuxian.com:5000/testimage
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;Bingo !!!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Congrantulation, you just setup your private registry.&lt;/p&gt;
-
-&lt;h3 id=&#34;instaling-mac-os-client-certificates&#34;&gt;Instaling Mac OS client certificates&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code&gt;mkdir /etc/docker/certs.d/registry.linuxian.com:5000
-cp domain.crt /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
-sudo security add-trusted-cert -d \
-   -r trustRoot -k /Library/Keychains/System.keychain \
-   /etc/docker/certs.d/registry.linuxian.com\:5000/ca.crt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Now you can push/pull from your registry server.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;method-2&#34;&gt;Method 2&lt;/h1&gt;
-
-&lt;p&gt;Following things require to run in production :&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Registered Domain&lt;/li&gt;
-&lt;li&gt;SSL certificates&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/rahulinux/test/master/docker-registry.png&#34; height=&#34;500&#34; width=&#34;900&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;As you can see in above picture, you can use Load Balanacer like HAproxy, Nginx or ELB ( in AWS ) which handle SSL and proxy request to your registry server.&lt;/p&gt;
-</description>
+      <description>Introduction In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.
+I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.
+What is Docker Registry? A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.
+There are to types of Registry:
+ Public Registry : The default registry for all images.</description>
     </item>
     
   </channel>

@@ -96,9 +96,7 @@ ga('create', 'your_google_analytics_id', 'auto');
 now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.</p>
 
 <h2 id="1-run-command">1. RUN command</h2>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run hello-world
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run hello-world</code></pre></div>
 <p><strong>Whats just happend?</strong></p>
 
 <p>Basically once you run above command, it&rsquo;s do following things:</p>
@@ -112,15 +110,11 @@ now we will see how to play with container because handling containers is the so
 </ul>
 
 <p>If you want to run container in background then you can simply pass <code>-d</code> flag to run command as below:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run -d centos <span style="color: #e6db74">&quot;/bin/bash&quot;</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
 <p>It will run container in detached mode.</p>
 
 <p>Another command for interactive mode:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run -i -t centos <span style="color: #e6db74">&quot;/bin/bash&quot;</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -i -t centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
 <p>Run command has many option, you can check <code>man docker-run</code> for more info, some basic overview as below:</p>
 
 <p>The run options control the image’s runtime behavior in a container. These settings affect:</p>
@@ -142,23 +136,15 @@ now we will see how to play with container because handling containers is the so
 <p>Example:</p>
 
 <p>To create :</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker create --name test-cn -i -t centos <span style="color: #e6db74">&quot;/bin/bash&quot;</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker create --name test-cn -i -t centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
 <p>Output:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>d63f927cf1c9cc7899389dfddb52fd104b4f2ed7a211e11cf994ea7a644fdd7d
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">d63f927cf1c9cc7899389dfddb52fd104b4f2ed7a211e11cf994ea7a644fdd7d</code></pre></div>
 <p>The output you see, it&rsquo;s a container ID, every container has uniq id, we have provided name (test-cn) to container, if you do not provided name then you can use container id, which is output of above command</p>
 
 <p>To start :</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker start -a -i test-cn
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker start -a -i test-cn</code></pre></div>
 <p>OR</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker start -a -i d63f927cf1c
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker start -a -i d63f927cf1c</code></pre></div>
 <hr />
 
 <h2 id="3-start-stop-and-restart-command">3. Start, Stop and Restart command</h2>
@@ -184,11 +170,7 @@ Control the container either by Name or ID
 <h2 id="4-exec-command">4. Exec command</h2>
 
 <p>Now let say you have runing container, and you want to run some commands in runing container, in this case you can use <code>exec</code> command:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker <span style="color: #f8f8f2">exec</span> -t test-cn bash -c <span style="color: #e6db74">&quot;cat /etc/hosts&quot;</span>
-</pre></div>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker <span style="color: #f8f8f2">exec</span> -it test-cn bash
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker exec -t test-cn bash -c <span style="color:#e6db74">&#34;cat /etc/hosts&#34;</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker exec -it test-cn bash</code></pre></div>
 <p>This will create new bash session in the running container.</p>
 
 <hr />
@@ -198,16 +180,12 @@ Control the container either by Name or ID
 <p>Copy data from/to running container</p>
 
 <p>Example:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker cp test-cn:/etc/hosts test-cn-hosts-file
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker cp test-cn:/etc/hosts test-cn-hosts-file</code></pre></div>
 <p>This will copy hosts file from test-cn container to local path with name test-cn-hosts-file</p>
 
 <p>Usage:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f92672">]</span> CONTAINER:PATH LOCALPATH
-docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f92672">]</span> LOCALPATH<span style="color: #f8f8f2">|</span>- CONTAINER:PATH
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker cp <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER:PATH LOCALPATH
+docker cp <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> LOCALPATH|- CONTAINER:PATH</code></pre></div>
 <hr />
 
 <h2 id="6-attach-command">6. attach command</h2>
@@ -215,13 +193,9 @@ docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f9267
 <p>This commands brings a container to the foreground. The container must be running to be attached.</p>
 
 <p>Usage:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker attach <span style="color: #f92672">[</span>OPTIONS<span style="color: #f92672">]</span> CONTAINER
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker attach <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER</code></pre></div>
 <p>Example:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker attach test-cn
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker attach test-cn</code></pre></div>
 <p>Once you run exit command or after attaching container you kill process inside container, it will go to stop mode.</p>
 
 <hr />
@@ -231,17 +205,13 @@ docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f9267
 <p>It will gives you all container system information like network,os,driver etc&hellip; in json format.</p>
 
 <p>Example:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker inspect test-cn
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker inspect test-cn</code></pre></div>
 <hr />
 
 <h2 id="8-rm-command">8. rm command</h2>
 
 <p>This command is used to delete any container either by name or ID. Put Make sure that the container is stopped before you remove it.</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker rm CONTAINER-ID
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker rm CONTAINER-ID</code></pre></div>
 <hr />
 
 <h2 id="9-ps-command">9. ps command</h2>
@@ -249,13 +219,9 @@ docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f9267
 <p>Shows the current running containers on the system and with -a flag list all containers that has been created</p>
 
 <p>To check running containers</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker ps
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker ps</code></pre></div>
 <p>for checking all containers</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker ps -a
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker ps -a</code></pre></div>
 <hr />
 
 <h2 id="10-search-and-pull-image">10. Search and pull image</h2>
@@ -263,13 +229,9 @@ docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f9267
 <p>If you want to search any ready image let say for java then you can simply use search and pull</p>
 
 <p>To search all java images:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker search java
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker search java</code></pre></div>
 <p>To pull on java image:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker pull java
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull java</code></pre></div>
 <hr />
 
 <h2 id="11-docker-save-and-load-image-and-list-images">11. Docker save and load image and list images</h2>
@@ -277,20 +239,14 @@ docker cp <span style="color: #f92672">[</span>OPTIONS<span style="color: #f9267
 <p>Lets say you have created your custom image, now you want to export in file and copy to another server then you can simply use this option, its just for portable version of docker images.</p>
 
 <p>Usage:</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker save -o test-cn.tar test-cn
-docker load --input test-cn
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker save -o test-cn.tar test-cn
+docker load --input test-cn</code></pre></div>
 <p>To list downloaded images</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker images
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker images</code></pre></div>
 <h2 id="mix-command">Mix command</h2>
 
 <p>To stop all container in one single command</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker stop <span style="color: #e6db74">&#39;docker ps -aq&#39;</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker stop <span style="color:#e6db74">&#39;docker ps -aq&#39;</span></code></pre></div>
 <p>I hope this is useful for you, feel free to email/comment if any quires.</p>
 
 <p>In next tutorial we will learn about building docker images.</p>
@@ -299,20 +255,25 @@ docker load --input test-cn
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/hands-on-docker-commands\/';
-    var disqus_title = 'Hands on docker commands';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/hands-on-docker-commands\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>

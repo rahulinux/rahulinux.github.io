@@ -106,7 +106,7 @@ ga('create', 'your_google_analytics_id', 'auto');
 
 <ul>
 <li><strong>Public Registry</strong> : The default registry for all images. <a href="https://hub.docker.com">Docker hub</a>  which provides a free-to-use, hosted Registry, plus additional features (organization accounts, automated builds, and more)</li>
-<li><strong>Private Registry</strong> : In case if you don&rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&rsquo;s a great solution to integrate with and complement your CI/CD system. Example like <a href="https://www.sonatype.com/docker"><strong>Nexus</strong></a> or <a href="https://docs.docker.com/registry/"><strong>Docker registry</strong></a></li>
+<li><strong>Private Registry</strong> : In case if you don&rsquo;t want to publish your own images to outside world or to improve the download speed instead of downloading images docker hub, we can make the private registry and it&rsquo;s a great solution to integrate with and complement your CI/CD system. Example like <a href="https://www.sonatype.com/docker"><strong>Nexus</strong></a> or <a href="https://docs.docker.com/registry/"><strong>Docker registry</strong></a> or <a href="http://port.us.org/"><strong>Portus</strong></a></li>
 </ul>
 
 <hr />
@@ -135,27 +135,21 @@ ga('create', 'your_google_analytics_id', 'auto');
 <ol>
 <li>Create directory for hosting registry and registry storage.</li>
 </ol>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>mkdir /opt/docker-registry
-<span style="color: #f8f8f2">cd</span> /opt/docker-registry/
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mkdir /opt/docker-registry
+cd /opt/docker-registry/
 mkdir data
-mkdir certs
-</pre></div>
-
+mkdir certs</code></pre></div>
 <ol>
 <li>Generate self-sign certificates</li>
 </ol>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days <span style="color: #ae81ff">365</span> -out certs/domain.crt
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -newkey rsa:4096 -nodes -sha256 -keyout certs/domain.key -x509 -days <span style="color:#ae81ff">365</span> -out certs/domain.crt</code></pre></div>
 <ol>
 <li>Start your registry</li>
 </ol>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run -d -p <span style="color: #ae81ff">5000</span>:5000 --restart<span style="color: #f92672">=</span>always <span style="color: #ae81ff">\</span>
-   --name registry -v <span style="color: #f8f8f2">$PWD</span>/data:/var/lib/registry <span style="color: #ae81ff">\</span>
-   -v <span style="color: #f8f8f2">$PWD</span>/certs:/certs -e <span style="color: #f8f8f2">REGISTRY_HTTP_TLS_CERTIFICATE</span><span style="color: #f92672">=</span>/certs/domain.crt <span style="color: #ae81ff">\</span>
-   -e <span style="color: #f8f8f2">REGISTRY_HTTP_TLS_KEY</span><span style="color: #f92672">=</span>/certs/domain.key registry:2
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">docker run -d -p <span style="color:#ae81ff">5000</span>:5000 --restart<span style="color:#f92672">=</span>always <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   --name registry -v $PWD/data:/var/lib/registry <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   -v $PWD/certs:/certs -e REGISTRY_HTTP_TLS_CERTIFICATE<span style="color:#f92672">=</span>/certs/domain.crt <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>   -e REGISTRY_HTTP_TLS_KEY<span style="color:#f92672">=</span>/certs/domain.key registry:2</code></pre></div>
 <h3 id="testing">Testing</h3>
 
 <p>We can test from same host but since we are using self-sign certificates, we need to install in docker client, for that you need to copy certificate file in <strong>/etc/docker/conf.d/<hostname>:5000/ca.crt</strong></p>
@@ -213,20 +207,25 @@ sudo security add-trusted-cert -d \
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/setup-private-docker-registry\/';
-    var disqus_title = 'Setup Private Docker Registry';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/setup-private-docker-registry\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>

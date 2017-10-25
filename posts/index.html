@@ -115,7 +115,7 @@ There are to types of Registry:
 						</div>
 						<div class="post-summary"><p>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
 I&rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
-#!/bin/bash set -e # Create and Attach Volume to Instace using IP Address export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &quot;Usage: $0&lt;hostname|IP&gt; &lt;size&gt;&quot; exit 1 fi msg(){ echo &quot;=========={$@}==========&quot; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE local host=$1 if !</p></div>
+#!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &#34;Usage: $0&lt;hostname|IP&gt; &lt;size&gt;&#34; exit 1 fi msg(){ echo &#34;=========={$@}==========&#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</p></div>
 						<div class="post-list-footer text-center">
 							<a href="http://www.linuxian.com/posts/aws-volume-script/">Read More</a>
 						</div>
@@ -129,7 +129,7 @@ I&rsquo;m connected to AWS using VPN, so following script will work with private
 							<h4 class="post-date">Feb 9, 2017</h4>
 						</div>
 						<div class="post-summary"><p>Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
-1. RUN command docker run hello-world  Whats just happend?
+1. RUN command docker run hello-world Whats just happend?
 Basically once you run above command, it&rsquo;s do following things:
  Check &ldquo;hello-world&rdquo; image is exists or not locally, that&rsquo;s why you see first msg &ldquo;Unable to find.</p></div>
 						<div class="post-list-footer text-center">
@@ -198,7 +198,7 @@ Here is a Python script which will send notification to administrator, which acc
 				<li>
 					<div class="post-list-item">
 						<div class="post-header">
-							<h4 class="post-link"><a href="http://www.linuxian.com/posts/SED-10-useful-commands/">SED 10 useful commands</a></h4>
+							<h4 class="post-link"><a href="http://www.linuxian.com/posts/sed-10-useful-commands/">SED 10 useful commands</a></h4>
 							<h4 class="post-date">Jul 1, 2012</h4>
 						</div>
 						<div class="post-summary"><p>When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
@@ -206,7 +206,7 @@ About SED
 sed is an Non-interactive stream editor.
 Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</p></div>
 						<div class="post-list-footer text-center">
-							<a href="http://www.linuxian.com/posts/SED-10-useful-commands/">Read More</a>
+							<a href="http://www.linuxian.com/posts/sed-10-useful-commands/">Read More</a>
 						</div>
 					</div>
 				</li>

@@ -91,134 +91,132 @@ ga('create', 'your_google_analytics_id', 'auto');
                 <p>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?</p>
 
 <p>Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">#!/usr/bin/env python</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Name          :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :)</span>
-<span style="color: #75715e"># Pupose        :- To check the user account expire status in Linux, unix, BSD etc</span>
-<span style="color: #75715e"># Author        :- Rahul Patil&lt;http://www.linuxian.com&gt;</span>
-<span style="color: #75715e"># Created       :- 12 Jun 2013</span>
-<span style="color: #75715e"># Version       :- 0.1</span>
-<span style="color: #75715e"># License       :- free</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/bin/env python</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Name          :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :)</span>
+<span style="color:#75715e"># Pupose        :- To check the user account expire status in Linux, unix, BSD etc</span>
+<span style="color:#75715e"># Author        :- Rahul Patil&lt;http://www.linuxian.com&gt;</span>
+<span style="color:#75715e"># Created       :- 12 Jun 2013</span>
+<span style="color:#75715e"># Version       :- 0.1</span>
+<span style="color:#75715e"># License       :- free</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
 
-<span style="color: #75715e"># Report `checkUsrAccount_Expiry.py` bugs to loginrahul90@gmail.com</span>
+<span style="color:#75715e"># Report `checkUsrAccount_Expiry.py` bugs to loginrahul90@gmail.com</span>
 
-<span style="color: #f92672">import</span> <span style="color: #f8f8f2">re</span>
-<span style="color: #f92672">import</span> <span style="color: #f8f8f2">socket</span>
-<span style="color: #f92672">import</span> <span style="color: #f8f8f2">smtplib</span>
-<span style="color: #f92672">import</span> <span style="color: #f8f8f2">datetime</span>
+<span style="color:#f92672">import</span> re
+<span style="color:#f92672">import</span> socket
+<span style="color:#f92672">import</span> smtplib
+<span style="color:#f92672">import</span> datetime
 
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Specify Mail Login Credencial</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #f8f8f2">host_name</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">socket</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">gethostname()</span>
-<span style="color: #f8f8f2">sender</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;your_mail_id@gmail.com&#39;</span>
-<span style="color: #f8f8f2">password</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;yourpassword&#39;</span>
-<span style="color: #f8f8f2">recipient</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;loginrahul90@gmail.com&#39;</span>   <span style="color: #75715e"># set admin email ID</span>
-<span style="color: #f8f8f2">subject</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;Account Expiry Details of {!r}&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(host_name)</span>
-<span style="color: #f8f8f2">min_days</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">20</span>   <span style="color: #75715e"># set min days</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Specify Mail Login Credencial</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+host_name <span style="color:#f92672">=</span> socket<span style="color:#f92672">.</span>gethostname()
+sender <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;your_mail_id@gmail.com&#39;</span>
+password <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;yourpassword&#39;</span>
+recipient <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;loginrahul90@gmail.com&#39;</span>   <span style="color:#75715e"># set admin email ID</span>
+subject <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;Account Expiry Details of {!r}&#39;</span><span style="color:#f92672">.</span>format(host_name)
+min_days <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>   <span style="color:#75715e"># set min days</span>
 
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Specify SMTP Server</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #f8f8f2">server</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&#39;smtp.gmail.com&#39;</span>
-<span style="color: #f8f8f2">port</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">587</span>
-
-
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #f8f8f2">body1</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;{:&lt;8s} :: {:&lt;2n} days || Last date :: {:3s}&quot;</span>
-<span style="color: #f8f8f2">body2</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;{:&lt;8s} :: Expired on {:3s}&quot;</span>
-<span style="color: #f8f8f2">msg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[]</span>
-
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Sent Mail</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">mailIt</span><span style="color: #f8f8f2">(body):</span>
-        <span style="color: #f8f8f2">body</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;&quot;</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&#39;</span><span style="color: #ae81ff">\r\n</span><span style="color: #e6db74">&lt;br&gt;&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(body)</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;&quot;</span>
-        <span style="color: #f8f8f2">headers</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[</span><span style="color: #e6db74">&quot;From: &quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">sender,</span>
-                    <span style="color: #e6db74">&quot;Subject: &quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">subject,</span>
-                    <span style="color: #e6db74">&quot;To: &quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">recipient,</span>
-                    <span style="color: #e6db74">&quot;MIME-Version: 1.0&quot;</span><span style="color: #f8f8f2">,</span>
-                    <span style="color: #e6db74">&quot;Content-Type: text/html&quot;</span><span style="color: #f8f8f2">]</span>
-        <span style="color: #f8f8f2">headers</span> <span style="color: #f92672">=</span> <span style="color: #e6db74">&quot;</span><span style="color: #ae81ff">\r\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(headers)</span>
-        <span style="color: #f8f8f2">session</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">smtplib</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">SMTP(server,</span> <span style="color: #f8f8f2">port)</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">ehlo()</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">starttls()</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">ehlo</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">login(sender,</span> <span style="color: #f8f8f2">password)</span>
-        <span style="color: #66d9ef">print</span> <span style="color: #e6db74">&quot;</span><span style="color: #ae81ff">\n\n</span><span style="color: #e6db74">Sending Mail...&quot;</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">sendmail(sender,</span> <span style="color: #f8f8f2">recipient,</span> <span style="color: #f8f8f2">headers</span> <span style="color: #f92672">+</span> <span style="color: #e6db74">&quot;</span><span style="color: #ae81ff">\r\n\r\n</span><span style="color: #e6db74">&quot;</span> <span style="color: #f92672">+</span> <span style="color: #f8f8f2">body)</span>
-        <span style="color: #66d9ef">print</span> <span style="color: #e6db74">&quot;Sent Successfullly !!&quot;</span>
-        <span style="color: #f8f8f2">session</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">quit()</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Specify SMTP Server</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+server <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;smtp.gmail.com&#39;</span>
+port <span style="color:#f92672">=</span> <span style="color:#ae81ff">587</span>
 
 
-<span style="color: #f8f8f2">total_expired_users</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">total_expring_users</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span>
-<span style="color: #f8f8f2">expr_list</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">{}</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+body1 <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;{:&lt;8s} :: {:&lt;2n} days || Last date :: {:3s}&#34;</span>
+body2 <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;{:&lt;8s} :: Expired on {:3s}&#34;</span>
+msg <span style="color:#f92672">=</span> []
 
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e">#  Convert Unix timestamp to Readable Date/time</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">convUnixTime</span><span style="color: #f8f8f2">(t):</span>
-        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">datetime</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">datetime</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">fromtimestamp(t</span><span style="color: #f92672">*</span><span style="color: #ae81ff">60</span><span style="color: #f92672">*</span><span style="color: #ae81ff">60</span><span style="color: #f92672">*</span><span style="color: #ae81ff">24</span><span style="color: #f8f8f2">)</span>
-
-
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Read shadow file and check for account expriry</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #66d9ef">with</span> <span style="color: #f8f8f2">open(</span> <span style="color: #e6db74">&quot;/etc/shadow&quot;</span> <span style="color: #f8f8f2">)</span> <span style="color: #66d9ef">as</span> <span style="color: #f8f8f2">shadow:</span>
-        <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">aLine</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">shadow:</span>
-                <span style="color: #f8f8f2">filed</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">aLine</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">split(</span><span style="color: #e6db74">&quot;:&quot;</span><span style="color: #f8f8f2">)</span>
-                <span style="color: #f8f8f2">Ac</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">filed[</span><span style="color: #ae81ff">7</span><span style="color: #f8f8f2">]</span>
-                <span style="color: #66d9ef">try</span><span style="color: #f8f8f2">:</span>
-                        <span style="color: #f8f8f2">Ac</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">int(Ac)</span>
-                        <span style="color: #f8f8f2">exprdate</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">convUnixTime(Ac)</span>
-                        <span style="color: #f8f8f2">Ac</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span><span style="color: #f92672">+</span><span style="color: #f8f8f2">(</span> <span style="color: #f8f8f2">exprdate</span> <span style="color: #f92672">-</span> <span style="color: #f8f8f2">datetime</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">datetime</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">today())</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">days</span>
-                        <span style="color: #f8f8f2">l</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">[Ac,exprdate]</span>
-                <span style="color: #66d9ef">except</span> <span style="color: #a6e22e">ValueError</span><span style="color: #f8f8f2">:</span>
-                        <span style="color: #66d9ef">pass</span>
-                <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
-                        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">Ac</span> <span style="color: #f92672">&lt;=</span> <span style="color: #f8f8f2">min_days:</span>
-                                <span style="color: #f8f8f2">expr_list[filed[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]]</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">l</span>
-                        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">Ac</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">:</span>
-                                <span style="color: #f8f8f2">total_expired_users</span> <span style="color: #f92672">+=</span> <span style="color: #ae81ff">1</span>
-                        <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
-                                <span style="color: #f8f8f2">total_expring_users</span> <span style="color: #f92672">+=</span> <span style="color: #ae81ff">1</span>
-
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #75715e"># Check Account Expry days and format it Properly Output</span>
-<span style="color: #75715e">#---------------------------------------------------------</span>
-<span style="color: #66d9ef">def</span> <span style="color: #a6e22e">AccountExprDetails</span><span style="color: #f8f8f2">():</span>
-        <span style="color: #f8f8f2">msg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">[]</span>
-        <span style="color: #f8f8f2">t1</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">total_expired_users</span>
-        <span style="color: #f8f8f2">t2</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">total_expring_users</span>
-        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">t1</span> <span style="color: #f92672">!=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">:</span>
-                <span style="color: #f8f8f2">msg</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">append(</span><span style="color: #e6db74">&quot;====&gt;&gt;Following {!r} Account has been Expired&quot;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(t1))</span>
-                <span style="color: #f8f8f2">index</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">t1</span>
-        <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
-                <span style="color: #f8f8f2">index</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span>
-        <span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">usr,days</span> <span style="color: #f92672">in</span> <span style="color: #f8f8f2">expr_list</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">iteritems():</span>
-                <span style="color: #f8f8f2">dt</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">str(days[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">])</span>
-                <span style="color: #66d9ef">if</span>   <span style="color: #f8f8f2">days[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">:</span>
-                        <span style="color: #f8f8f2">msg</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">insert(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,body2</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(usr,dt))</span>
-                <span style="color: #66d9ef">elif</span> <span style="color: #f8f8f2">days[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">&lt;=</span> <span style="color: #f8f8f2">min_days:</span>
-                        <span style="color: #f8f8f2">msg</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">extend([body1</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(usr,days[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">],dt)])</span>
-        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">t2</span> <span style="color: #f92672">!=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">:</span>
-                <span style="color: #f8f8f2">msg</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">insert(index</span><span style="color: #f92672">+</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span><span style="color: #e6db74">&quot;====&gt;&gt;Following {0} Account will be Expire in {1} Days&quot;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">format(t2,min_days))</span>
-        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">msg</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Sent Mail</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">mailIt</span>(body):
+        body <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;</span> <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&lt;br&gt;&#39;</span><span style="color:#f92672">.</span>join(body) <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;&#34;</span>
+        headers <span style="color:#f92672">=</span> [<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;From: &#34;</span> <span style="color:#f92672">+</span> sender,
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Subject: &#34;</span> <span style="color:#f92672">+</span> subject,
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;To: &#34;</span> <span style="color:#f92672">+</span> recipient,
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;MIME-Version: 1.0&#34;</span>,
+                    <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Content-Type: text/html&#34;</span>]
+        headers <span style="color:#f92672">=</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>join(headers)
+        session <span style="color:#f92672">=</span> smtplib<span style="color:#f92672">.</span>SMTP(server, port)
+        session<span style="color:#f92672">.</span>ehlo()
+        session<span style="color:#f92672">.</span>starttls()
+        session<span style="color:#f92672">.</span>ehlo
+        session<span style="color:#f92672">.</span>login(sender, password)
+        <span style="color:#66d9ef">print</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n\n</span><span style="color:#e6db74">Sending Mail...&#34;</span>
+        session<span style="color:#f92672">.</span>sendmail(sender, recipient, headers <span style="color:#f92672">+</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\r\n\r\n</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">+</span> body)
+        <span style="color:#66d9ef">print</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Sent Successfullly !!&#34;</span>
+        session<span style="color:#f92672">.</span>quit()
 
 
+total_expired_users <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+total_expring_users <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+expr_list <span style="color:#f92672">=</span> {}
 
-<span style="color: #f8f8f2">msg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">AccountExprDetails()</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e">#  Convert Unix timestamp to Readable Date/time</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">convUnixTime</span>(t):
+        <span style="color:#66d9ef">return</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>fromtimestamp(t<span style="color:#f92672">*</span><span style="color:#ae81ff">60</span><span style="color:#f92672">*</span><span style="color:#ae81ff">60</span><span style="color:#f92672">*</span><span style="color:#ae81ff">24</span>)
 
-<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">__name__</span> <span style="color: #f92672">==</span> <span style="color: #e6db74">&quot;__main__&quot;</span><span style="color: #f8f8f2">:</span>
-       <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">len(msg):</span>
-                <span style="color: #66d9ef">print</span> <span style="color: #e6db74">&#39;</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&#39;</span><span style="color: #f92672">.</span><span style="color: #f8f8f2">join(msg)</span>
-                <span style="color: #f8f8f2">mailIt(msg)</span>
-       <span style="color: #66d9ef">else</span><span style="color: #f8f8f2">:</span>
-                <span style="color: #66d9ef">print</span> <span style="color: #e6db74">&quot;No User Account has been Expire&quot;</span>
-</pre></div>
 
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Read shadow file and check for account expriry</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#66d9ef">with</span> open( <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;/etc/shadow&#34;</span> ) <span style="color:#66d9ef">as</span> shadow:
+        <span style="color:#66d9ef">for</span> aLine <span style="color:#f92672">in</span> shadow:
+                filed <span style="color:#f92672">=</span> aLine<span style="color:#f92672">.</span>split(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;:&#34;</span>)
+                Ac <span style="color:#f92672">=</span> filed[<span style="color:#ae81ff">7</span>]
+                <span style="color:#66d9ef">try</span>:
+                        Ac <span style="color:#f92672">=</span> int(Ac)
+                        exprdate <span style="color:#f92672">=</span> convUnixTime(Ac)
+                        Ac<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span><span style="color:#f92672">+</span>( exprdate <span style="color:#f92672">-</span> datetime<span style="color:#f92672">.</span>datetime<span style="color:#f92672">.</span>today())<span style="color:#f92672">.</span>days
+                        l<span style="color:#f92672">=</span>[Ac,exprdate]
+                <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">ValueError</span>:
+                        <span style="color:#66d9ef">pass</span>
+                <span style="color:#66d9ef">else</span>:
+                        <span style="color:#66d9ef">if</span> Ac <span style="color:#f92672">&lt;=</span> min_days:
+                                expr_list[filed[<span style="color:#ae81ff">0</span>]]<span style="color:#f92672">=</span>l
+                        <span style="color:#66d9ef">if</span> Ac <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
+                                total_expired_users <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+                        <span style="color:#66d9ef">else</span>:
+                                total_expring_users <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#75715e"># Check Account Expry days and format it Properly Output</span>
+<span style="color:#75715e">#---------------------------------------------------------</span>
+<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">AccountExprDetails</span>():
+        msg <span style="color:#f92672">=</span> []
+        t1 <span style="color:#f92672">=</span> total_expired_users
+        t2 <span style="color:#f92672">=</span> total_expring_users
+        <span style="color:#66d9ef">if</span> t1 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+                msg<span style="color:#f92672">.</span>append(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;====&gt;&gt;Following {!r} Account has been Expired&#34;</span><span style="color:#f92672">.</span>format(t1))
+                index <span style="color:#f92672">=</span> t1
+        <span style="color:#66d9ef">else</span>:
+                index <span style="color:#f92672">=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>
+        <span style="color:#66d9ef">for</span> usr,days <span style="color:#f92672">in</span> expr_list<span style="color:#f92672">.</span>iteritems():
+                dt<span style="color:#f92672">=</span>str(days[<span style="color:#ae81ff">1</span>])
+                <span style="color:#66d9ef">if</span>   days[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">0</span>:
+                        msg<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">1</span>,body2<span style="color:#f92672">.</span>format(usr,dt))
+                <span style="color:#66d9ef">elif</span> days[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&lt;=</span> min_days:
+                        msg<span style="color:#f92672">.</span>extend([body1<span style="color:#f92672">.</span>format(usr,days[<span style="color:#ae81ff">0</span>],dt)])
+        <span style="color:#66d9ef">if</span> t2 <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+                msg<span style="color:#f92672">.</span>insert(index<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span>,<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;====&gt;&gt;Following {0} Account will be Expire in {1} Days&#34;</span><span style="color:#f92672">.</span>format(t2,min_days))
+        <span style="color:#66d9ef">return</span> msg
+
+
+
+msg <span style="color:#f92672">=</span> AccountExprDetails()
+
+<span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;__main__&#34;</span>:
+       <span style="color:#66d9ef">if</span> len(msg):
+                <span style="color:#66d9ef">print</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>join(msg)
+                mailIt(msg)
+       <span style="color:#66d9ef">else</span>:
+                <span style="color:#66d9ef">print</span> <span style="color:#e6db74"></span><span style="color:#e6db74">&#34;No User Account has been Expire&#34;</span></code></pre></div>
 <p>Sample Output:</p>
 
 <pre><code>====&gt;&gt;Following 3 Account has been Expired
@@ -242,20 +240,25 @@ Sent Successfully !!
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/python-script-display-and-mail-users-account-expiry-details\/';
-    var disqus_title = 'Send password expiry notification to nix users using Python script';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/python-script-display-and-mail-users-account-expiry-details\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>

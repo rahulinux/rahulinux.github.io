@@ -2,11 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Linux on Linuxian</title>
-    <link>http://www.linuxian.com/categories/linux/index.xml</link>
+    <link>http://www.linuxian.com/categories/linux/</link>
     <description>Recent content in Linux on Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <atom:link href="http://www.linuxian.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 19 Jun 2013 16:57:35 +0000</lastBuildDate>
+    
+	<atom:link href="http://www.linuxian.com/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
     
     <item>
       <title>Useful Linux Commands</title>
@@ -14,97 +17,7 @@
       <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
       
       <guid>http://www.linuxian.com/posts/hands-on-linux-commands/</guid>
-      <description>&lt;p&gt;In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;1. Place the argument of the most recent command on the shell&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;When typing out long arguments, such as&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;tail -f /var/log/messages
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;You can put that argument on your command line by holding down the &lt;kbd&gt;ALT&lt;/kbd&gt; key and pressing the period &lt;kbd&gt;.&lt;/kbd&gt; or by pressing &lt;kbd&gt;ESC&lt;/kbd&gt; then the period &lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
-
-&lt;p&gt;For example: tail -f &lt;kbd&gt;ALT&lt;/kbd&gt; + &lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
-
-&lt;p&gt;this would put &amp;lsquo;/var/log/messages&amp;rsquo; as my argument. Keeping pressing &lt;kbd&gt;ALT&lt;/kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt; to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.&lt;/p&gt;
-
-&lt;p&gt;In Mac you can use &lt;kbd&gt;ESC&lt;kbd&gt;+&lt;kbd&gt;.&lt;/kbd&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;2. Man Pages&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Command &lt;code&gt;man&lt;/code&gt; is your friend, Before googling , you should check man pages to solve issue yourself. here is simple Example, if want to understand File System Hierarchy, then simply use :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;man hier
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;3. SSH&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If ServerB is Not accessible but you can access ServerA , and ServerA can access ServerB , then you can use .&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;ssh -t ServerA  ssh  ServerB
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Directly ssh to ServerB that is only accessible through ServerA&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;4. RPM, DPKG&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If you want to Check which file belongs to which package.&lt;/p&gt;
-
-&lt;p&gt;In RHEL/CentOS&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;rpm -qf   /path/of/file
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;In Ubuntu&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;dpkg -S  /path/of/file
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Note that if package installed using source code, then it will never show , only apply for files those are installed through package manager.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;5. Get absolute Path of file&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;This trick very useful in Shell Script.&lt;/p&gt;
-
-&lt;p&gt;if you want to check absolute path of file which is in your current directory :&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;readlink  -f  filename
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If you want to get absolute path of script it self&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #f8f8f2&#34;&gt;This_Script&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;readlink -f &lt;span style=&#34;color: #f8f8f2&#34;&gt;$0&lt;/span&gt; &lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;6. Backup/Rename File&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;If you want to Backup file with current date name.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;cp  filename&lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;,-bkp-&lt;span style=&#34;color: #66d9ef&#34;&gt;$(&lt;/span&gt;date +%F&lt;span style=&#34;color: #66d9ef&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;If you want to rename file&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;mv filename&lt;span style=&#34;color: #f92672&#34;&gt;{&lt;/span&gt;,-old&lt;span style=&#34;color: #f92672&#34;&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;strong&gt;7. Fast, built-in pipe-based data sink&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt; Yourcommand   &lt;span style=&#34;color: #f8f8f2&#34;&gt;|&lt;/span&gt;:
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This is shorter and actually much faster than &amp;gt;/dev/null (see sample output for timings)&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;8. Save Command in History Without Executing it.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Type your command and Simple Press &lt;kbd&gt;ALT&lt;/kbd&gt;+&lt;kbd&gt;#&lt;/kbd&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;9. Search and Execute Recent commands from your history&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Simply Press &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;r&lt;/kbd&gt; and type some word to search your Command, Simply do Next using &lt;kbd&gt;Ctrl&lt;/kbd&gt;+&lt;kbd&gt;r&lt;/kbd&gt;  to cycle through commands.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;10. Fast Execute recent command.&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;Suppose you have Open file using vim then you save file and run some other command,
-now just run&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #272822&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;!vim
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;this will execute last command start with vim from your history.&lt;/p&gt;
-
-&lt;p&gt;If you want to share any command line tips &amp;amp; tricks, just post in comments.&lt;/p&gt;
-</description>
+      <description>In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.</description>
     </item>
     
   </channel>

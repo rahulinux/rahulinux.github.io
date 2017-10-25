@@ -284,49 +284,41 @@ The Docker client and daemon communicate using a REST API, over UNIX sockets or 
 <h3 id="installation-on-centos-7">Installation on CentOS 7</h3>
 
 <p><strong>1. Add Official docker repo</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>cat <span style="color: #e6db74">&lt;&lt; EOF &gt; /etc/yum.repos.d/docker.repo</span>
-<span style="color: #e6db74">[Docker]</span>
-<span style="color: #e6db74">name=Docker Repository</span>
-<span style="color: #e6db74">baseurl=https://yum.dockerproject.org/repo/main/centos/7</span>
-<span style="color: #e6db74">enabled=1</span>
-<span style="color: #e6db74">gpgcheck=1</span>
-<span style="color: #e6db74">gpgkey=https://yum.dockerproject.org/gpg</span>
-<span style="color: #e6db74">EOF</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat <span style="color:#e6db74">&lt;&lt; EOF &gt; /etc/yum.repos.d/docker.repo
+</span><span style="color:#e6db74">[Docker]
+</span><span style="color:#e6db74">name=Docker Repository
+</span><span style="color:#e6db74">baseurl=https://yum.dockerproject.org/repo/main/centos/7
+</span><span style="color:#e6db74">enabled=1
+</span><span style="color:#e6db74">gpgcheck=1
+</span><span style="color:#e6db74">gpgkey=https://yum.dockerproject.org/gpg
+</span><span style="color:#e6db74">EOF</span></code></pre></div>
 <p><strong>2. Install docker-engine</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>yum install -y docker-engine
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">yum install -y docker-engine</code></pre></div>
 <p>Note: if docker is already install, make sure to remove older version using <code>yum remove docker container-selinux docker-common docker-client</code></p>
 
 <p><strong>3. Start service and add in startup</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>systemctl restart docker.service
-chkconfig --level <span style="color: #ae81ff">35</span> docker on
-<span style="color: #75715e"># check docker info using</span>
-docker info
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">systemctl restart docker.service
+chkconfig --level <span style="color:#ae81ff">35</span> docker on
+<span style="color:#75715e"># check docker info using
+</span><span style="color:#75715e"></span>docker info</code></pre></div>
 <p><strong>4. Testing Docker</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>docker run hello-world
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run hello-world</code></pre></div>
 <p><strong>Output will be like</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>Unable to find image <span style="color: #e6db74">&#39;hello-world:latest&#39;</span> locally
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">Unable to find image <span style="color:#e6db74">&#39;hello-world:latest&#39;</span> locally
 latest: Pulling from library/hello-world
-78445dd45222: Pull <span style="color: #f8f8f2">complete</span>
+78445dd45222: Pull complete
 Digest: sha256:c5515758d4c5e1e838e9cd307f6c6a0d620b5e07e6f927b07d05f6d12a1ac8d7
-Status: Downloaded newer image <span style="color: #66d9ef">for</span> hello-world:latest
+Status: Downloaded newer image <span style="color:#66d9ef">for</span> hello-world:latest
 
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
 
 To generate this message, Docker took the following steps:
- <span style="color: #ae81ff">1</span>. The Docker client contacted the Docker daemon.
- <span style="color: #ae81ff">2</span>. The Docker daemon pulled the <span style="color: #e6db74">&quot;hello-world&quot;</span> image from the Docker Hub.
- <span style="color: #ae81ff">3</span>. The Docker daemon created a new container from that image which runs the
+ <span style="color:#ae81ff">1</span>. The Docker client contacted the Docker daemon.
+ <span style="color:#ae81ff">2</span>. The Docker daemon pulled the <span style="color:#e6db74">&#34;hello-world&#34;</span> image from the Docker Hub.
+ <span style="color:#ae81ff">3</span>. The Docker daemon created a new container from that image which runs the
     executable that produces the output you are currently reading.
- <span style="color: #ae81ff">4</span>. The Docker daemon streamed that output to the Docker client, which sent it
+ <span style="color:#ae81ff">4</span>. The Docker daemon streamed that output to the Docker client, which sent it
     to your terminal.
 
 To try something more ambitious, you can run an Ubuntu container with:
@@ -336,9 +328,7 @@ Share images, automate workflows, and more with a free Docker ID:
  https://cloud.docker.com/
 
 For more examples and ideas, visit:
- https://docs.docker.com/engine/userguide/
-</pre></div>
-
+ https://docs.docker.com/engine/userguide/</code></pre></div>
 <p>In Next tutorial we will see, some usefull handson on docker :)</p>
 
 <p>Feel free to comment or email if you have any question/suggessions</p>
@@ -347,20 +337,25 @@ For more examples and ideas, visit:
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/getting-started-with-docker\/';
-    var disqus_title = 'Getting started with Docker Basics';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/getting-started-with-docker\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>

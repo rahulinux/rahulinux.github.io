@@ -93,9 +93,7 @@ ga('create', 'your_google_analytics_id', 'auto');
 <p><strong>1. Place the argument of the most recent command on the shell</strong></p>
 
 <p>When typing out long arguments, such as</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>tail -f /var/log/messages
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tail -f /var/log/messages</code></pre></div>
 <p>You can put that argument on your command line by holding down the <kbd>ALT</kbd> key and pressing the period <kbd>.</kbd> or by pressing <kbd>ESC</kbd> then the period <kbd>.</kbd></p>
 
 <p>For example: tail -f <kbd>ALT</kbd> + <kbd>.</kbd></p>
@@ -107,15 +105,11 @@ ga('create', 'your_google_analytics_id', 'auto');
 <p><strong>2. Man Pages</strong></p>
 
 <p>Command <code>man</code> is your friend, Before googling , you should check man pages to solve issue yourself. here is simple Example, if want to understand File System Hierarchy, then simply use :</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>man hier
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">man hier</code></pre></div>
 <p><strong>3. SSH</strong></p>
 
 <p>If ServerB is Not accessible but you can access ServerA , and ServerA can access ServerB , then you can use .</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>ssh -t ServerA  ssh  ServerB
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssh -t ServerA  ssh  ServerB</code></pre></div>
 <p>Directly ssh to ServerB that is only accessible through ServerA</p>
 
 <p><strong>4. RPM, DPKG</strong></p>
@@ -123,13 +117,9 @@ ga('create', 'your_google_analytics_id', 'auto');
 <p>If you want to Check which file belongs to which package.</p>
 
 <p>In RHEL/CentOS</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>rpm -qf   /path/of/file
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rpm -qf   /path/of/file</code></pre></div>
 <p>In Ubuntu</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>dpkg -S  /path/of/file
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dpkg -S  /path/of/file</code></pre></div>
 <p>Note that if package installed using source code, then it will never show , only apply for files those are installed through package manager.</p>
 
 <p><strong>5. Get absolute Path of file</strong></p>
@@ -137,27 +127,17 @@ ga('create', 'your_google_analytics_id', 'auto');
 <p>This trick very useful in Shell Script.</p>
 
 <p>if you want to check absolute path of file which is in your current directory :</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>readlink  -f  filename
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">readlink  -f  filename</code></pre></div>
 <p>If you want to get absolute path of script it self</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f8f8f2">This_Script</span><span style="color: #f92672">=</span><span style="color: #66d9ef">$(</span>readlink -f <span style="color: #f8f8f2">$0</span> <span style="color: #66d9ef">)</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">This_Script<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>readlink -f $0 <span style="color:#66d9ef">)</span></code></pre></div>
 <p><strong>6. Backup/Rename File</strong></p>
 
 <p>If you want to Backup file with current date name.</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>cp  filename<span style="color: #f92672">{</span>,-bkp-<span style="color: #66d9ef">$(</span>date +%F<span style="color: #66d9ef">)</span><span style="color: #f92672">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cp  filename<span style="color:#f92672">{</span>,-bkp-<span style="color:#66d9ef">$(</span>date +%F<span style="color:#66d9ef">)</span><span style="color:#f92672">}</span></code></pre></div>
 <p>If you want to rename file</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>mv filename<span style="color: #f92672">{</span>,-old<span style="color: #f92672">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv filename<span style="color:#f92672">{</span>,-old<span style="color:#f92672">}</span></code></pre></div>
 <p><strong>7. Fast, built-in pipe-based data sink</strong></p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span> Yourcommand   <span style="color: #f8f8f2">|</span>:
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> Yourcommand   |:</code></pre></div>
 <p>This is shorter and actually much faster than &gt;/dev/null (see sample output for timings)</p>
 
 <p><strong>8. Save Command in History Without Executing it.</strong></p>
@@ -172,9 +152,7 @@ ga('create', 'your_google_analytics_id', 'auto');
 
 <p>Suppose you have Open file using vim then you save file and run some other command,
 now just run</p>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span>!vim
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">!vim</code></pre></div>
 <p>this will execute last command start with vim from your history.</p>
 
 <p>If you want to share any command line tips &amp; tricks, just post in comments.</p>
@@ -183,20 +161,25 @@ now just run</p>
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/hands-on-linux-commands\/';
-    var disqus_title = 'Useful Linux Commands';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/hands-on-linux-commands\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>

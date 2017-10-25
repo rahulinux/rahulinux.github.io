@@ -95,92 +95,93 @@ ga('create', 'your_google_analytics_id', 'auto');
 <p>I&rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can
 change PrivateIpAddress to PublicIp</p>
 
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #75715e">#!/bin/bash</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e">#!/bin/bash
+</span><span style="color:#75715e"></span>
+set -e
 
-<span style="color: #f8f8f2">set</span> -e
+<span style="color:#75715e"># Create and Attach Volume to Instace using IP Address
+</span><span style="color:#75715e"></span>
+export AWS_ACCESS_KEY_ID<span style="color:#f92672">=</span>XXX
+export AWS_SECRET_ACCESS_KEY<span style="color:#f92672">=</span>XXXXXX
+export REGION<span style="color:#f92672">=</span>us-east-1
+export AWS_DEFAULT_REGION<span style="color:#f92672">=</span>$REGION
 
-<span style="color: #75715e"># Create and Attach Volume to Instace using IP Address</span>
+<span style="color:#66d9ef">if</span> <span style="color:#f92672">[[</span> $# -ne <span style="color:#ae81ff">2</span> <span style="color:#f92672">]]</span>
+<span style="color:#66d9ef">then</span>
+    echo <span style="color:#e6db74">&#34;Usage: </span>$0<span style="color:#e6db74"> &lt;hostname|IP&gt; &lt;size&gt;&#34;</span>
+    exit <span style="color:#ae81ff">1</span>
+<span style="color:#66d9ef">fi</span>
 
-<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_ACCESS_KEY_ID</span><span style="color: #f92672">=</span>XXX
-<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_SECRET_ACCESS_KEY</span><span style="color: #f92672">=</span>XXXXXX
-<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">REGION</span><span style="color: #f92672">=</span>us-east-1
-<span style="color: #f8f8f2">export</span> <span style="color: #f8f8f2">AWS_DEFAULT_REGION</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">$REGION</span>
+msg<span style="color:#f92672">(){</span>
 
-<span style="color: #66d9ef">if</span> <span style="color: #f92672">[[</span> <span style="color: #f8f8f2">$#</span> -ne <span style="color: #ae81ff">2</span> <span style="color: #f92672">]]</span>
-<span style="color: #66d9ef">then</span>
-    <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;Usage: </span><span style="color: #f8f8f2">$0</span><span style="color: #e6db74"> &lt;hostname|IP&gt; &lt;size&gt;&quot;</span>
-    <span style="color: #f8f8f2">exit</span> <span style="color: #ae81ff">1</span>
-<span style="color: #66d9ef">fi</span>
+    echo <span style="color:#e6db74">&#34;=========={</span>$@<span style="color:#e6db74">}==========&#34;</span>
 
-msg<span style="color: #f92672">(){</span>
+<span style="color:#f92672">}</span>
 
-    <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;=========={</span><span style="color: #f8f8f2">$@</span><span style="color: #e6db74">}==========&quot;</span>
+get_instance_data<span style="color:#f92672">(){</span>
+    <span style="color:#75715e"># returns ZONE STATUS IP INSTANCE_ID DEVICE
+</span><span style="color:#75715e"></span>    local host<span style="color:#f92672">=</span>$1
+    <span style="color:#66d9ef">if</span> ! echo $host | grep -qE <span style="color:#e6db74">&#39;\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b&#39;</span>
+    <span style="color:#66d9ef">then</span>
+         host<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>dig +short $host<span style="color:#66d9ef">)</span>
+    <span style="color:#66d9ef">fi</span>
+    raw_data<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>aws ec2 describe-instances <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --query <span style="color:#e6db74">&#39;Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name,PrivateIpAddress,InstanceId,BlockDeviceMappings[*].DeviceName]&#39;</span> <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>        --output text | grep -A1 <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>host<span style="color:#e6db74">}</span><span style="color:#e6db74">\t&#34;</span><span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    instance_data<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span> echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>raw_data<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> | head -1 <span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+    vid<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span> echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>raw_data<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> | grep -o <span style="color:#e6db74">&#39;sd.&#39;</span> | sort | uniq | tail -1 | cut -c <span style="color:#ae81ff">3</span>- | tr <span style="color:#e6db74">&#34;0-9a-z&#34;</span> <span style="color:#e6db74">&#34;1-9a-z_&#34;</span><span style="color:#66d9ef">)</span>
+    echo <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">${</span>instance_data<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span> <span style="color:#e6db74">&#34;/dev/sd</span><span style="color:#e6db74">${</span>vid<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+<span style="color:#f92672">}</span>
 
-<span style="color: #f92672">}</span>
+msg <span style="color:#e6db74">&#34;Fetching Instance Data&#34;</span>
+read ZONE STATUS IP INSTANCE_ID DEVICE <span style="color:#f92672">&lt;&lt;&lt;</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>get_instance_data $1<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
+msg <span style="color:#e6db74">&#34;Done&#34;</span>
 
-get_instance_data<span style="color: #f92672">(){</span>
-    <span style="color: #75715e"># returns ZONE STATUS IP INSTANCE_ID DEVICE</span>
-    <span style="color: #f8f8f2">local</span> <span style="color: #f8f8f2">host</span><span style="color: #f92672">=</span><span style="color: #f8f8f2">$1</span>
-    <span style="color: #66d9ef">if</span> ! <span style="color: #f8f8f2">echo</span> <span style="color: #f8f8f2">$host</span> <span style="color: #f8f8f2">|</span> grep -qE <span style="color: #e6db74">&#39;\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b&#39;</span>
-    <span style="color: #66d9ef">then</span>
-         <span style="color: #f8f8f2">host</span><span style="color: #f92672">=</span><span style="color: #66d9ef">$(</span>dig +short <span style="color: #f8f8f2">$host</span><span style="color: #66d9ef">)</span>
-    <span style="color: #66d9ef">fi</span>
-    <span style="color: #f8f8f2">raw_data</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>aws ec2 describe-instances <span style="color: #ae81ff">\</span>
-        --query <span style="color: #e6db74">&#39;Reservations[*].Instances[*].[Placement.AvailabilityZone, State.Name,PrivateIpAddress,InstanceId,BlockDeviceMappings[*].DeviceName]&#39;</span> <span style="color: #ae81ff">\</span>
-        --output text <span style="color: #f8f8f2">|</span> grep -A1 <span style="color: #e6db74">&quot;${</span><span style="color: #f8f8f2">host</span><span style="color: #e6db74">}\t&quot;</span><span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
-    <span style="color: #f8f8f2">instance_data</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span> <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;${</span><span style="color: #f8f8f2">raw_data</span><span style="color: #e6db74">}&quot;</span> <span style="color: #f8f8f2">|</span> head -1 <span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
-    <span style="color: #f8f8f2">vid</span><span style="color: #f92672">=</span><span style="color: #66d9ef">$(</span> <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;${</span><span style="color: #f8f8f2">raw_data</span><span style="color: #e6db74">}&quot;</span> <span style="color: #f8f8f2">|</span> grep -o <span style="color: #e6db74">&#39;sd.&#39;</span> <span style="color: #f8f8f2">|</span> sort <span style="color: #f8f8f2">|</span> uniq <span style="color: #f8f8f2">|</span> tail -1 <span style="color: #f8f8f2">|</span> cut -c <span style="color: #ae81ff">3</span>- <span style="color: #f8f8f2">|</span> tr <span style="color: #e6db74">&quot;0-9a-z&quot;</span> <span style="color: #e6db74">&quot;1-9a-z_&quot;</span><span style="color: #66d9ef">)</span>
-    <span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;${</span><span style="color: #f8f8f2">instance_data</span><span style="color: #e6db74">}&quot;</span> <span style="color: #e6db74">&quot;/dev/sd${</span><span style="color: #f8f8f2">vid</span><span style="color: #e6db74">}&quot;</span>
-<span style="color: #f92672">}</span>
+msg <span style="color:#e6db74">&#34;Creating Volume in Zone </span>$ZONE<span style="color:#e6db74"> for IP </span>$IP<span style="color:#e6db74"> [ID: </span>$INSTANCE_ID<span style="color:#e6db74">]&#34;</span>
+volume_id<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;</span><span style="color:#66d9ef">$(</span>aws ec2 create-volume --size <span style="color:#e6db74">${</span>2<span style="color:#66d9ef">:-</span>10<span style="color:#e6db74">}</span> --region $REGION --availability-zone $ZONE --volume-type standard | jq -r .VolumeId<span style="color:#66d9ef">)</span><span style="color:#e6db74">&#34;</span>
 
-msg <span style="color: #e6db74">&quot;Fetching Instance Data&quot;</span>
-<span style="color: #f8f8f2">read</span> ZONE STATUS IP INSTANCE_ID DEVICE <span style="color: #f92672">&lt;&lt;&lt;</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>get_instance_data <span style="color: #f8f8f2">$1</span><span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
-msg <span style="color: #e6db74">&quot;Done&quot;</span>
-
-msg <span style="color: #e6db74">&quot;Creating Volume in Zone </span><span style="color: #f8f8f2">$ZONE</span><span style="color: #e6db74"> for IP </span><span style="color: #f8f8f2">$IP</span><span style="color: #e6db74"> [ID: </span><span style="color: #f8f8f2">$INSTANCE_ID</span><span style="color: #e6db74">]&quot;</span>
-<span style="color: #f8f8f2">volume_id</span><span style="color: #f92672">=</span><span style="color: #e6db74">&quot;</span><span style="color: #66d9ef">$(</span>aws ec2 create-volume --size <span style="color: #e6db74">${</span><span style="color: #f8f8f2">2</span><span style="color: #66d9ef">:-</span><span style="color: #f8f8f2">10</span><span style="color: #e6db74">}</span> --region <span style="color: #f8f8f2">$REGION</span> --availability-zone <span style="color: #f8f8f2">$ZONE</span> --volume-type standard <span style="color: #f8f8f2">|</span> jq -r .VolumeId<span style="color: #66d9ef">)</span><span style="color: #e6db74">&quot;</span>
-
-msg <span style="color: #e6db74">&quot;Volume has been created with ID:</span><span style="color: #f8f8f2">$volume_id</span><span style="color: #e6db74">&quot;</span>
-<span style="color: #f8f8f2">echo</span> <span style="color: #e6db74">&quot;Waiting for Volume availability&quot;</span> <span style="color: #f92672">&amp;&amp;</span> sleep <span style="color: #ae81ff">30</span>
-msg <span style="color: #e6db74">&quot;Attaching to Instance&quot;</span>
-aws ec2 attach-volume --volume-id <span style="color: #f8f8f2">$volume_id</span>  --instance-id <span style="color: #f8f8f2">$INSTANCE_ID</span> --device <span style="color: #f8f8f2">$DEVICE</span>
-</pre></div>
-
+msg <span style="color:#e6db74">&#34;Volume has been created with ID:</span>$volume_id<span style="color:#e6db74">&#34;</span>
+echo <span style="color:#e6db74">&#34;Waiting for Volume availability&#34;</span> <span style="color:#f92672">&amp;&amp;</span> sleep <span style="color:#ae81ff">30</span>
+msg <span style="color:#e6db74">&#34;Attaching to Instance&#34;</span>
+aws ec2 attach-volume --volume-id $volume_id  --instance-id $INSTANCE_ID --device $DEVICE</code></pre></div>
 
 <h3 id="output">Output</h3>
-<div class="highlight" style="background: #272822"><pre style="line-height: 125%"><span></span><span style="color: #f92672">=========={</span>Fetching Instance Data<span style="color: #f92672">}==========</span>
-<span style="color: #f92672">=========={</span>Done<span style="color: #f92672">}==========</span>
-<span style="color: #f92672">=========={</span>Creating Volume in Zone us-east-1b <span style="color: #66d9ef">for</span> IP <span style="color: #ae81ff">172</span>.31.19.121 <span style="color: #f92672">[</span>ID: i-07208ea25a760e769<span style="color: #f92672">]}==========</span>
-<span style="color: #f92672">=========={</span>Volume has been created with ID:vol-04b537f936fe0c0e9<span style="color: #f92672">}==========</span>
-Waiting <span style="color: #66d9ef">for</span> Volume <span style="color: #f8f8f2">availability</span>
-<span style="color: #f92672">=========={</span>Attaching to Instance<span style="color: #f92672">}==========</span>
-<span style="color: #f92672">{</span>
-    <span style="color: #e6db74">&quot;AttachTime&quot;</span>: <span style="color: #e6db74">&quot;2017-05-03T07:55:00.921Z&quot;</span>,
-    <span style="color: #e6db74">&quot;InstanceId&quot;</span>: <span style="color: #e6db74">&quot;i-07208ea25a760e769&quot;</span>,
-    <span style="color: #e6db74">&quot;VolumeId&quot;</span>: <span style="color: #e6db74">&quot;vol-04b537f936fe0c0e9&quot;</span>,
-    <span style="color: #e6db74">&quot;State&quot;</span>: <span style="color: #e6db74">&quot;attaching&quot;</span>,
-    <span style="color: #e6db74">&quot;Device&quot;</span>: <span style="color: #e6db74">&quot;/dev/sdd&quot;</span>
-<span style="color: #f92672">}</span>
-</pre></div>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#f92672">=========={</span>Fetching Instance Data<span style="color:#f92672">}==========</span>
+<span style="color:#f92672">=========={</span>Done<span style="color:#f92672">}==========</span>
+<span style="color:#f92672">=========={</span>Creating Volume in Zone us-east-1b <span style="color:#66d9ef">for</span> IP <span style="color:#ae81ff">172</span>.31.19.121 <span style="color:#f92672">[</span>ID: i-07208ea25a760e769<span style="color:#f92672">]}==========</span>
+<span style="color:#f92672">=========={</span>Volume has been created with ID:vol-04b537f936fe0c0e9<span style="color:#f92672">}==========</span>
+Waiting <span style="color:#66d9ef">for</span> Volume availability
+<span style="color:#f92672">=========={</span>Attaching to Instance<span style="color:#f92672">}==========</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#e6db74">&#34;AttachTime&#34;</span>: <span style="color:#e6db74">&#34;2017-05-03T07:55:00.921Z&#34;</span>,
+    <span style="color:#e6db74">&#34;InstanceId&#34;</span>: <span style="color:#e6db74">&#34;i-07208ea25a760e769&#34;</span>,
+    <span style="color:#e6db74">&#34;VolumeId&#34;</span>: <span style="color:#e6db74">&#34;vol-04b537f936fe0c0e9&#34;</span>,
+    <span style="color:#e6db74">&#34;State&#34;</span>: <span style="color:#e6db74">&#34;attaching&#34;</span>,
+    <span style="color:#e6db74">&#34;Device&#34;</span>: <span style="color:#e6db74">&#34;/dev/sdd&#34;</span>
+<span style="color:#f92672">}</span></code></pre></div>
             </div>
             
             <div class="post-comments">
                 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'linuxian';
-    var disqus_identifier = 'http:\/\/www.linuxian.com\/posts\/aws-volume-script\/';
-    var disqus_title = 'AWS volume script';
-    var disqus_url = 'http:\/\/www.linuxian.com\/posts\/aws-volume-script\/';
-
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
             </div>
             
             <div class="push"></div>
