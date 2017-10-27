@@ -78,17 +78,6 @@ In Summery:  Simple IT Automation tool It&amp;rsquo;s Configuration Management t
     </item>
     
     <item>
-      <title>Send password expiry notification to nix users using Python script</title>
-      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
-      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
-      
-      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
-      <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
-Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.
-#!/usr/bin/env python #--------------------------------------------------------- # Name :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :) # Pupose :- To check the user account expire status in Linux, unix, BSD etc # Author :- Rahul Patil&amp;lt;http://www.</description>
-    </item>
-    
-    <item>
       <title>SED 10 useful commands</title>
       <link>http://www.linuxian.com/posts/sed-10-useful-commands/</link>
       <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
@@ -98,6 +87,17 @@ Here is a Python script which will send notification to administrator, which acc
 About SED
 sed is an Non-interactive stream editor.
 Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</description>
+    </item>
+    
+    <item>
+      <title>Send password expiry notification to nix users using Python script</title>
+      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
+      <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
+Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.
+#!/usr/bin/env python #--------------------------------------------------------- # Name :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :) # Pupose :- To check the user account expire status in Linux, unix, BSD etc # Author :- Rahul Patil&amp;lt;http://www.</description>
     </item>
     
   </channel>

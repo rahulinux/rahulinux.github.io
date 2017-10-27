@@ -6,7 +6,6 @@
     <description>Recent content in Scripting on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 14 Jun 2013 10:54:24 +0000</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/tags/scripting/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>Send password expiry notification to nix users using Python script</title>
       <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
-      <pubDate>Fri, 14 Jun 2013 10:54:24 +0000</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
       <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
