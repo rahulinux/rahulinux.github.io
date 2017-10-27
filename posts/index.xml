@@ -25,6 +25,17 @@ There are to types of Registry:
     </item>
     
     <item>
+      <title>AWS volume script</title>
+      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
+      <pubDate>Tue, 02 May 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
+      <description>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
+I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
+#!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &amp;#34;Usage: $0&amp;lt;hostname|IP&amp;gt; &amp;lt;size&amp;gt;&amp;#34; exit 1 fi msg(){ echo &amp;#34;=========={$@}==========&amp;#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</description>
+    </item>
+    
+    <item>
       <title>Hands on docker commands</title>
       <link>http://www.linuxian.com/posts/hands-on-docker-commands/</link>
       <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
@@ -57,14 +68,26 @@ In Summery:  Simple IT Automation tool It&amp;rsquo;s Configuration Management t
     </item>
     
     <item>
-      <title>AWS volume script</title>
-      <link>http://www.linuxian.com/posts/aws-volume-script/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <title>Send password expiry notification to nix users using Python script</title>
+      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
+      <pubDate>Fri, 14 Jun 2013 00:00:00 +0000</pubDate>
       
-      <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
-      <description>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
-I&amp;rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
-#!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &amp;#34;Usage: $0&amp;lt;hostname|IP&amp;gt; &amp;lt;size&amp;gt;&amp;#34; exit 1 fi msg(){ echo &amp;#34;=========={$@}==========&amp;#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</description>
+      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
+      <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
+Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.
+#!/usr/bin/env python #--------------------------------------------------------- # Name :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :) # Pupose :- To check the user account expire status in Linux, unix, BSD etc # Author :- Rahul Patil&amp;lt;http://www.</description>
+    </item>
+    
+    <item>
+      <title>SED 10 useful commands</title>
+      <link>http://www.linuxian.com/posts/sed-10-useful-commands/</link>
+      <pubDate>Sun, 01 Jul 2012 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/sed-10-useful-commands/</guid>
+      <description>When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
+About SED
+sed is an Non-interactive stream editor.
+Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</description>
     </item>
     
     <item>
@@ -75,29 +98,6 @@ I&amp;rsquo;m connected to AWS using VPN, so following script will work with pri
       <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
       <description>Introduction In this tutorial we will learn following things:
  What is Containers Why Containers Containers vs VM&amp;rsquo;s What is Docker Docker component and architecture Docker Installation &amp;amp; Setup on CentOS 7 Docker basic commands  In Traditional way of virtualization As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications, But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.</description>
-    </item>
-    
-    <item>
-      <title>SED 10 useful commands</title>
-      <link>http://www.linuxian.com/posts/sed-10-useful-commands/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.linuxian.com/posts/sed-10-useful-commands/</guid>
-      <description>When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
-About SED
-sed is an Non-interactive stream editor.
-Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</description>
-    </item>
-    
-    <item>
-      <title>Send password expiry notification to nix users using Python script</title>
-      <link>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</guid>
-      <description>Are you Managing N Number of Users and want to check Account Expires and send notification to administrator through Gmail ?
-Here is a Python script which will send notification to administrator, which accounts are going to expire in 7 days. You are free to use and modify this script for your work.
-#!/usr/bin/env python #--------------------------------------------------------- # Name :- checkUsrAccount_Expiry.py v 0.1 Copyleft (c) :) # Pupose :- To check the user account expire status in Linux, unix, BSD etc # Author :- Rahul Patil&amp;lt;http://www.</description>
     </item>
     
   </channel>

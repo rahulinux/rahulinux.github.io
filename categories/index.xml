@@ -6,6 +6,7 @@
     <description>Recent content in Categories on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Tue, 02 May 2017 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,7 +14,7 @@
     <item>
       <title>Bash</title>
       <link>http://www.linuxian.com/categories/bash/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 02 May 2017 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/bash/</guid>
       <description></description>
@@ -67,7 +68,7 @@
     <item>
       <title>Python</title>
       <link>http://www.linuxian.com/categories/python/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jun 2013 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/python/</guid>
       <description></description>
@@ -76,7 +77,7 @@
     <item>
       <title>Script</title>
       <link>http://www.linuxian.com/categories/script/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 02 May 2017 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/script/</guid>
       <description></description>
@@ -85,7 +86,7 @@
     <item>
       <title>Scripting</title>
       <link>http://www.linuxian.com/categories/scripting/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 14 Jun 2013 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/scripting/</guid>
       <description></description>
@@ -94,7 +95,7 @@
     <item>
       <title>Sed</title>
       <link>http://www.linuxian.com/categories/sed/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 01 Jul 2012 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/sed/</guid>
       <description></description>

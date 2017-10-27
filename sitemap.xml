@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>http://www.linuxian.com/posts/aws-volume-script/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/posts/hands-on-docker-commands/</loc>
     <lastmod>2017-02-09T17:06:58+02:00</lastmod>
   </url>
@@ -23,27 +28,30 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/posts/aws-volume-script/</loc>
+    <loc>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/bash/</loc>
-    <priority>0</priority>
+    <loc>http://www.linuxian.com/posts/sed-10-useful-commands/</loc>
+    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/bash/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/bash/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.linuxian.com/tags/containers/</loc>
-    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -54,7 +62,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker/</loc>
+    <loc>http://www.linuxian.com/tags/containers/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -66,7 +74,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker-cli/</loc>
+    <loc>http://www.linuxian.com/tags/docker/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -78,7 +86,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker-registry/</loc>
+    <loc>http://www.linuxian.com/tags/docker-cli/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -90,17 +98,23 @@
   </url>
   
   <url>
+    <loc>http://www.linuxian.com/tags/docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/posts/getting-started-with-docker/</loc>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/linux/</loc>
+    <loc>http://www.linuxian.com/categories/linux/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/linux/</loc>
+    <loc>http://www.linuxian.com/tags/linux/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -112,56 +126,56 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/python/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.linuxian.com/categories/python/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/posts/sed-10-useful-commands/</loc>
-  </url>
-  
-  <url>
-    <loc>http://www.linuxian.com/tags/script/</loc>
+    <loc>http://www.linuxian.com/tags/python/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/script/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/scripting/</loc>
+    <loc>http://www.linuxian.com/tags/script/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/scripting/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/sed/</loc>
+    <loc>http://www.linuxian.com/tags/scripting/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/sed/</loc>
+    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/posts/python-script-display-and-mail-users-account-expiry-details/</loc>
+    <loc>http://www.linuxian.com/tags/sed/</loc>
+    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/tags/</loc>
-    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -172,13 +186,13 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/tips/</loc>
+    <loc>http://www.linuxian.com/categories/tips/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/tips/</loc>
+    <loc>http://www.linuxian.com/tags/tips/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
