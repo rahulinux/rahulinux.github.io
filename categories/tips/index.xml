@@ -6,30 +6,29 @@
     <description>Recent content in Tips on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Jun 2013 16:57:35 +0000</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/categories/tips/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Useful Linux Commands</title>
-      <link>http://www.linuxian.com/posts/hands-on-linux-commands/</link>
-      <pubDate>Wed, 19 Jun 2013 16:57:35 +0000</pubDate>
-      
-      <guid>http://www.linuxian.com/posts/hands-on-linux-commands/</guid>
-      <description>In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.</description>
-    </item>
-    
-    <item>
       <title>SED 10 useful commands</title>
       <link>http://www.linuxian.com/posts/sed-10-useful-commands/</link>
-      <pubDate>Sun, 01 Jul 2012 08:47:00 -0700</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/posts/sed-10-useful-commands/</guid>
       <description>When you are write a script and if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
 About SED
 sed is an Non-interactive stream editor.
 Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</description>
+    </item>
+    
+    <item>
+      <title>Useful Linux Commands</title>
+      <link>http://www.linuxian.com/posts/hands-on-linux-commands/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/hands-on-linux-commands/</guid>
+      <description>In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.</description>
     </item>
     
   </channel>

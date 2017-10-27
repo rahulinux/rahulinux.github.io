@@ -6,7 +6,6 @@
     <description>Recent content in Bash on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 02 May 2017 20:57:21 +0200</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/categories/bash/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +13,7 @@
     <item>
       <title>AWS volume script</title>
       <link>http://www.linuxian.com/posts/aws-volume-script/</link>
-      <pubDate>Tue, 02 May 2017 20:57:21 +0200</pubDate>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/posts/aws-volume-script/</guid>
       <description>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
