@@ -1,1 +1,2 @@
 User-agent: *
+SITEMAP: http://www.linuxian.com/robots.txt
