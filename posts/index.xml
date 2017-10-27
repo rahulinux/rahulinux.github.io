@@ -48,6 +48,16 @@ Basically once you run above command, it&amp;rsquo;s do following things:
     </item>
     
     <item>
+      <title>Getting started with Docker Basics</title>
+      <link>http://www.linuxian.com/posts/getting-started-with-docker/</link>
+      <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
+      <description>Introduction In this tutorial we will learn following things:
+ What is Containers Why Containers Containers vs VM&amp;rsquo;s What is Docker Docker component and architecture Docker Installation &amp;amp; Setup on CentOS 7 Docker basic commands  In Traditional way of virtualization As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications, But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.</description>
+    </item>
+    
+    <item>
       <title>ansible_basics</title>
       <link>http://www.linuxian.com/posts/ansible_basics/</link>
       <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
@@ -88,16 +98,6 @@ Here is a Python script which will send notification to administrator, which acc
 About SED
 sed is an Non-interactive stream editor.
 Features  scripting languages work primarily with text file. programmable editor. accept command-line option and can be scripted ( sed -f script_name ) GNU versions supports POSIX (Grep) and (Egrep) regexes Does not operate on the source file , by default , its only print the changes in source file exept ( -i option).</description>
-    </item>
-    
-    <item>
-      <title>Getting started with Docker Basics</title>
-      <link>http://www.linuxian.com/posts/getting-started-with-docker/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
-      <description>Introduction In this tutorial we will learn following things:
- What is Containers Why Containers Containers vs VM&amp;rsquo;s What is Docker Docker component and architecture Docker Installation &amp;amp; Setup on CentOS 7 Docker basic commands  In Traditional way of virtualization As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications, But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.</description>
     </item>
     
   </channel>
