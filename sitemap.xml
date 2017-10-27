@@ -18,6 +18,11 @@
   </url>
   
   <url>
+    <loc>http://www.linuxian.com/posts/hands-on-linux-commands/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/posts/aws-volume-script/</loc>
   </url>
   
@@ -90,11 +95,13 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/linux/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/linux/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -166,16 +173,14 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/tips/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/tips/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.linuxian.com/posts/hands-on-linux-commands/</loc>
   </url>
   
   <url>
