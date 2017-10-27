@@ -41,7 +41,7 @@ I&amp;rsquo;m connected to AWS using VPN, so following script will work with pri
       <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
       
       <guid>http://www.linuxian.com/posts/hands-on-docker-commands/</guid>
-      <description>Hands on docker commands Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
+      <description>Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
 1. RUN command docker run hello-world Whats just happend?
 Basically once you run above command, it&amp;rsquo;s do following things:
  Check &amp;ldquo;hello-world&amp;rdquo; image is exists or not locally, that&amp;rsquo;s why you see first msg &amp;ldquo;Unable to find.</description>
