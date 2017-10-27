@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Python on Linuxian</title>
+    <title>Python on The Linuxian</title>
     <link>http://www.linuxian.com/tags/python/</link>
-    <description>Recent content in Python on Linuxian</description>
+    <description>Recent content in Python on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 14 Jun 2013 10:54:24 +0000</lastBuildDate>

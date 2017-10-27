@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Docker Cli on Linuxian</title>
+    <title>Docker Cli on The Linuxian</title>
     <link>http://www.linuxian.com/categories/docker-cli/</link>
-    <description>Recent content in Docker Cli on Linuxian</description>
+    <description>Recent content in Docker Cli on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
