@@ -56,41 +56,7 @@ function hide (elements) {
   }
 }
 
-function subscribe() {
-    vex.defaultOptions.className = 'vex-theme-top';
-    var vexId = vex.dialog.open({
-    message: 'Get latest updates, enter your email:',
-    input: [
-        '<input name="email" type="text" placeholder="username@domain.com" required />',
-    ].join(''),
-    buttons: [
-        $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
-        $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
-    ],
-    callback: function (data) {
-        if (!data) {
-                }
-                else {
-            var email_value = data.email;
-                        var form = document.createElement("form");
-                        form.setAttribute('method',"post");
-                        
-                        form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
-
-                        var input = document.createElement("input"); 
-                        input.setAttribute('type',"email");
-                        input.setAttribute('name',"email");
-                        input.value = email_value;
-
-                        form.appendChild(input);
-                        form.submit();
-        }
-                
-                 hide(document.querySelectorAll('.vex'));
-    },
-    });
-}
-  function createSidePopup() {
+ function createSidePopup() {
     if (document.querySelectorAll('.vex').length == 0) {
         vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
         var vexId = vex.dialog.open({
@@ -108,7 +74,7 @@ function subscribe() {
                     else {
                 var email_value = data.email;
                             var form = document.createElement("form");
-                            form.setAttribute('method',"POST");
+                            form.setAttribute('method',"post");
                             form.setAttribute('accept-charset',"UTF-8");
                             form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
 
@@ -219,7 +185,7 @@ gtag('config', 'UA-108824004-1');
 	    <div class="post-comments">
                
                
-	       <button type="button" class="btn btn-default btn-lg" onclick="subscribe()">Subscribe</button>
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
             </div>
 	    <p></p>
             
