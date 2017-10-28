@@ -6,4 +6,10 @@ code {
      
   background-color: #23241f;
 }
-
+*[id]:before { 
+  display: block; 
+  content: " "; 
+  margin-top: -75px; 
+  height: 75px; 
+  visibility: hidden; 
+}
