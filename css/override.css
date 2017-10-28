@@ -13,3 +13,20 @@ code {
   height: 75px; 
   visibility: hidden; 
 }
+
+.taglist a {
+    background-color: #ff9933;
+    color: #fff;
+    display: inline-block;
+    line-height: 1.5em;
+    padding: .3em .6em;
+    vertical-align: 20%;
+    font-size: 0.6em;
+    font-family: "Open Sans",sans-serif;
+    font-weight: 700!important;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-radius: .25em;
+    -moz-border-radius: .25em;
+    -webkit-border-radius: .25em;
+}
