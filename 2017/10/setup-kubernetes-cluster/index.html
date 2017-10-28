@@ -44,6 +44,103 @@ ga('create', 'UA-108824004-1', 'auto');
 </script>
 
 
+<script src="http://www.linuxian.com/js/vex.combined.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-default.css">
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-bottom-right-corner.css">
+
+<script>
+function hide (elements) {
+  elements = elements.length ? elements : [elements];
+  for (var index = 0; index < elements.length; index++) {
+    elements[index].style.display = 'none';
+  }
+}
+
+function subscribe() {
+    vex.defaultOptions.className = 'vex-theme-default';
+    var vexId = vex.dialog.open({
+    message: 'Get latest updates, enter your email:',
+    input: [
+        '<input name="email" type="text" placeholder="username@domain.com" required />',
+    ].join(''),
+    buttons: [
+        $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+        $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+    ],
+    callback: function (data) {
+        if (!data) {
+                }
+                else {
+            var email_value = data.email;
+                        var form = document.createElement("form");
+                        form.setAttribute('method',"post");
+                        
+                        form.setAttribute('action', "http://formspree.io/loginrahul90@gmail.com");
+
+                        var input = document.createElement("input"); 
+                        input.setAttribute('type',"email");
+                        input.setAttribute('name',"email");
+                        input.value = email_value;
+
+                        form.appendChild(input);
+                        form.submit();
+        }
+                
+                 hide(document.querySelectorAll('.vex'));
+    },
+    });
+}
+  function createSidePopup() {
+    if (document.querySelectorAll('.vex').length == 0) {
+        vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
+        var vexId = vex.dialog.open({
+        message: 'Why not subscribe for more! Email Please',
+        input: [
+            '<input name="email" type="text" placeholder="username@domain.com" required />',
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+        ],
+        callback: function (data) {
+            if (!data) {
+                    }
+                    else {
+                var email_value = data.email;
+                            var form = document.createElement("form");
+                            form.setAttribute('method',"post");
+                            form.setAttribute('action', "http://formspree.io/loginrahul90@gmail.com");
+
+                            var input = document.createElement("input");
+                            input.setAttribute('type',"email");
+                            input.setAttribute('name',"email");
+                            input.value = email_value;
+
+                            form.appendChild(input);
+                            form.submit();
+            }
+                    hide(document.querySelectorAll('.vex'));
+        },
+        });
+    }
+}
+
+    
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
+</script>
+
         <header>
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
 	<div class="container-fluid">
@@ -206,6 +303,7 @@ kube_api_pwd: 'changepassword'
 	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/10/kubernetes-basics/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Kubernetes Basics</a></button>
                
                
+	       <button type="button" class="btn btn-default btn-lg" onclick="subscribe()">Subscribe</button>
             </div>
 	    <p></p>
             
@@ -238,6 +336,6 @@ kube_api_pwd: 'changepassword'
 
 <div class="text-center">Copyright © 2017 Rahul Patil</div>
 
-</footer>
+
 
     </body>
