@@ -99,9 +99,8 @@ ga('create', '37761605', 'auto');
 							<h4 class="post-link"><a href="http://www.linuxian.com/posts/aws-volume-script/">AWS volume script</a></h4>
 							<h4 class="post-date">May 2, 2017</h4>
 						</div>
-						<div class="post-summary"><p>Here is small useful script which will help you to attach volume on ec2 instances without login into the AWS console.
-I&rsquo;m connected to AWS using VPN, so following script will work with private ip but if you are not connected to vpn, then you can change PrivateIpAddress to PublicIp
-#!/bin/bash  set -e # Create and Attach Volume to Instace using IP Address  export AWS_ACCESS_KEY_ID=XXX export AWS_SECRET_ACCESS_KEY=XXXXXX export REGION=us-east-1 export AWS_DEFAULT_REGION=$REGION if [[ $# -ne 2 ]] then echo &#34;Usage: $0&lt;hostname|IP&gt; &lt;size&gt;&#34; exit 1 fi msg(){ echo &#34;=========={$@}==========&#34; } get_instance_data(){ # returns ZONE STATUS IP INSTANCE_ID DEVICE  local host=$1 if !</p></div>
+						<div class="post-summary"><p>AWS valume create and attach volume to instance</p></div>
+						
 						<div class="post-list-footer text-center">
 							<a href="http://www.linuxian.com/posts/aws-volume-script/">Read More</a>
 						</div>

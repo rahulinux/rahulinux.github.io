@@ -43,13 +43,13 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/bash/</loc>
+    <loc>http://www.linuxian.com/tags/bash/</loc>
     <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/bash/</loc>
+    <loc>http://www.linuxian.com/categories/bash/</loc>
     <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -61,19 +61,13 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/containers/</loc>
-    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.linuxian.com/tags/containers/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/docker/</loc>
+    <loc>http://www.linuxian.com/categories/containers/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -85,7 +79,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/docker-cli/</loc>
+    <loc>http://www.linuxian.com/categories/docker/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -97,7 +91,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/docker-registry/</loc>
+    <loc>http://www.linuxian.com/categories/docker-cli/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -109,13 +103,19 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/linux/</loc>
-    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/categories/docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/tags/linux/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/linux/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -127,20 +127,14 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/python/</loc>
-    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.linuxian.com/tags/python/</loc>
     <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/script/</loc>
-    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/categories/python/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -151,8 +145,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/scripting/</loc>
-    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/categories/script/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -163,13 +157,19 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/sed/</loc>
-    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/categories/scripting/</loc>
+    <lastmod>2013-06-14T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/tags/sed/</loc>
+    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/sed/</loc>
     <lastmod>2012-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -187,13 +187,13 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/tips/</loc>
+    <loc>http://www.linuxian.com/tags/tips/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/tips/</loc>
+    <loc>http://www.linuxian.com/categories/tips/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
