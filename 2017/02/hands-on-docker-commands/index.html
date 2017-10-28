@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Hands on docker commands &middot; The Linuxian </title>
+
+        <meta content="Hands on docker commands - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<meta name="keywords" content="linuxian,docker,container,docker-cli,docker commands,docker basics,docker basic command,docker handson,docker on centos,docker devops">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - You will find useful docker commands and learn how it&#39;s works" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/2017/02/hands-on-docker-commands/">Hands on docker commands</a></h1>
+             
+            <span class="post-date">Feb 9, 2017 </span>
+            
+            <div class="post-content">
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li><a href="#introduction">Introduction</a>
+<ul>
+<li><a href="#1-run-command">1. RUN command</a></li>
+<li><a href="#2-create-command">2. Create command</a></li>
+<li><a href="#3-start-stop-and-restart-command">3. Start, Stop and Restart command</a></li>
+<li><a href="#4-exec-command">4. Exec command</a></li>
+<li><a href="#5-cp-command">5. cp command</a></li>
+<li><a href="#6-attach-command">6. attach command</a></li>
+<li><a href="#7-inspect-command">7. Inspect command</a></li>
+<li><a href="#8-rm-command">8. rm command</a></li>
+<li><a href="#9-ps-command">9. ps command</a></li>
+<li><a href="#10-search-and-pull-image">10. Search and pull image</a></li>
+<li><a href="#11-docker-save-and-load-image-and-list-images">11. Docker save and load image and list images</a></li>
+<li><a href="#mix-command">Mix command</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<h1 id="introduction">Introduction</h1>
+
+<p>In the previous tutorial, we have learn about docker and containers and Installation of docker.
+now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.</p>
+
+<h2 id="1-run-command">1. RUN command</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run hello-world</code></pre></div>
+<p><strong>Whats just happend?</strong></p>
+
+<p>Basically once you run above command, it&rsquo;s do following things:</p>
+
+<ul>
+<li>Check &ldquo;hello-world&rdquo; image is exists or not locally, that&rsquo;s why you see first msg &ldquo;Unable to find..&rdquo; in first ran</li>
+<li>Pullimage from docker hub if not exists in local</li>
+<li>Create container from downloaded image with some random name</li>
+<li>Start the container in forground mode ( all output on TTY ) from downloaded image</li>
+<li>Once process is finished then it will stop the container, in our case it was just print hello-world message.</li>
+</ul>
+
+<p>If you want to run container in background then you can simply pass <code>-d</code> flag to run command as below:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -d centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
+<p>It will run container in detached mode.</p>
+
+<p>Another command for interactive mode:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker run -i -t centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
+<p>Run command has many option, you can check <code>man docker-run</code> for more info, some basic overview as below:</p>
+
+<p>The run options control the image’s runtime behavior in a container. These settings affect:</p>
+
+<ul>
+<li>detached or foreground running</li>
+<li>container identification and name</li>
+<li>network settings and host name</li>
+<li>runtime constraints on CPU and memory</li>
+<li>privileges and LXC configuration</li>
+</ul>
+
+<hr />
+
+<h2 id="2-create-command">2. Create command</h2>
+
+<p>Create command only create container with settings you provided, it does not start container.</p>
+
+<p>Example:</p>
+
+<p>To create :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker create --name test-cn -i -t centos <span style="color:#e6db74">&#34;/bin/bash&#34;</span></code></pre></div>
+<p>Output:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">d63f927cf1c9cc7899389dfddb52fd104b4f2ed7a211e11cf994ea7a644fdd7d</code></pre></div>
+<p>The output you see, it&rsquo;s a container ID, every container has uniq id, we have provided name (test-cn) to container, if you do not provided name then you can use container id, which is output of above command</p>
+
+<p>To start :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker start -a -i test-cn</code></pre></div>
+<p>OR</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker start -a -i d63f927cf1c</code></pre></div>
+<hr />
+
+<h2 id="3-start-stop-and-restart-command">3. Start, Stop and Restart command</h2>
+
+<p>To change the container state, you can use thise command like our init script.</p>
+
+<p>When you fire stop command, docker actually sends signal -15 ( SIGTERM), to the process. The SIGTERM signal requests the process to terminate itself gracefully. once signal sends,
+docker will wait for some timeout&hellip; if its does not stop, then after timeout, docker will send SIGTERM signal ( -9 ) to kill the process forcefully.</p>
+
+<p>Usage:</p>
+
+<pre><code>docker stop | start| restart [OPTIONS] CONTAINER [CONTAINER...]
+
+[Options]
+-t, --time=10      Seconds to wait for stop before killing it
+
+[Container]
+Control the container either by Name or ID
+</code></pre>
+
+<hr />
+
+<h2 id="4-exec-command">4. Exec command</h2>
+
+<p>Now let say you have runing container, and you want to run some commands in runing container, in this case you can use <code>exec</code> command:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker exec -t test-cn bash -c <span style="color:#e6db74">&#34;cat /etc/hosts&#34;</span></code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker exec -it test-cn bash</code></pre></div>
+<p>This will create new bash session in the running container.</p>
+
+<hr />
+
+<h2 id="5-cp-command">5. cp command</h2>
+
+<p>Copy data from/to running container</p>
+
+<p>Example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker cp test-cn:/etc/hosts test-cn-hosts-file</code></pre></div>
+<p>This will copy hosts file from test-cn container to local path with name test-cn-hosts-file</p>
+
+<p>Usage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker cp <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER:PATH LOCALPATH
+docker cp <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> LOCALPATH|- CONTAINER:PATH</code></pre></div>
+<hr />
+
+<h2 id="6-attach-command">6. attach command</h2>
+
+<p>This commands brings a container to the foreground. The container must be running to be attached.</p>
+
+<p>Usage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker attach <span style="color:#f92672">[</span>OPTIONS<span style="color:#f92672">]</span> CONTAINER</code></pre></div>
+<p>Example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker attach test-cn</code></pre></div>
+<p>Once you run exit command or after attaching container you kill process inside container, it will go to stop mode.</p>
+
+<hr />
+
+<h2 id="7-inspect-command">7. Inspect command</h2>
+
+<p>It will gives you all container system information like network,os,driver etc&hellip; in json format.</p>
+
+<p>Example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker inspect test-cn</code></pre></div>
+<hr />
+
+<h2 id="8-rm-command">8. rm command</h2>
+
+<p>This command is used to delete any container either by name or ID. Put Make sure that the container is stopped before you remove it.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker rm CONTAINER-ID</code></pre></div>
+<hr />
+
+<h2 id="9-ps-command">9. ps command</h2>
+
+<p>Shows the current running containers on the system and with -a flag list all containers that has been created</p>
+
+<p>To check running containers</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker ps</code></pre></div>
+<p>for checking all containers</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker ps -a</code></pre></div>
+<hr />
+
+<h2 id="10-search-and-pull-image">10. Search and pull image</h2>
+
+<p>If you want to search any ready image let say for java then you can simply use search and pull</p>
+
+<p>To search all java images:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker search java</code></pre></div>
+<p>To pull on java image:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker pull java</code></pre></div>
+<hr />
+
+<h2 id="11-docker-save-and-load-image-and-list-images">11. Docker save and load image and list images</h2>
+
+<p>Lets say you have created your custom image, now you want to export in file and copy to another server then you can simply use this option, its just for portable version of docker images.</p>
+
+<p>Usage:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker save -o test-cn.tar test-cn
+docker load --input test-cn</code></pre></div>
+<p>To list downloaded images</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker images</code></pre></div>
+<h2 id="mix-command">Mix command</h2>
+
+<p>To stop all container in one single command</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker stop <span style="color:#e6db74">&#39;docker ps -aq&#39;</span></code></pre></div>
+<p>I hope this is useful for you, feel free to email/comment if any quires.</p>
+
+<p>In next tutorial we will learn about building docker images.</p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/02/getting-started-with-docker-basics/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Getting started with Docker Basics</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="next" href="http://www.linuxian.com/2017/05/aws-volume-script/">AWS volume script Next <span class="glyphicon glyphicon-arrow-right"></span> </a></button>
+               
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>

@@ -13,10 +13,10 @@
     
     <item>
       <title>Setup Private Docker Registry</title>
-      <link>http://www.linuxian.com/posts/setup-private-docker-registry/</link>
+      <link>http://www.linuxian.com/2017/05/setup-private-docker-registry/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
+      <guid>http://www.linuxian.com/2017/05/setup-private-docker-registry/</guid>
       <description>Introduction In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.
 I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.
 What is Docker Registry? A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.
@@ -26,10 +26,10 @@ There are to types of Registry:
     
     <item>
       <title>Hands on docker commands</title>
-      <link>http://www.linuxian.com/posts/hands-on-docker-commands/</link>
+      <link>http://www.linuxian.com/2017/02/hands-on-docker-commands/</link>
       <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
       
-      <guid>http://www.linuxian.com/posts/hands-on-docker-commands/</guid>
+      <guid>http://www.linuxian.com/2017/02/hands-on-docker-commands/</guid>
       <description>Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
 1. RUN command docker run hello-world Whats just happend?
 Basically once you run above command, it&amp;rsquo;s do following things:

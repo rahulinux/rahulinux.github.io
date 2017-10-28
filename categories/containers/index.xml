@@ -6,17 +6,40 @@
     <description>Recent content in Containers on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 May 2017 23:26:07 +0200</lastBuildDate>
+    <lastBuildDate>Sat, 28 Oct 2017 21:37:47 +0200</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/categories/containers/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>Setup Kubernetes Cluster</title>
+      <link>http://www.linuxian.com/2017/10/setup-kubernetes-cluster/</link>
+      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/2017/10/setup-kubernetes-cluster/</guid>
+      <description>Introduction In the previous post, we have learn kubernetes basics and understand it&amp;rsquo;s components. now in this tutorial we will see how to setup 3 nodes kubernets cluster.
+There is lots of tools available to setup kubernetes like Minikube, kubeadm and Kargo
+I found very simple installation using Kargo ( now knows as Kubespray ). which is just ansible playbooks.
+So we can see how to setup 3 node kubernetes cluster using Kargo.</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes Basics</title>
+      <link>http://www.linuxian.com/2017/10/kubernetes-basics/</link>
+      <pubDate>Sat, 28 Oct 2017 21:20:35 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/2017/10/kubernetes-basics/</guid>
+      <description>Introduction This guide will help to understand basics concepts of Kubernetes.
+What is Kubernets?
+ Kubernetes (commonly referred to as &amp;ldquo;k8s&amp;rdquo;) is an open source container cluster manager originally designed by Google and donated to the Cloud Native Computing Foundation. It aims to provide a &amp;ldquo;platform for automating deployment, scaling, and operations of application containers across clusters of hosts&amp;rdquo;. It usually works with the Docker container tool and coordinates between a wide cluster of hosts running Docker.</description>
+    </item>
+    
+    <item>
       <title>Setup Private Docker Registry</title>
-      <link>http://www.linuxian.com/posts/setup-private-docker-registry/</link>
+      <link>http://www.linuxian.com/2017/05/setup-private-docker-registry/</link>
       <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
       
-      <guid>http://www.linuxian.com/posts/setup-private-docker-registry/</guid>
+      <guid>http://www.linuxian.com/2017/05/setup-private-docker-registry/</guid>
       <description>Introduction In this tutorial we are going to learn about Docker registry and how to setup your own private registry with self-sign certificates.
 I hope you have read previous posts on docker basics and it&amp;rsquo;s concepts.
 What is Docker Registry? A registry is a storage and content delivery system, holding named Docker images, available in different tagged versions.
@@ -26,10 +49,10 @@ There are to types of Registry:
     
     <item>
       <title>Hands on docker commands</title>
-      <link>http://www.linuxian.com/posts/hands-on-docker-commands/</link>
+      <link>http://www.linuxian.com/2017/02/hands-on-docker-commands/</link>
       <pubDate>Thu, 09 Feb 2017 17:06:58 +0200</pubDate>
       
-      <guid>http://www.linuxian.com/posts/hands-on-docker-commands/</guid>
+      <guid>http://www.linuxian.com/2017/02/hands-on-docker-commands/</guid>
       <description>Introduction In the previous tutorial, we have learn about docker and containers and Installation of docker. now we will see how to play with container because handling containers is the sole purpose of all these infrastructure.
 1. RUN command docker run hello-world Whats just happend?
 Basically once you run above command, it&amp;rsquo;s do following things:
@@ -38,10 +61,10 @@ Basically once you run above command, it&amp;rsquo;s do following things:
     
     <item>
       <title>Getting started with Docker Basics</title>
-      <link>http://www.linuxian.com/posts/getting-started-with-docker/</link>
+      <link>http://www.linuxian.com/2017/02/getting-started-with-docker-basics/</link>
       <pubDate>Wed, 08 Feb 2017 00:00:00 +0000</pubDate>
       
-      <guid>http://www.linuxian.com/posts/getting-started-with-docker/</guid>
+      <guid>http://www.linuxian.com/2017/02/getting-started-with-docker-basics/</guid>
       <description>Introduction In this tutorial we will learn following things:
  What is Containers Why Containers Containers vs VM&amp;rsquo;s What is Docker Docker component and architecture Docker Installation &amp;amp; Setup on CentOS 7 Docker basic commands  In Traditional way of virtualization As we used lot of VMs for dev testing or any R &amp;amp; D purpose or may be for different different VMs for applications, But actually we create VM then we install OS then we host our application in that OS, so its actually takes much resouces.</description>
     </item>

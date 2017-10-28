@@ -13,10 +13,10 @@
     
     <item>
       <title>SED 10 useful commands</title>
-      <link>http://www.linuxian.com/posts/sed-10-useful-commands/</link>
+      <link>http://www.linuxian.com/2012/07/sed-10-useful-commands/</link>
       <pubDate>Sun, 01 Jul 2012 00:00:00 +0000</pubDate>
       
-      <guid>http://www.linuxian.com/posts/sed-10-useful-commands/</guid>
+      <guid>http://www.linuxian.com/2012/07/sed-10-useful-commands/</guid>
       <description>In bash scripting, if you want to edit some file from command line, then you can use sed. 10 Basic examples that I’ve provided here, you’ll find using command line more enjoyable and fun.
 About SED
 sed is an Non-interactive stream editor.

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Useful Linux Commands &middot; The Linuxian </title>
+
+        <meta content="Useful Linux Commands - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<meta name="keywords" content="linux,Tips,commands,linux tips &amp; trics,shell,bash,top commands,linux commands,linux command shortcuts">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - Learn linux command that will improve your productivity and speed on the terminal" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/2013/06/useful-linux-commands/">Useful Linux Commands</a></h1>
+             
+            <span class="post-date">Jun 19, 2013 </span>
+            
+            <div class="post-content">
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-place-the-argument-of-the-most-recent-command-on-the-shell">1. Place the argument of the most recent command on the shell</a></li>
+<li><a href="#2-man-pages">2. Man Pages</a></li>
+<li><a href="#3-ssh">3. SSH</a></li>
+<li><a href="#4-rpm-dpkg">4. RPM, DPKG</a></li>
+<li><a href="#5-get-absolute-path-of-file">5. Get absolute Path of file</a></li>
+<li><a href="#6-backup-rename-file">6. Backup/Rename File</a></li>
+<li><a href="#7-fast-built-in-pipe-based-data-sink">7. Fast, built-in pipe-based data sink</a></li>
+<li><a href="#8-save-command-in-history-without-executing-it">8. Save Command in History Without Executing it.</a></li>
+<li><a href="#9-search-and-execute-recent-commands-from-your-history">9. Search and Execute Recent commands from your history</a></li>
+<li><a href="#10-fast-execute-recent-command">10. Fast Execute recent command.</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<p>In this post, I want to list some useful shell scripts/commands, keyboard shortcuts , some may be already known to you and some may not be, but nonetheless I feel its my duty to share some not so trivial things to search and find that easily sometimes, also I needed a quick reference of these which may be useful for Linux System Admin, coders including me in future, so here we go.</p>
+
+<h2 id="1-place-the-argument-of-the-most-recent-command-on-the-shell">1. Place the argument of the most recent command on the shell</h2>
+
+<p>When typing out long arguments, such as</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">tail -f /var/log/messages</code></pre></div>
+<p>You can put that argument on your command line by holding down the <kbd>ALT</kbd> key and pressing the period <kbd>.</kbd> or by pressing <kbd>ESC</kbd> then the period <kbd>.</kbd></p>
+
+<p>For example: tail -f <kbd>ALT</kbd> + <kbd>.</kbd></p>
+
+<p>this would put &lsquo;/var/log/messages&rsquo; as my argument. Keeping pressing <kbd>ALT</kbd>+<kbd>.</kbd> to cycle through arguments of your commands starting from most recent to oldest. This can save a ton of typing.</p>
+
+<p>In Mac you can use <kbd>ESC<kbd>+<kbd>.</kbd></p>
+
+<h2 id="2-man-pages">2. Man Pages</h2>
+
+<p>Command <code>man</code> is your friend, Before googling , you should check man pages to solve issue yourself. here is simple Example, if want to understand File System Hierarchy, then simply use :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">man hier</code></pre></div>
+<h2 id="3-ssh">3. SSH</h2>
+
+<p>If ServerB is Not accessible but you can access ServerA , and ServerA can access ServerB , then you can use .</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">ssh -t ServerA  ssh  ServerB</code></pre></div>
+<p>Directly ssh to ServerB that is only accessible through ServerA</p>
+
+<h2 id="4-rpm-dpkg">4. RPM, DPKG</h2>
+
+<p>If you want to Check which file belongs to which package.</p>
+
+<p>In RHEL/CentOS</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">rpm -qf   /path/of/file</code></pre></div>
+<p>In Ubuntu</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">dpkg -S  /path/of/file</code></pre></div>
+<p>Note that if package installed using source code, then it will never show , only apply for files those are installed through package manager.</p>
+
+<h2 id="5-get-absolute-path-of-file">5. Get absolute Path of file</h2>
+
+<p>This trick very useful in Shell Script.</p>
+
+<p>if you want to check absolute path of file which is in your current directory :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">readlink  -f  filename</code></pre></div>
+<p>If you want to get absolute path of script it self</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">This_Script<span style="color:#f92672">=</span><span style="color:#66d9ef">$(</span>readlink -f $0 <span style="color:#66d9ef">)</span></code></pre></div>
+<h2 id="6-backup-rename-file">6. Backup/Rename File</h2>
+
+<p>If you want to Backup file with current date name.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cp  filename<span style="color:#f92672">{</span>,-bkp-<span style="color:#66d9ef">$(</span>date +%F<span style="color:#66d9ef">)</span><span style="color:#f92672">}</span></code></pre></div>
+<p>If you want to rename file</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mv filename<span style="color:#f92672">{</span>,-old<span style="color:#f92672">}</span></code></pre></div>
+<h2 id="7-fast-built-in-pipe-based-data-sink">7. Fast, built-in pipe-based data sink</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"> Yourcommand   |:</code></pre></div>
+<p>This is shorter and actually much faster than &gt;/dev/null (see sample output for timings)</p>
+
+<h2 id="8-save-command-in-history-without-executing-it">8. Save Command in History Without Executing it.</h2>
+
+<p>Type your command and Simple Press <kbd>ALT</kbd>+<kbd>#</kbd></p>
+
+<h2 id="9-search-and-execute-recent-commands-from-your-history">9. Search and Execute Recent commands from your history</h2>
+
+<p>Simply Press <kbd>Ctrl</kbd>+<kbd>r</kbd> and type some word to search your Command, Simply do Next using <kbd>Ctrl</kbd>+<kbd>r</kbd>  to cycle through commands.</p>
+
+<h2 id="10-fast-execute-recent-command">10. Fast Execute recent command.</h2>
+
+<p>Suppose you have Open file using vim then you save file and run some other command,
+now just run</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">!vim</code></pre></div>
+<p>this will execute last command start with vim from your history.</p>
+
+<p>If you want to share any command line tips &amp; tricks, just post in comments.</p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2013/06/send-password-expiry-notification-to-nix-users-using-python-script/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Send password expiry notification to nix users using Python script</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="next" href="http://www.linuxian.com/2015/01/ansible_basics/">ansible_basics Next <span class="glyphicon glyphicon-arrow-right"></span> </a></button>
+               
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>

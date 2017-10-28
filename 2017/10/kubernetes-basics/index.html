@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Kubernetes Basics &middot; The Linuxian </title>
+
+        <meta content="Kubernetes Basics - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<meta name="keywords" content="Kubernetes basics,kubernetes component,kubernetes guide,what is kubernetes,kubernetes architecture">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - Let&#39;s understand kubernetes basics and component and architecture" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/2017/10/kubernetes-basics/">Kubernetes Basics</a></h1>
+             
+            <span class="post-date">Oct 28, 2017 </span>
+            
+            <div class="post-content">
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#kubernetes-concepts">Kubernetes Concepts</a></li>
+<li><a href="#component">Component</a>
+<ul>
+<li><a href="#master-node">Master Node</a></li>
+<li><a href="#inside-master-node">Inside Master Node</a></li>
+<li><a href="#worker-node">Worker node</a></li>
+<li><a href="#inside-worker-node">Inside Worker node</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<h2 id="introduction">Introduction</h2>
+
+<p>This guide will help to understand basics concepts of Kubernetes.</p>
+
+<p><strong>What is Kubernets?</strong></p>
+
+<blockquote>
+<p>Kubernetes (commonly referred to as &ldquo;k8s&rdquo;) is an open source container cluster manager originally designed by Google and donated to the Cloud Native Computing Foundation. It aims to provide a &ldquo;platform for automating deployment, scaling, and operations of application containers across clusters of hosts&rdquo;. It usually works with the Docker container tool and coordinates between a wide cluster of hosts running Docker.</p>
+</blockquote>
+
+<p>With Kubernetes, you are able to quickly and efficiently respond to customer demand:</p>
+
+<ul>
+<li>Deploy your applications quickly and predictably.</li>
+<li>Scale your applications on the fly.</li>
+<li>Seamlessly roll out new features.</li>
+<li>Optimize use of your hardware by using only the resources you need</li>
+</ul>
+
+<p><strong>Kubernetes is:</strong></p>
+
+<ul>
+<li><strong>portable</strong> : public, private, hybrid, multi-cloud</li>
+<li><strong>extensible</strong> : modular, pluggable, hookable, composable</li>
+<li><strong>self-healing</strong> : auto-placement, auto-restart, auto-replication, auto-scaling</li>
+</ul>
+
+<p><a href="https://aucouranton.com/2014/06/13/linux-containers-parallels-lxc-openvz-docker-and-more/">READ ABOUT CONTAINERS</a></p>
+
+<h2 id="kubernetes-concepts">Kubernetes Concepts</h2>
+
+<ul>
+<li><p><strong>Cluster</strong> : A cluster is a set of physical or virtual machines and other infrastructure resources used by Kubernetes to run your applications.</p></li>
+
+<li><p><strong>Node</strong> : A node is a physical or virtual machine running Kubernetes, onto which pods can be scheduled.</p></li>
+
+<li><p><strong>Pod</strong> : A pod is a co-located group of containers and volumes. Kubernetes targets the management of elastic applications that consist of multiple microservices communicating with each other. Often those microservices are tightly coupled forming a group of containers that would typically, in a non-containerized setup run together on one server. This group, the smallest unit that can be scheduled to be deployed through K8s is called a pod. This group of containers would share storage, Linux namespaces, cgroups, IP addresses. These are co-located, hence share resources and are always scheduled together. Pods are not intended to live long. They are created, destroyed and re-created on demand, based on the state of the server and the service itself.</p></li>
+
+<li><p><strong>Label</strong> : A label is a key/value pair that is attached to a resource, such as a pod, to convey a user-defined identifying attribute. Labels can be used to organize and to select subsets of resources.</p></li>
+
+<li><p><strong>Selector</strong> : A selector is an expression that matches labels in order to identify related resources, such as which pods are targeted by a load-balanced service.</p></li>
+
+<li><p><strong>Replication Controller</strong> : A replication controller ensures that a specified number of pod replicas are running at any one time. It both allows for easy scaling of replicated systems and handles re-creation of a pod when the machine it is on reboots or otherwise fails.</p></li>
+
+<li><p><strong>Service</strong> : As pods have short lifetime, there is not guarantee about the IP address they are served on. This could make the communication of microservices hard. Imagine a typical Frontend communication with Backend services. Hence K8s has introduced the concept of service, which is an abstraction on top of number of pods, typically requiring to run a proxy on top, for other services to communicate with it via a Virtual IP address.  This is where you can configure load balancing for your numerous pods and expose them via a service.</p></li>
+
+<li><p><strong>Volume</strong> : A volume is a directory, possibly with some data in it, which is accessible to a Container as part of its filesystem. Kubernetes volumes build upon Docker Volumes, adding provisioning of the volume directory and/or device.</p></li>
+
+<li><p><strong>Secret</strong> : A secret stores sensitive data, such as authentication tokens, which can be made available to containers upon request.</p></li>
+
+<li><p><strong>Name</strong> : A user- or client-provided name for a resource.</p></li>
+
+<li><p><strong>Namespace</strong> : A namespace is like a prefix to the name of a resource. Namespaces help different projects, teams, or customers to share a cluster, such as by preventing name collisions between unrelated teams.</p></li>
+
+<li><p><strong>Annotation</strong> : A key/value pair that can hold larger (compared to a label), and possibly not human-readable, data, intended to store non-identifying auxiliary data, especially data manipulated by tools and system extensions. Efficient filtering by annotation values is not supported.</p></li>
+
+<li><p><strong>Networking</strong> : flannel is a virtual network that gives a subnet to each host for use with container runtimes. read more about this on <a href="https://github.com/coreos/flannel">https://github.com/coreos/flannel</a></p></li>
+</ul>
+
+<h2 id="component">Component</h2>
+
+<h3 id="master-node">Master Node</h3>
+
+<blockquote>
+<p>Master node is responsible for the management of Kubernetes cluster. This is the entry point of all administrative tasks. Master node is the one taking care of orchestrating the worker nodes, where the actual services are running.</p>
+</blockquote>
+
+<h3 id="inside-master-node">Inside Master Node</h3>
+
+<ul>
+<li><p><strong>API server</strong> : API server is the entry points for all the REST commands used to control the cluster. It processes the rest requests, validates them, executes the bound business logic. The result state has to be persisted somewhere, and that brings us to the next component of the master node.</p></li>
+
+<li><p><strong>etcd storage</strong> : etcd is a simple, distributed, consistent key-value store. It’s mainly used for shared configuration and service discovery. It provides a REST API for CRUD operations as well as an interface to register watchers on specific nodes, which enables a reliable way to notify the rest of the cluster about configuration changes. Example of data stored by Kubernetes in etcd are jobs being scheduled, created and deployed pod/service details and state, namespaces and replication informations, etc</p></li>
+
+<li><p><strong>scheduler</strong> : The deployment of configured pods and services onto the nodes happens thanks to the scheduler component. Scheduler has the information regarding resources available on the members of the cluster, as well as the ones required for the configured service to run and hence is able to decide where to deploy a specific service.</p></li>
+
+<li><p><strong>controller-manager</strong> : Optionally you can run different kinds of controllers inside the master node. controller-manager is a daemon embedding those.  A controller uses apiserver to watch the shared state of the cluster and makes corrective changes to the current state to being it to the desired one.  An example of such a controller is the Replication controller, which takes care of the number of pods in the system. The replication factor is configured by the user and that’s the controller’s responsibility to recreate a failed pod, or remove an extra-scheduled one.  Other examples of controllers are endpoints controller, namespace controller, and serviceaccounts controller</p></li>
+
+<li><p><strong>Flannel</strong> - A network overlay that will allow containers to communicate across multiple hosts.</p></li>
+</ul>
+
+<h3 id="worker-node">Worker node</h3>
+
+<blockquote>
+<p>The pods are run here, so the worker node contains all the necessary services to manage the networking between the containers, communicate with the master node, and assign resources to the containers scheduled.</p>
+</blockquote>
+
+<h3 id="inside-worker-node">Inside Worker node</h3>
+
+<ul>
+<li><p><strong>Docker</strong> : Docker runs on each of the worker nodes, and runs the configured pods. It takes care of downloading the images and starting the containers.</p></li>
+
+<li><p><strong>kublet</strong> : kubelet gets the configuration of a pod from the apiserver and ensures that the described containers are up and running. This is the worker service that’s responsible for communicating with master ndoe. It also communicates with etcd, to get information about services and write the details about newly created ones.</p></li>
+
+<li><p><strong>kube-proxy</strong> : kube-proxy acts as a network proxy and a load balancer for a service on a single worker node. It takes care of the network routing for TCP and UDP packets.</p></li>
+
+<li><p><strong>kubectl</strong> : And final bit – a command line tool to communicate with API service and send commands to the master node.</p></li>
+
+<li><p><strong>Flannel</strong> :  A network overlay that will allow containers to communicate across multiple hosts.</p></li>
+</ul>
+
+<hr />
+
+<p><img src="https://s3-us-west-2.amazonaws.com/x-team-ghost-images/2016/06/o7leok.png" alt="Architecture" /></p>
+
+<hr />
+
+<p>This is obviously a very simplistic description. If you wish to dig deeper, just read the official documentation on <a href="http://kubernetes.io">http://kubernetes.io</a></p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/05/setup-private-docker-registry/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Setup Private Docker Registry</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="next" href="http://www.linuxian.com/2017/10/setup-kubernetes-cluster/">Setup Kubernetes Cluster Next <span class="glyphicon glyphicon-arrow-right"></span> </a></button>
+               
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>

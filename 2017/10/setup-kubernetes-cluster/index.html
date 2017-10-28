@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Setup Kubernetes Cluster &middot; The Linuxian </title>
+
+        <meta content="Setup Kubernetes Cluster - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+<meta name="keywords" content="Kubernetes basics,kubernetes component,kubernetes guide,what is kubernetes,kubernetes architecture,Kubernetes Installation,setup 3 node kubernetes,kubernetes kargo,kubernetes ansible playbook,kubespray,kubernetes centos">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - Setup 3 nodes kubernetes cluster" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+            <h1><a href="http://www.linuxian.com/2017/10/setup-kubernetes-cluster/">Setup Kubernetes Cluster</a></h1>
+             
+            <span class="post-date">Oct 28, 2017 </span>
+            
+            <div class="post-content">
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#perquisite">Perquisite</a></li>
+<li><a href="#download-the-kargo">Download the Kargo</a></li>
+<li><a href="#configuring-the-static-inventory-file">Configuring the static inventory file</a></li>
+<li><a href="#test-connection">Test connection</a></li>
+<li><a href="#configure-variables">Configure variables</a></li>
+<li><a href="#installing-kubernetes">Installing Kubernetes</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<h2 id="introduction">Introduction</h2>
+
+<p>In the previous post, we have learn kubernetes basics and understand it&rsquo;s components. now in this tutorial we will see how to setup 3 nodes kubernets cluster.</p>
+
+<p>There is lots of tools available to setup kubernetes like Minikube, kubeadm and Kargo</p>
+
+<p>I found very simple installation using Kargo ( now knows as Kubespray ). which is just ansible playbooks.</p>
+
+<p>So we can see how to setup 3 node kubernetes cluster using Kargo.</p>
+
+<p>Assuming that you have ready installed 3 nodes of CentOS 7.4 or higher. you can have it on Pysical server or VM or AWS or any cloud, you just need to have ssh access to this servers.</p>
+
+<h2 id="perquisite">Perquisite</h2>
+
+<pre><code>yum install python-pip git python-netaddr
+pip install ansible==2.3.0
+</code></pre>
+
+<h2 id="download-the-kargo">Download the Kargo</h2>
+
+<pre><code>git clone https://github.com/kubernetes-incubator/kubespray
+</code></pre>
+
+<h2 id="configuring-the-static-inventory-file">Configuring the static inventory file</h2>
+
+<pre><code>cd kubespray
+cp inventory/inventory.example inventory/inventory
+vim inventory/inventory
+
+# ## Configure 'ip' variable to bind kubernetes services on a
+# ## different ip than the default iface
+node1 ansible_ssh_host=my-host01 ip=1.1.1.1
+node2 ansible_ssh_host=my-host02 ip=1.1.1.2
+node3 ansible_ssh_host=my-host03 ip=1.1.1.3
+
+# ## configure a bastion host if your nodes are not directly reachable
+# bastion ansible_ssh_host=x.x.x.x
+
+[kube-master]
+node1
+node2
+
+[etcd]
+node1
+node2
+node3
+
+[kube-node]
+node1
+node2
+node3
+
+[k8s-cluster:children]
+kube-node
+kube-master
+</code></pre>
+
+<h2 id="test-connection">Test connection</h2>
+
+<pre><code>ansible -i inventory/inventory all -m shell -a 'uptime'
+</code></pre>
+
+<h2 id="configure-variables">Configure variables</h2>
+
+<pre><code>vim inventory/group_vars/k8s-cluster.yml
+kube_api_pwd: 'changepassword'
+</code></pre>
+
+<h2 id="installing-kubernetes">Installing Kubernetes</h2>
+
+<pre><code>ansible-playbook -i inventory/inventory cluster.yml -vv
+</code></pre>
+
+<p>In case if you face any issue, you can run reset.yml playbook</p>
+
+<p>Once installation is finished, you can login to any node and check the status using following command.</p>
+
+<pre><code>kubectl get nodes
+</code></pre>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/10/kubernetes-basics/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Kubernetes Basics</a></button>
+               
+               
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+</footer>
+
+    </body>

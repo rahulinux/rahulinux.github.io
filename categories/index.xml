@@ -23,7 +23,7 @@
     <item>
       <title>Containers</title>
       <link>http://www.linuxian.com/categories/containers/</link>
-      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
       
       <guid>http://www.linuxian.com/categories/containers/</guid>
       <description></description>
@@ -32,7 +32,7 @@
     <item>
       <title>Docker</title>
       <link>http://www.linuxian.com/categories/docker/</link>
-      <pubDate>Fri, 05 May 2017 23:26:07 +0200</pubDate>
+      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
       
       <guid>http://www.linuxian.com/categories/docker/</guid>
       <description></description>
@@ -57,11 +57,29 @@
     </item>
     
     <item>
+      <title>Kubernetes</title>
+      <link>http://www.linuxian.com/categories/kubernetes/</link>
+      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/categories/kubernetes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Linux</title>
       <link>http://www.linuxian.com/categories/linux/</link>
       <pubDate>Wed, 19 Jun 2013 00:00:00 +0000</pubDate>
       
       <guid>http://www.linuxian.com/categories/linux/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Microservice</title>
+      <link>http://www.linuxian.com/categories/microservice/</link>
+      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/categories/microservice/</guid>
       <description></description>
     </item>
     
