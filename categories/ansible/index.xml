@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ansible on The Linuxian</title>
+    <link>http://www.linuxian.com/categories/ansible/</link>
+    <description>Recent content in Ansible on The Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 13 Jan 2015 20:14:43 +0200</lastBuildDate>
+    
+	<atom:link href="http://www.linuxian.com/categories/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ansible_basics</title>
+      <link>http://www.linuxian.com/2015/01/ansible_basics/</link>
+      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      
+      <guid>http://www.linuxian.com/2015/01/ansible_basics/</guid>
+      <description>This Guid will help you to learn Ansible basics and some practical stuff.
+What is Ansible ? Ansible is a radically simple IT automation platform that makes your applications and systems easier to deploy. Avoid writing scripts or custom code to deploy and update your applications— automate in a language that approaches plain English, using SSH, with no agents to install on remote systems
+In Summery:  Simple IT Automation tool It&amp;rsquo;s Configuration Management tool Provision tool &amp;ndash;&amp;gt; Create New VM/(AWS)Instance Package Installations Deployment  Why Ansible ?</description>
+    </item>
+    
+  </channel>
+</rss>
