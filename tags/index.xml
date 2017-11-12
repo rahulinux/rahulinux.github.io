@@ -39,18 +39,36 @@
     </item>
     
     <item>
+      <title>Ci Cd</title>
+      <link>http://www.linuxian.com/tags/ci-cd/</link>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/tags/ci-cd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Containers</title>
       <link>http://www.linuxian.com/tags/containers/</link>
-      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/containers/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Devops</title>
+      <link>http://www.linuxian.com/tags/devops/</link>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/tags/devops/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Docker</title>
       <link>http://www.linuxian.com/tags/docker/</link>
-      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/docker/</guid>
       <description></description>
@@ -104,9 +122,18 @@
     <item>
       <title>Microservice</title>
       <link>http://www.linuxian.com/tags/microservice/</link>
-      <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/microservice/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Portus</title>
+      <link>http://www.linuxian.com/tags/portus/</link>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/tags/portus/</guid>
       <description></description>
     </item>
     

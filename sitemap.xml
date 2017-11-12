@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.linuxian.com/2017/11/authorization-service-and-frontend-for-docker-registry/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/2017/10/setup-kubernetes-cluster/</loc>
     <lastmod>2017-10-28T21:37:47+02:00</lastmod>
   </url>
@@ -95,26 +100,50 @@
   </url>
   
   <url>
+    <loc>http://www.linuxian.com/tags/ci-cd/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/ci-cd/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/tags/containers/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/containers/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/devops/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/devops/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/tags/docker/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/docker/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -180,19 +209,31 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/microservice/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/microservice/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/portus/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/portus/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/posts/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -252,7 +293,7 @@
   
   <url>
     <loc>http://www.linuxian.com/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   

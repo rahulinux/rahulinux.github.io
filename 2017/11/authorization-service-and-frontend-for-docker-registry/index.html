@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Authorization service and frontend for Docker registry &middot; The Linuxian </title>
+
+        <meta content="Authorization service and frontend for Docker registry - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="shortcut icon" href="http://www.linuxian.comimg/favicon.ico" type="image/x-icon" />
+<meta name="keywords" content="portus basics,portus component,portus installation guide,docker registry ui,how to install portus,portus production setup,docker registry redis,docker registry management,portus architecture">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - Setup portus authorization service for docker registry" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+<script src="http://www.linuxian.com/js/vex.combined.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-top.css">
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-bottom-right-corner.css">
+
+<script>
+function hide (elements) {
+  elements = elements.length ? elements : [elements];
+  for (var index = 0; index < elements.length; index++) {
+    elements[index].style.display = 'none';
+  }
+}
+
+ function createSidePopup() {
+    if (document.querySelectorAll('.vex').length == 0) {
+        vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
+        var vexId = vex.dialog.open({
+        message: 'Why not subscribe for more! Email Please',
+        input: [
+            '<input name="email" type="text" placeholder="username@domain.com" required />',
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+        ],
+        callback: function (data) {
+            if (!data) {
+                    }
+                    else {
+                var email_value = data.email;
+                            var form = document.createElement("form");
+                            form.setAttribute('method',"post");
+                            form.setAttribute('accept-charset',"UTF-8");
+                            form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
+
+                            var input = document.createElement("input");
+                            input.setAttribute('type',"email");
+                            input.setAttribute('name',"email");
+                            input.value = email_value;
+
+                            form.appendChild(input);
+                            form.submit();
+            }
+                    hide(document.querySelectorAll('.vex'));
+        },
+        });
+    }
+}
+
+    
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
+</script>
+
+        <header>
+	<link rel="shortcut icon" href="http://www.linuxian.comimg/favicon.ico" type="image/x-icon" />
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+		<div>
+<div class="col-md-4 col-sm-6 small", style="float:right;padding-bottom: 10px;" >
+<script>
+  (function() {
+    var cx = '016366865894847407071:WMX92059528';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+</div>
+            <h1><a href="http://www.linuxian.com/2017/11/authorization-service-and-frontend-for-docker-registry/">Authorization service and frontend for Docker registry</a></h1>
+		    </div>        
+	    <span class="taglist">
+  
+    <a href="http://www.linuxian.com/tags/docker">docker</a>
+  
+    <a href="http://www.linuxian.com/tags/containers">containers</a>
+  
+    <a href="http://www.linuxian.com/tags/portus">portus</a>
+  
+    <a href="http://www.linuxian.com/tags/microservice">microservice</a>
+  
+    <a href="http://www.linuxian.com/tags/devops">devops</a>
+  
+    <a href="http://www.linuxian.com/tags/ci-cd">ci-cd</a>
+  
+             
+            <span >Nov 12, 2017 </span>
+            
+        </span> 
+            <div class="post-content">
+
+
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li><a href="#portus-architecture-and-component">Portus architecture and Component</a>
+<ul>
+<li><a href="#assumptions">Assumptions</a></li>
+</ul></li>
+<li><a href="#getting-started-with-installation">Getting Started with Installation</a>
+<ul>
+<li>
+<ul>
+<li><a href="#download-portus-reposotary">Download Portus Reposotary</a></li>
+<li><a href="#configure-secrets">Configure Secrets</a></li>
+<li><a href="#configure-certificates">Configure certificates</a></li>
+<li><a href="#start-portus">Start Portus</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#authentication-and-authorization">Authentication and authorization</a></li>
+<li><a href="#audit">Audit</a></li>
+<li><a href="#vulnerability-diagnosis">Vulnerability diagnosis</a></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<hr />
+
+<p>I have been working on improvment of existing CI/CD pipeline. were having some challenges like disk space, manage images and accessing data with docker registry server. I plan to use something else which could solve this issue, I came accross the nice tool <a href="!http://port.us.org/">Portus</a>.  It has lots of features like Search for images, Image Favorites, LDAP authentication, Comment function to images etc.</p>
+
+<h1 id="portus-architecture-and-component">Portus architecture and Component</h1>
+
+<p><img src="/img/portus_arch.png?bounds=50x50" alt="Portus Architecture" /></p>
+
+<ul>
+<li><strong>Portus</strong> :   Portus is a WebUI, Rails application that performs authentication and authorization.</li>
+<li><strong>MySQL</strong> :  Portus image list, user · team · Registry · Namespace information etc. are held, you can use postgresql as database, but need to do some modification in image, default db is mariadb.</li>
+<li><strong>Registry</strong> : this is a the container running the latest version of the <a href="https://github.com/docker/distribution">Docker registry</a> (aka distribution). It&rsquo;s based on the <a href="https://registry.hub.docker.com/_/registry/">official registry</a> Docker image. In Production you can use backend storage to AWS S3 and Redis as cache, so disk space will never be an issue again.</li>
+<li><strong>Crono</strong> : the <a href="http://port.us.org/features/1_Synchronizing-the-Registry-and-Portus.html">crono process</a> that keeps the data stored in the registry and in Portus&rsquo; DB in sync. like metadata such as the image list of Docker Registry to Portus by using the notification endpoint of Docker Registry.</li>
+<li><strong>Nginx</strong> : Return static content as Nginx instead of Rails, Docker Registry and communication to Portus are separated according to request path and Field of SSL communication.</li>
+</ul>
+
+<h2 id="assumptions">Assumptions</h2>
+
+<ul>
+<li>Docker-engine is installed</li>
+<li>Docker compose is installed</li>
+<li>Certificates is created</li>
+</ul>
+
+<hr />
+
+<h1 id="getting-started-with-installation">Getting Started with Installation</h1>
+
+<p><strong>The Setup</strong></p>
+
+<ul>
+<li>CentOS 7.4</li>
+<li>docker-engine 17.05.0</li>
+<li>docker-compose 1.16.1</li>
+<li>git (client)</li>
+</ul>
+
+<h3 id="download-portus-reposotary">Download Portus Reposotary</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p /opt/apps/
+git clone https://github.com/rahulinux/portus.git
+cd portus/</code></pre></div>
+<h3 id="configure-secrets">Configure Secrets</h3>
+
+<p>You need to edit .env file and update following values:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">MACHINE_FQDN<span style="color:#f92672">=</span>portus.example.local
+<span style="color:#75715e"># secret key is used for verifying the integrity of signed cookies.
+</span><span style="color:#75715e"># If you change this key, all old signed cookies will become invalid!
+</span><span style="color:#75715e"># Make sure the secret is at least 30 characters and all random,
+</span><span style="color:#75715e"># no regular words or you&#39;ll be exposed to dictionary attacks.
+</span><span style="color:#75715e"># secret can be generate using openssl rand -hex 64
+</span><span style="color:#75715e"></span>SECRET_KEY_BASE<span style="color:#f92672">=</span>b494a25faa8d22e430e843e220e424e10ac84d2ce0e64231f5b636d21251eb6d267adb042ad5884cbff0f3891bcf911bdf8abb3ce719849ccda9a4889249e5c2
+PORTUS_PASSWORD<span style="color:#f92672">=</span><span style="color:#ae81ff">12341234</span>
+DATABASE_PASSWORD<span style="color:#f92672">=</span>portus</code></pre></div>
+<p>Also update <code>server_name FQDN</code> in <code>nginx/nginx.conf</code></p>
+
+<p><strong>Note</strong>: If you don&rsquo;t have DNS, then you can add <code>portus.example.local</code> to <code>/etc/hosts</code> file, which will points to IPAddress where you are running portus container.</p>
+
+<h3 id="configure-certificates">Configure certificates</h3>
+
+<p>If you have registered certificates, then you can simply store in <code>ssl/portus.cert</code> and <code>ssl/portus.key</code></p>
+
+<p>Or if you don&rsquo;t have, then you can generate self sign certificates.</p>
+
+<h3 id="start-portus">Start Portus</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">docker-compose up -d 
+docker-compose logs -f # wait <span style="color:#66d9ef">for</span> finish db migration at first</code></pre></div>
+<p>Once it&rsquo;s start all services, you can browse the <a href="https://portus.youdomain">https://portus.youdomain</a>, first it will ask to create admin user and Configure the registry. Please note that you have to use same FQDN for adding registry in Poruts.</p>
+
+<p><img src="/img/1_configure_registry.png" alt="configure registry" /></p>
+
+<h1 id="authentication-and-authorization">Authentication and authorization</h1>
+
+<p>In Portus, Team exists as a group function that bundles each User.  namespace means your project name where you are going to push/pull the images like <code>portus.example.com/mynamespace/myimage:latest</code></p>
+
+<p>by default each has access to their own namespace.</p>
+
+<p><img src="/img/2_portus_users_groups.png" alt="users-groups" /></p>
+
+<p>There are three kinds of options for authorization to Namespace, and one of the following can be selected.</p>
+
+<ul>
+<li>Viewer
+
+<ul>
+<li>Pull only available</li>
+</ul></li>
+<li>Contributor
+
+<ul>
+<li>Push / Pull is possible</li>
+</ul></li>
+<li>Owner
+
+<ul>
+<li>Push / Pull is possible, the user can manage the Namespace</li>
+</ul></li>
+</ul>
+
+<p>In addition, NameSpace allows flexible settings such as pull permission from Anonymous users, permission if logged in.</p>
+
+<h1 id="audit">Audit</h1>
+
+<p>Audit log etc are also managed.  It is a necessary function as a registry server used by a large number of people.</p>
+
+<p><img src="/img/portus_audit_log.png" alt="audit-logs" /></p>
+
+<h1 id="vulnerability-diagnosis">Vulnerability diagnosis</h1>
+
+<p>You can configure portus, to scan security vulnerabilities dignosis in images using CoreOS Clair.</p>
+
+<p>Read more about this : <a href="http://port.us.org/features/6_security_scanning.html">http://port.us.org/features/6_security_scanning.html</a></p>
+
+<hr />
+
+<p>For production setup, you can configure registry backend storage as S3, Amazon RDS as Database.</p>
+
+<p>If you find any issue, please feel free to comment below :)</p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/10/setup-kubernetes-cluster/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Setup Kubernetes Cluster</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+
+
+    </body>

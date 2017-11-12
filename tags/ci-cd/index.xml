@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ci Cd on The Linuxian</title>
+    <link>http://www.linuxian.com/tags/ci-cd/</link>
+    <description>Recent content in Ci Cd on The Linuxian</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 12 Nov 2017 01:01:10 +0100</lastBuildDate>
+    
+	<atom:link href="http://www.linuxian.com/tags/ci-cd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Authorization service and frontend for Docker registry</title>
+      <link>http://www.linuxian.com/2017/11/authorization-service-and-frontend-for-docker-registry/</link>
+      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/2017/11/authorization-service-and-frontend-for-docker-registry/</guid>
+      <description>I have been working on improvment of existing CI/CD pipeline. were having some challenges like disk space, manage images and accessing data with docker registry server. I plan to use something else which could solve this issue, I came accross the nice tool Portus. It has lots of features like Search for images, Image Favorites, LDAP authentication, Comment function to images etc.
+Portus architecture and Component  Portus : Portus is a WebUI, Rails application that performs authentication and authorization.</description>
+    </item>
+    
+  </channel>
+</rss>
