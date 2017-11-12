@@ -59,7 +59,7 @@
     <item>
       <title>Devops</title>
       <link>http://www.linuxian.com/categories/devops/</link>
-      <pubDate>Sun, 12 Nov 2017 01:01:10 +0100</pubDate>
+      <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
       
       <guid>http://www.linuxian.com/categories/devops/</guid>
       <description></description>
@@ -102,6 +102,15 @@
     </item>
     
     <item>
+      <title>Kafka</title>
+      <link>http://www.linuxian.com/categories/kafka/</link>
+      <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/categories/kafka/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Kubernetes</title>
       <link>http://www.linuxian.com/categories/kubernetes/</link>
       <pubDate>Sat, 28 Oct 2017 21:37:47 +0200</pubDate>
@@ -140,7 +149,7 @@
     <item>
       <title>Python</title>
       <link>http://www.linuxian.com/categories/python/</link>
-      <pubDate>Fri, 14 Jun 2013 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
       
       <guid>http://www.linuxian.com/categories/python/</guid>
       <description></description>
@@ -158,7 +167,7 @@
     <item>
       <title>Scripting</title>
       <link>http://www.linuxian.com/categories/scripting/</link>
-      <pubDate>Fri, 14 Jun 2013 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
       
       <guid>http://www.linuxian.com/categories/scripting/</guid>
       <description></description>

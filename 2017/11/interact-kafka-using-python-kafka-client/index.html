@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Interact Kafka using python Kafka client &middot; The Linuxian </title>
+
+        <meta content="Interact Kafka using python Kafka client - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="shortcut icon" href="http://www.linuxian.com/img/favicon.ico" type="image/x-icon" />
+<meta name="keywords" content="pykafka examples,pykafka consumer,pykafka producer,python kafka client">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - examples of python kafka client" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+<script src="http://www.linuxian.com/js/vex.combined.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-top.css">
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-bottom-right-corner.css">
+
+<script>
+function hide (elements) {
+  elements = elements.length ? elements : [elements];
+  for (var index = 0; index < elements.length; index++) {
+    elements[index].style.display = 'none';
+  }
+}
+
+ function createSidePopup() {
+    if (document.querySelectorAll('.vex').length == 0) {
+        vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
+        var vexId = vex.dialog.open({
+        message: 'Why not subscribe for more! Email Please',
+        input: [
+            '<input name="email" type="text" placeholder="username@domain.com" required />',
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+        ],
+        callback: function (data) {
+            if (!data) {
+                    }
+                    else {
+                var email_value = data.email;
+                            var form = document.createElement("form");
+                            form.setAttribute('method',"post");
+                            form.setAttribute('accept-charset',"UTF-8");
+                            form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
+
+                            var input = document.createElement("input");
+                            input.setAttribute('type',"email");
+                            input.setAttribute('name',"email");
+                            input.value = email_value;
+
+                            form.appendChild(input);
+                            form.submit();
+            }
+                    hide(document.querySelectorAll('.vex'));
+        },
+        });
+    }
+}
+
+    
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
+</script>
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+		<div>
+<div class="col-md-4 col-sm-6 small", style="float:right;padding-bottom: 10px;" >
+<script>
+  (function() {
+    var cx = '016366865894847407071:WMX92059528';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+</div>
+            <h1><a href="http://www.linuxian.com/2017/11/interact-kafka-using-python-kafka-client/">Interact Kafka using python Kafka client</a></h1>
+		    </div>        
+	    <span class="taglist">
+  
+    <a href="http://www.linuxian.com/tags/scripting">scripting</a>
+  
+    <a href="http://www.linuxian.com/tags/python">python</a>
+  
+    <a href="http://www.linuxian.com/tags/kafka">kafka</a>
+  
+    <a href="http://www.linuxian.com/tags/devops">devops</a>
+  
+             
+            <span >Nov 12, 2017 </span>
+            
+        </span> 
+            <div class="post-content">
+
+
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#install-pykafka">Install pykafka</a></li>
+<li><a href="#kafka-configuration">Kafka configuration</a></li>
+</ul></li>
+<li><a href="#connecting-kafka">Connecting Kafka</a></li>
+<li><a href="#kafka-producer">Kafka Producer</a></li>
+<li><a href="#kafka-consumer">Kafka Consumer</a></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<hr />
+
+<p>In this tutorial you will learn how to interact Kafka using python module. this will help to you write your own ansible module to handle Kafka or monitoring script to check Kafka.</p>
+
+<p>There are two main libraries for kafka in python, pykafka and kafka-python, we will see pykafka.</p>
+
+<h2 id="install-pykafka">Install pykafka</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">pip install pykafka</code></pre></div>
+<h2 id="kafka-configuration">Kafka configuration</h2>
+
+<p>With all settings to run Kafka server, you need to make sure following entry should be enabled on your Kafka server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">advertised.listeners<span style="color:#f92672">=</span>PLAINTEXT://xxx.xxx.xxx.xxx:9092</code></pre></div>
+<h1 id="connecting-kafka">Connecting Kafka</h1>
+
+<p>You can use <code>ipython</code> to run following examples</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pykafka <span style="color:#f92672">import</span> KafkaClient
+client <span style="color:#f92672">=</span> KafkaClient(hosts<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;ip:9092&#34;</span>)
+<span style="color:#66d9ef">print</span> client<span style="color:#f92672">.</span>topics</code></pre></div>
+<p>You will see topics name in output or you could face connection problems as below :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">NoBrokersAvailableError: Unable to connect to a broker to fetch metadata. See logs</code></pre></div>
+<p>This problem because of Kafka port is not opened or ACL/ranger policy as missconfigured on Kafka.</p>
+
+<p>You can enable debug mode using :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> logging <span style="color:#f92672">as</span> log
+log<span style="color:#f92672">.</span>basicConfig(level<span style="color:#f92672">=</span>log<span style="color:#f92672">.</span>DEBUG)</code></pre></div>
+<p>Execute again</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pykafka <span style="color:#f92672">import</span> KafkaClient
+client <span style="color:#f92672">=</span> KafkaClient(hosts<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;ip:9092&#34;</span>)
+<span style="color:#66d9ef">print</span> client<span style="color:#f92672">.</span>topics</code></pre></div>
+<p>Log output :</p>
+
+<pre><code>INFO:pykafka.cluster:Discovered 1 brokers
+DEBUG:pykafka.cluster:Discovered broker id 0: 0.0.0.0:9092
+DEBUG:pykafka.connection:Connecting to 0.0.0.0:9092
+INFO:pykafka.connection:Failed to connect to 0.0.0.0:9092
+WARNING:pykafka.broker:Failed to connect newly created broker for 0.0.0.0:9092
+</code></pre>
+
+<p>it&rsquo;s failed because I used 0.0.0.0 instead of using kafka ip/hostname</p>
+
+<h1 id="kafka-producer">Kafka Producer</h1>
+
+<p>PyKafka client does not support topic creation, so topic should be exists, then you can use following producer example</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pykafka <span style="color:#f92672">import</span> KafkaClient
+client <span style="color:#f92672">=</span> KafkaClient(hosts<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;ip:9092&#34;</span>)
+<span style="color:#75715e"># select topic </span>
+topic <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>topics[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;mytopic&#39;</span>]
+<span style="color:#66d9ef">with</span> topic<span style="color:#f92672">.</span>get_sync_producer() <span style="color:#66d9ef">as</span> producer:
+   producer<span style="color:#f92672">.</span>produce(<span style="color:#e6db74"></span><span style="color:#e6db74">&#34;Test message&#34;</span>)</code></pre></div>
+<h1 id="kafka-consumer">Kafka Consumer</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pykafka <span style="color:#f92672">import</span> KafkaClient
+client <span style="color:#f92672">=</span> KafkaClient(hosts<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#34;ip:9092&#34;</span>)
+<span style="color:#75715e"># select topic </span>
+topic <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>topics[<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;mytopic&#39;</span>]
+consumer <span style="color:#f92672">=</span> topic<span style="color:#f92672">.</span>get_simple_consumer(consumer_timeout_ms<span style="color:#f92672">=</span><span style="color:#ae81ff">5000</span>)
+<span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> consumer:
+   <span style="color:#66d9ef">print</span> m<span style="color:#f92672">.</span>value</code></pre></div>
+<p>in above example the <code>consumer_timeout_ms</code> says that, if there is no messages for 5 seconds then end the consumer, if you don&rsquo;t set this, it will run forever unless you stopped the consumer.</p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/11/authorization-service-and-frontend-for-docker-registry/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Authorization service and frontend for Docker registry</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+
+
+    </body>
