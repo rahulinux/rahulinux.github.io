@@ -135,13 +135,13 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/devops/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/devops/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -304,6 +304,18 @@
   <url>
     <loc>http://www.linuxian.com/categories/scripting/</loc>
     <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/security/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/security/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   

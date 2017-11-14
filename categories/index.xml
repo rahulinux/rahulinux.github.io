@@ -59,7 +59,7 @@
     <item>
       <title>Devops</title>
       <link>http://www.linuxian.com/categories/devops/</link>
-      <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
       
       <guid>http://www.linuxian.com/categories/devops/</guid>
       <description></description>
@@ -179,6 +179,15 @@
       <pubDate>Sun, 12 Nov 2017 02:42:14 +0100</pubDate>
       
       <guid>http://www.linuxian.com/categories/scripting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Security</title>
+      <link>http://www.linuxian.com/categories/security/</link>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/categories/security/</guid>
       <description></description>
     </item>
     
