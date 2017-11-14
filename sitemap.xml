@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.linuxian.com/2017/11/join-linux-into-domain/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/2017/11/interact-kafka-using-python-kafka-client/</loc>
     <lastmod>2017-11-12T02:42:14+01:00</lastmod>
   </url>
@@ -63,32 +68,26 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/ansible/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.linuxian.com/categories/ansible/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/automation/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <loc>http://www.linuxian.com/tags/ansible/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/automation/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/bash/</loc>
-    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/tags/automation/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -99,14 +98,14 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <loc>http://www.linuxian.com/tags/bash/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/ci-cd/</loc>
-    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <loc>http://www.linuxian.com/categories/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -117,7 +116,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/containers/</loc>
+    <loc>http://www.linuxian.com/tags/ci-cd/</loc>
     <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
@@ -129,8 +128,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/devops/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <loc>http://www.linuxian.com/tags/containers/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -141,8 +140,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker/</loc>
-    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <loc>http://www.linuxian.com/tags/devops/</loc>
+    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -153,8 +152,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker-cli/</loc>
-    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <loc>http://www.linuxian.com/tags/docker/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -165,7 +164,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/docker-registry/</loc>
+    <loc>http://www.linuxian.com/tags/docker-cli/</loc>
     <lastmod>2017-05-05T23:26:07+02:00</lastmod>
     <priority>0</priority>
   </url>
@@ -177,20 +176,32 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/howto/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <loc>http://www.linuxian.com/tags/docker-registry/</loc>
+    <lastmod>2017-05-05T23:26:07+02:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/domain-join/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/domain-join/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/howto/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/kafka/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <loc>http://www.linuxian.com/tags/howto/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -201,8 +212,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/kubernetes/</loc>
-    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
+    <loc>http://www.linuxian.com/tags/kafka/</loc>
+    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -213,8 +224,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/linux/</loc>
-    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/tags/kubernetes/</loc>
+    <lastmod>2017-10-28T21:37:47+02:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -225,8 +236,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/microservice/</loc>
-    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <loc>http://www.linuxian.com/tags/linux/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -237,7 +248,7 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/tags/portus/</loc>
+    <loc>http://www.linuxian.com/tags/microservice/</loc>
     <lastmod>2017-11-12T01:01:10+01:00</lastmod>
     <priority>0</priority>
   </url>
@@ -249,7 +260,19 @@
   </url>
   
   <url>
+    <loc>http://www.linuxian.com/tags/portus/</loc>
+    <lastmod>2017-11-12T01:01:10+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/posts/</loc>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/categories/python/</loc>
     <lastmod>2017-11-12T02:42:14+01:00</lastmod>
     <priority>0</priority>
   </url>
@@ -261,8 +284,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/python/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <loc>http://www.linuxian.com/categories/script/</loc>
+    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -273,8 +296,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/script/</loc>
-    <lastmod>2017-05-02T00:00:00+00:00</lastmod>
+    <loc>http://www.linuxian.com/categories/scripting/</loc>
+    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -285,8 +308,8 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/scripting/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
+    <loc>http://www.linuxian.com/categories/sed/</loc>
+    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -297,31 +320,25 @@
   </url>
   
   <url>
-    <loc>http://www.linuxian.com/categories/sed/</loc>
-    <lastmod>2012-07-01T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://www.linuxian.com/tags/</loc>
-    <lastmod>2015-01-13T20:14:43+02:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/</loc>
-    <lastmod>2017-11-12T02:42:14+01:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://www.linuxian.com/tags/tips/</loc>
-    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+    <lastmod>2017-11-14T21:47:06+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/tips/</loc>
+    <lastmod>2013-06-19T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.linuxian.com/tags/tips/</loc>
     <lastmod>2013-06-19T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>

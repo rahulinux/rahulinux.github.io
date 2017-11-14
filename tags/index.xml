@@ -6,7 +6,7 @@
     <description>Recent content in Tags on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Jan 2015 20:14:43 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 14 Nov 2017 21:47:06 +0100</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Ansible</title>
       <link>http://www.linuxian.com/tags/ansible/</link>
-      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/ansible/</guid>
       <description></description>
@@ -23,7 +23,7 @@
     <item>
       <title>Automation</title>
       <link>http://www.linuxian.com/tags/automation/</link>
-      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/automation/</guid>
       <description></description>
@@ -93,9 +93,18 @@
     </item>
     
     <item>
+      <title>Domain Join</title>
+      <link>http://www.linuxian.com/tags/domain-join/</link>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/tags/domain-join/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Howto</title>
       <link>http://www.linuxian.com/tags/howto/</link>
-      <pubDate>Tue, 13 Jan 2015 20:14:43 +0200</pubDate>
+      <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
       
       <guid>http://www.linuxian.com/tags/howto/</guid>
       <description></description>
