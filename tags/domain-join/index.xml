@@ -17,7 +17,7 @@
       <pubDate>Tue, 14 Nov 2017 21:47:06 +0100</pubDate>
       
       <guid>http://www.linuxian.com/2017/11/join-linux-into-domain/</guid>
-      <description>Join Linux into Domain If you are looking for how to add Linux ( CentOS ) into Microsoft domain controller ( Active Directory directory), then this articial useful for you.
+      <description>If you are looking for how to add Linux ( CentOS ) into Microsoft domain controller ( Active Directory directory), then this articial useful for you.
 Introduction I was working on Highly secure big data infra, where all services access where configure by Ranger ACL&amp;rsquo;s. the services were interact with Kafka, Hadoop, Hive etc. it&amp;rsquo;s uses Keytab files for authentications and the basic requirement were client should be part of the domain controller.</description>
     </item>
     
