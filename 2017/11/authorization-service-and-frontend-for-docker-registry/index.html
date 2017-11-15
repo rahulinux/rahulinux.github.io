@@ -217,7 +217,13 @@ gtag('config', 'UA-108824004-1');
 </ul></li>
 <li><a href="#authentication-and-authorization">Authentication and authorization</a></li>
 <li><a href="#audit">Audit</a></li>
-<li><a href="#vulnerability-diagnosis">Vulnerability diagnosis</a></li>
+<li><a href="#vulnerability-diagnosis">Vulnerability diagnosis</a>
+<ul>
+<li>
+<ul>
+<li><a href="#updates">Updates</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </nav>
                 </div>
@@ -341,6 +347,12 @@ docker-compose logs -f # wait <span style="color:#66d9ef">for</span> finish db m
 <p>For production setup, you can configure registry backend storage as S3, Amazon RDS as Database.</p>
 
 <p>If you find any issue, please feel free to comment below :)</p>
+
+<h3 id="updates">Updates</h3>
+
+<p><strong>Error</strong> : Could not delete tag on the registry: end of file reached or peer cert: , #<Puma::MiniSSL::SSLError: System error: Success - 0></p>
+
+<p><strong>Fix</strong> : Enable SSL in registry, you can find check box &ldquo;Use SSL&rdquo;</p>
 
             </div>
 	    <div class="post-comments">
