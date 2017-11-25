@@ -29,9 +29,8 @@ So we can see how to setup 3 node kubernetes cluster using Kargo.</description>
       <pubDate>Sat, 28 Oct 2017 21:20:35 +0200</pubDate>
       
       <guid>http://www.linuxian.com/2017/10/kubernetes-basics/</guid>
-      <description>Introduction This guide will help to understand basics concepts of Kubernetes.
-What is Kubernets?
- Kubernetes (commonly referred to as &amp;ldquo;k8s&amp;rdquo;) is an open source container cluster manager originally designed by Google and donated to the Cloud Native Computing Foundation. It aims to provide a &amp;ldquo;platform for automating deployment, scaling, and operations of application containers across clusters of hosts&amp;rdquo;. It usually works with the Docker container tool and coordinates between a wide cluster of hosts running Docker.</description>
+      <description>This guide will help to understand basics concepts of Kubernetes.
+What is Kubernetes?  Kubernetes (commonly referred to as &amp;ldquo;k8s&amp;rdquo;) is an open source container cluster manager originally designed by Google and donated to the Cloud Native Computing Foundation. It aims to provide a &amp;ldquo;platform for automating deployment, scaling, and operations of application containers across clusters of hosts&amp;rdquo;. It usually works with the Docker container tool and coordinates between a wide cluster of hosts running Docker.</description>
     </item>
     
   </channel>
