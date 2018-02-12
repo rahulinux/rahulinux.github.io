@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Working with SSL/TLS - Part-02 &middot; The Linuxian </title>
+
+        <meta content="Working with SSL/TLS - Part-02 - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="shortcut icon" href="http://www.linuxian.com/img/favicon.ico" type="image/x-icon" />
+<meta name="keywords" content="what is ssl,why ssl/tls,difference between ssl and tls,how does ssl works?">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - We are going to understand the basics concepts of SSL/TLS, to setup own CA and gain knowledge to working with SSL/TLS" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+<script src="http://www.linuxian.com/js/vex.combined.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-top.css">
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-bottom-right-corner.css">
+
+<script>
+function hide (elements) {
+  elements = elements.length ? elements : [elements];
+  for (var index = 0; index < elements.length; index++) {
+    elements[index].style.display = 'none';
+  }
+}
+
+ function createSidePopup() {
+    if (document.querySelectorAll('.vex').length == 0) {
+        vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
+        var vexId = vex.dialog.open({
+        message: 'Why not subscribe for more! Email Please',
+        input: [
+            '<input name="email" type="text" placeholder="username@domain.com" required />',
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+        ],
+        callback: function (data) {
+            if (!data) {
+                    }
+                    else {
+                var email_value = data.email;
+                            var form = document.createElement("form");
+                            form.setAttribute('method',"post");
+                            form.setAttribute('accept-charset',"UTF-8");
+                            form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
+
+                            var input = document.createElement("input");
+                            input.setAttribute('type',"email");
+                            input.setAttribute('name',"email");
+                            input.value = email_value;
+
+                            form.appendChild(input);
+                            form.submit();
+            }
+                    hide(document.querySelectorAll('.vex'));
+        },
+        });
+    }
+}
+
+    
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
+</script>
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+		<div>
+<div class="col-md-4 col-sm-6 small", style="float:right;padding-bottom: 10px;" >
+<script>
+  (function() {
+    var cx = '016366865894847407071:WMX92059528';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+</div>
+            <h1><a href="http://www.linuxian.com/2018/02/working-with-ssl/tls---part-02/">Working with SSL/TLS - Part-02</a></h1>
+		    </div>        
+	    <span class="taglist">
+  
+    <a href="http://www.linuxian.com/tags/ssl">ssl</a>
+  
+    <a href="http://www.linuxian.com/tags/tls">tls</a>
+  
+             
+            <span >Feb 13, 2018 </span>
+            
+        </span> 
+            <div class="post-content">
+
+
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li><a href="#overview">Overview</a>
+<ul>
+<li><a href="#certificate-authority-ca">Certificate Authority (CA)</a></li>
+<li><a href="#certificate-signing-request-csr">Certificate Signing Request (CSR)</a>
+<ul>
+<li><a href="#what-s-in-a-csr">What&rsquo;s in a CSR?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#setting-up-own-ca">Setting up own CA</a>
+<ul>
+<li><a href="#root-pair">Root Pair</a></li>
+</ul></li>
+<li><a href="#simple-https-server">Simple HTTPS server</a></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<hr />
+
+<h1 id="overview">Overview</h1>
+
+<p>In previous post, we hav learn basics of SSL/TLS. now we will see following things:</p>
+
+<ul>
+<li>Basics and terminologies of Certificates.</li>
+<li>Setting up own CA</li>
+<li>Simple HTTPS server</li>
+</ul>
+
+<p>In some cases it may make more sense to act as your own CA, rather than paying a CA like DigiCert. Common cases include securing an intranet website, or for issuing certificates to clients to allow them to authenticate to a server (eg, Apache, OpenVPN).</p>
+
+<p><strong>Basics and terminologies of Certificates</strong></p>
+
+<h2 id="certificate-authority-ca">Certificate Authority (CA)</h2>
+
+<ul>
+<li>A CA provides services in the field of certificate issuing and electronic signatures,  where it acts as a Trusted Third Party.</li>
+<li>CA is responsible for the validation of certificate requests, issuing certificates, revocation of invalid certificates and publishing information about certificates which have been revoked.</li>
+<li>CA issues digital certificates to other parties. In doing so, the CA attests that the certificate belongs to the person, organization, server or entity recorded in the certificate.  This is accomplished by using their own (root) certificate to sign the public key.  Important here is that the user is both able to check the signature of the CA and should be confident of the fact that the CA checks the owner of the certificate.</li>
+<li>The root certificates of these CA&rsquo;s are included by default in all common browsers. These certificates ensure that websites connected to the root certificates through an SSL certificate, are trusted automatically by standard browsers. When detecting use of a, to the browser unknown, CA an error message will be shown.</li>
+<li>Following commercial CA (also called registrar ) brands:
+
+<ul>
+<li>Comodo</li>
+<li>Symantec</li>
+<li>GeoTrust</li>
+<li>Thawte</li>
+<li>GlobalSign</li>
+</ul></li>
+</ul>
+
+<h2 id="certificate-signing-request-csr">Certificate Signing Request (CSR)</h2>
+
+<p>When you are going to request SSL certificate from trusted CA, then you require CSR (Certificate Signing Request). the CSR is encrypted text containing information about the certificate that needs to be requested. for each certificate request a new CSR is required. With a CSR you can request a certificate online.</p>
+
+<h3 id="what-s-in-a-csr">What&rsquo;s in a CSR?</h3>
+
+<p>A CSR consists of two parts:</p>
+
+<p>1) Request information, such as the domain name en the Organisation Name. A digital signature with a keysize of at least 2048 bits.</p>
+
+<p>Example of a CSR:</p>
+
+<pre><code>-----BEGIN NEW CERTIFICATE REQUEST-----
+
+MIIDdDCCAt0CAQAwgYExCzAJBgNVBAYTAlVTMREwDwYDVQQIDAhNaXNzb3VyaTEP
+
+&lt;meer regels met gecodeerde data&gt;
+
+3zxQMwtCDFdDbbKCN9gKalJkEGzqXrx9
+
+-----END NEW CERTIFICATE REQUEST-----
+</code></pre>
+
+<p>2) Key Pair</p>
+
+<p>When requesting a CSR, two keys will be saved on your server:</p>
+
+<ul>
+<li>Private Key</li>
+<li>Public Key</li>
+</ul>
+
+<p>The Private Key must be kept secret and should at all times remain on the server. without the Private key the certificate does not work.</p>
+
+<p>The Public Key will be added in the CSR and will be sent when ordering via our request form.</p>
+
+<p>When all validation procedures are finished the Certification Authority (for example Comodo) digitally signs the CSR.</p>
+
+<p>The issued certificate corresponds with the Private Key and can be validated with that while installing.</p>
+
+<h1 id="setting-up-own-ca">Setting up own CA</h1>
+
+<p>Now our use case is, we will setup own CA for internal use only. let say, you can have multiple https sites running with your own sign certificates. also you can encrypt communications between client and server using certificates.  and it&rsquo;s free :)</p>
+
+<p>We are going to use <code>cfssl</code> tool to generate certificates.</p>
+
+<h2 id="root-pair">Root Pair</h2>
+
+<p>Acting as a certificate authority (CA) means dealing with cryptographic pairs of private keys and public certificates. The very first cryptographic pair we’ll create is the root pair. This consists of the root key (ca.key) and root certificate (ca.pem). This pair forms the identity of your CA.</p>
+
+<p>Typically, the root CA does not sign server or client certificates directly. The root CA is only ever used to create one or more intermediate CAs, which are trusted by the root CA to sign certificates on their behalf. This is best practice. It allows the root key to be kept offline and unused as much as possible, as any compromise of the root key is disastrous.</p>
+
+<p>Create file <code>ca-csr.json</code> with following content:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;Linuxian root CA&#34;</span>,
+  <span style="color:#f92672">&#34;key&#34;</span>: {
+    <span style="color:#f92672">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;rsa&#34;</span>,
+    <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">2048</span>
+  },
+    <span style="color:#f92672">&#34;names&#34;</span>: [
+       {
+         <span style="color:#f92672">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;NL&#34;</span>,
+         <span style="color:#f92672">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;Netherlands&#34;</span>,
+         <span style="color:#f92672">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;Amsterdam&#34;</span>,
+         <span style="color:#f92672">&#34;O&#34;</span>: <span style="color:#e6db74">&#34;Linuxian&#34;</span>,
+         <span style="color:#f92672">&#34;OU&#34;</span>: <span style="color:#e6db74">&#34;CA Services&#34;</span>
+       }
+    ]
+}</code></pre></div>
+<p>Let&rsquo;s generate root pair using :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir ~/certs
+chmod <span style="color:#ae81ff">0700</span> ~/certs
+cd ~/certs
+cfssl gencert -initca ca-csr.json | cfssljson -bare ca</code></pre></div>
+<p>It will generate three files.</p>
+
+<ul>
+<li><code>ca.pem</code> : Public Key</li>
+<li><code>ca-key.pem</code>: Private Key</li>
+<li><code>ca.csr</code> : Certificate Signing Request</li>
+</ul>
+
+<p>Now, let&rsquo;s verify the root certificate</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">openssl x509 -noout -text -in ca.pem</code></pre></div>
+<p>The output shows:</p>
+
+<ul>
+<li>Signature Algorithm used</li>
+<li>Dates of certificate Validity</li>
+<li>Public-Key bit length</li>
+<li>Issuer, which is the entity that signed the certificate</li>
+<li>Subject, which refers to the certificate itself</li>
+<li>The Issuer and Subject are identical as the certificate is self-signed. Note that all root certificates are self-signed.</li>
+</ul>
+
+<p>Let&rsquo;s create CA configuration, which will provide profile for server and client.</p>
+
+<p>Create file <code>ca-config.json</code> with following content:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;signing&#34;</span>: {
+    <span style="color:#f92672">&#34;default&#34;</span>: {
+      <span style="color:#f92672">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>
+    },
+    <span style="color:#f92672">&#34;profiles&#34;</span>: {
+      <span style="color:#f92672">&#34;server&#34;</span>: {
+        <span style="color:#f92672">&#34;usages&#34;</span>: [
+          <span style="color:#e6db74">&#34;signing&#34;</span>,
+          <span style="color:#e6db74">&#34;key encipherment&#34;</span>,
+          <span style="color:#e6db74">&#34;server auth&#34;</span>
+        ],
+        <span style="color:#f92672">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>
+      },
+      <span style="color:#f92672">&#34;client&#34;</span>: {
+        <span style="color:#f92672">&#34;usages&#34;</span>: [
+          <span style="color:#e6db74">&#34;signing&#34;</span>,
+          <span style="color:#e6db74">&#34;key encipherment&#34;</span>,
+          <span style="color:#e6db74">&#34;client auth&#34;</span>
+        ],
+        <span style="color:#f92672">&#34;expiry&#34;</span>: <span style="color:#e6db74">&#34;8760h&#34;</span>
+      }
+    }
+  }
+}</code></pre></div>
+<p>Now if you want to sign certificates for your internal web server, for example <code>vault.linuxian.local</code></p>
+
+<p>Create file called <code>server-csr.json</code> with following content:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
+  <span style="color:#f92672">&#34;CN&#34;</span>: <span style="color:#e6db74">&#34;vault.linuxian.local&#34;</span>,
+  <span style="color:#f92672">&#34;hosts&#34;</span>: [
+    <span style="color:#e6db74">&#34;vault.linuxian.local&#34;</span>
+  ],
+  <span style="color:#f92672">&#34;key&#34;</span>: {
+    <span style="color:#f92672">&#34;algo&#34;</span>: <span style="color:#e6db74">&#34;rsa&#34;</span>,
+    <span style="color:#f92672">&#34;size&#34;</span>: <span style="color:#ae81ff">2048</span>
+  },
+  <span style="color:#f92672">&#34;names&#34;</span>: [
+    {
+      <span style="color:#f92672">&#34;C&#34;</span>: <span style="color:#e6db74">&#34;NL&#34;</span>,
+      <span style="color:#f92672">&#34;L&#34;</span>: <span style="color:#e6db74">&#34;Amsterdam&#34;</span>,
+      <span style="color:#f92672">&#34;O&#34;</span>: <span style="color:#e6db74">&#34;Linuxian&#34;</span>,
+      <span style="color:#f92672">&#34;OU&#34;</span>: <span style="color:#e6db74">&#34;CA&#34;</span>,
+      <span style="color:#f92672">&#34;ST&#34;</span>: <span style="color:#e6db74">&#34;Netherlands&#34;</span>
+    }
+  ]
+}</code></pre></div>
+<p>Sign server certificate with own Root CA:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cfssl gencert -ca<span style="color:#f92672">=</span>ca.pem -ca-key<span style="color:#f92672">=</span>ca-key.pem -config<span style="color:#f92672">=</span>ca-config.json -profile<span style="color:#f92672">=</span>server server-csr.json |  cfssljson -bare server</code></pre></div>
+<p>Now you will have server public and private key.</p>
+
+<h1 id="simple-https-server">Simple HTTPS server</h1>
+
+<p>Let&rsquo;s use newly created certificates and run simple python https server to use it.</p>
+
+<p>Create file <code>simple-https-server.py</code> as below:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e">#!/usr/local/bin python</span>
+
+<span style="color:#f92672">import</span> BaseHTTPServer<span style="color:#f92672">,</span> SimpleHTTPServer
+<span style="color:#f92672">import</span> ssl
+
+httpd <span style="color:#f92672">=</span> BaseHTTPServer<span style="color:#f92672">.</span>HTTPServer((<span style="color:#e6db74"></span><span style="color:#e6db74">&#39;0.0.0.0&#39;</span>, <span style="color:#ae81ff">443</span>),SimpleHTTPServer<span style="color:#f92672">.</span>SimpleHTTPRequestHandler)
+httpd<span style="color:#f92672">.</span>socket <span style="color:#f92672">=</span> ssl<span style="color:#f92672">.</span>wrap_socket(httpd<span style="color:#f92672">.</span>socket, certfile<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;./server.pem&#39;</span>, keyfile<span style="color:#f92672">=</span><span style="color:#e6db74"></span><span style="color:#e6db74">&#39;./server-key.pem&#39;</span>, server_side<span style="color:#f92672">=</span>True, ssl_version<span style="color:#f92672">=</span>ssl<span style="color:#f92672">.</span>PROTOCOL_TLSv1_2)
+
+httpd<span style="color:#f92672">.</span>serve_forever()</code></pre></div>
+<p>Run server :</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo python simple-https-server.py</code></pre></div>
+<p>Make sure your domain should resolve to the ip where this server is running.</p>
+
+<p>You will get error saying insecure site as below:</p>
+
+<p><img src="/img/cert-3.jpg" alt="insecure site" /></p>
+
+<p>You are getting this error because your server certificate is not sign by public trusted authority. and it&rsquo;s sign by your own CA. but your own Root CA Public key, not exists in your trusted certificate. So you need to add Root Publice certificate <code>ca.pem</code> in trusted.</p>
+
+<p>Once you added in trusted certificate, In my case for Mac OS, I&rsquo;ve added <code>ca.pem</code> in Keychain access under login.</p>
+
+<p>You will successfully see Green result :)</p>
+
+<p><img src="/img/cert-1.jpg" alt="Secure site" /></p>
+
+<p><img src="/img/cert-2.jpg" alt="Secure site2" /></p>
+
+<p>Please feel free to comment below, if you find any difficulties</p>
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2018/02/working-with-ssl/tls---part-01/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Working with SSL/TLS - Part-01</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+
+
+    </body>

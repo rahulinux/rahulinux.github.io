@@ -6,10 +6,20 @@
     <description>Recent content in Tls on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 12 Feb 2018 19:58:08 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 13 Feb 2018 00:06:40 +0100</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/tags/tls/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Working with SSL/TLS - Part-02</title>
+      <link>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-02/</link>
+      <pubDate>Tue, 13 Feb 2018 00:06:40 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-02/</guid>
+      <description>Overview In previous post, we hav learn basics of SSL/TLS. now we will see following things:
+ Basics and terminologies of Certificates. Setting up own CA Simple HTTPS server  In some cases it may make more sense to act as your own CA, rather than paying a CA like DigiCert. Common cases include securing an intranet website, or for issuing certificates to clients to allow them to authenticate to a server (eg, Apache, OpenVPN).</description>
+    </item>
     
     <item>
       <title>Working with SSL/TLS - Part-01</title>

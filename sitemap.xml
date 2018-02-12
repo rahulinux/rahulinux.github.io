@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-02/</loc>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
+  </url>
+  
+  <url>
     <loc>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-01/</loc>
     <lastmod>2018-02-12T19:58:08+01:00</lastmod>
   </url>
@@ -277,7 +282,7 @@
   
   <url>
     <loc>http://www.linuxian.com/posts/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -343,13 +348,13 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/ssl/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/ssl/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -361,7 +366,7 @@
   
   <url>
     <loc>http://www.linuxian.com/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -379,13 +384,13 @@
   
   <url>
     <loc>http://www.linuxian.com/tags/tls/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://www.linuxian.com/categories/tls/</loc>
-    <lastmod>2018-02-12T19:58:08+01:00</lastmod>
+    <lastmod>2018-02-13T00:06:40+01:00</lastmod>
     <priority>0</priority>
   </url>
   
