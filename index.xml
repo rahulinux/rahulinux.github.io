@@ -6,10 +6,21 @@
     <description>Recent content on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Dec 2017 22:17:31 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 12 Feb 2018 19:58:08 +0100</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Working with SSL/TLS - Part-01</title>
+      <link>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-01/</link>
+      <pubDate>Mon, 12 Feb 2018 19:58:08 +0100</pubDate>
+      
+      <guid>http://www.linuxian.com/2018/02/working-with-ssl/tls---part-01/</guid>
+      <description>Overview When it&amp;rsquo;s comes to the SSL/TLS certificates, my mind get tensed and confuse. because it&amp;rsquo;s very complex topic to debug and understand.
+So in this post, I&amp;rsquo;ll try to simplify this thing using following break down:
+ What is and Why SSL/TLS ? Different between SSL and TLS How deos SSL/TLS works ? Basics and terminologies of Certificates. Setting up own CA Simple HTTPS server  What is and Why SSL/TLS ?</description>
+    </item>
     
     <item>
       <title>Kuberenetes Basics concepts Pod, ReplicaSets and Deployment</title>

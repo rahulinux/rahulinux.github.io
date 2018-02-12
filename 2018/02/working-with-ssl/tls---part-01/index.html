@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title> Working with SSL/TLS - Part-01 &middot; The Linuxian </title>
+
+        <meta content="Working with SSL/TLS - Part-01 - The Linuxian" property="og:title">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<link rel="shortcut icon" href="http://www.linuxian.com/img/favicon.ico" type="image/x-icon" />
+<meta name="keywords" content="what is ssl,why ssl/tls,difference between ssl and tls,how does ssl works?">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - We are going to understand the basics concepts of SSL/TLS, to setup own CA and gain knowledge to working with SSL/TLS" property="og:description">
+<meta name="robots" content="index, follow">
+
+
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="http://www.linuxian.com/css/nix.css">
+<link rel="stylesheet" href="http://www.linuxian.com/css/override.css">
+
+ 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata|Open+Sans|Roboto|Montserrat|Concert+One" rel="stylesheet">
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+				  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-108824004-1', 'auto');
+	  ga('send', 'pageview');
+
+</script>
+
+
+<script src="http://www.linuxian.com/js/vex.combined.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-top.css">
+<link rel="stylesheet" type="text/css" href="http://www.linuxian.com/css/vex-theme-bottom-right-corner.css">
+
+<script>
+function hide (elements) {
+  elements = elements.length ? elements : [elements];
+  for (var index = 0; index < elements.length; index++) {
+    elements[index].style.display = 'none';
+  }
+}
+
+ function createSidePopup() {
+    if (document.querySelectorAll('.vex').length == 0) {
+        vex.defaultOptions.className = 'vex-theme-bottom-right-corner';
+        var vexId = vex.dialog.open({
+        message: 'Why not subscribe for more! Email Please',
+        input: [
+            '<input name="email" type="text" placeholder="username@domain.com" required />',
+        ].join(''),
+        buttons: [
+            $.extend({}, vex.dialog.buttons.YES, { text: 'Subscribe' }),
+            $.extend({}, vex.dialog.buttons.NO, { text: 'Back' })
+        ],
+        callback: function (data) {
+            if (!data) {
+                    }
+                    else {
+                var email_value = data.email;
+                            var form = document.createElement("form");
+                            form.setAttribute('method',"post");
+                            form.setAttribute('accept-charset',"UTF-8");
+                            form.setAttribute('action', "https://formcarry.com/s/rkfEPOGAb");
+
+                            var input = document.createElement("input");
+                            input.setAttribute('type',"email");
+                            input.setAttribute('name',"email");
+                            input.value = email_value;
+
+                            form.appendChild(input);
+                            form.submit();
+            }
+                    hide(document.querySelectorAll('.vex'));
+        },
+        });
+    }
+}
+
+    
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
+</script>
+
+        <header>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" id="green-terminal" href=http://www.linuxian.com>rahulinux@web ~ $</a>
+		</div>
+
+		
+		<div class="collapse navbar-collapse" id="navbar-collapse-1">
+			<ul class="nav navbar-nav navbar-right">
+				<li>
+					<a href="http://www.linuxian.com">/home/rahulinux</a>
+				</li>
+				
+				
+				<li >
+					<a href="/posts">~/posts</a>
+				</li>
+				
+				
+				<li >
+					<a href="/aboute-me">~/about_me</a>
+				</li>
+				
+
+			</ul>
+		</div>
+	</div>
+</nav>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-108824004-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments)};
+  gtag('js', new Date());
+
+gtag('config', 'UA-108824004-1');
+</script>
+</header>
+
+    </head>
+
+    <body>
+        <div class="container wrapper">
+		<div>
+<div class="col-md-4 col-sm-6 small", style="float:right;padding-bottom: 10px;" >
+<script>
+  (function() {
+    var cx = '016366865894847407071:WMX92059528';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+</div>
+            <h1><a href="http://www.linuxian.com/2018/02/working-with-ssl/tls---part-01/">Working with SSL/TLS - Part-01</a></h1>
+		    </div>        
+	    <span class="taglist">
+  
+    <a href="http://www.linuxian.com/tags/ssl">ssl</a>
+  
+    <a href="http://www.linuxian.com/tags/tls">tls</a>
+  
+             
+            <span >Feb 12, 2018 </span>
+            
+        </span> 
+            <div class="post-content">
+
+
+	        
+	        <div id="toc" class="well col-md-4 col-sm-6 small", style="float:right;margin-left: 10px;" >
+		<h3>What's on this Page</h3>
+                 <nav id="TableOfContents">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#what-is-and-why-ssl-tls">What is and Why SSL/TLS ?</a></li>
+<li><a href="#different-between-ssl-and-tls">Different between SSL and TLS</a></li>
+<li><a href="#how-deos-ssl-tls-works">How deos SSL/TLS works ?</a>
+<ul>
+<li>
+<ul>
+<li><a href="#step-1-client-hello">Step 1# Client Hello</a></li>
+<li><a href="#step-2-server-hello">Step 2# Server Hello</a></li>
+<li><a href="#step-3-server-key-exchange">Step 3# Server Key Exchange</a></li>
+<li><a href="#step-4-server-hello-done">Step 4# Server Hello Done</a></li>
+<li><a href="#step-5-client-key-exchange">Step 5# Client Key exchange</a></li>
+<li><a href="#step-6-change-cipher-spec">Step 6# Change Cipher Spec</a></li>
+<li><a href="#step-7-encrypted-handshake">Step 7# Encrypted handshake</a></li>
+</ul></li>
+<li><a href="#what-s-next">What&rsquo;s next ?</a></li>
+</ul></li>
+</ul>
+</nav>
+                </div>
+		
+                
+
+<hr />
+
+<h1 id="overview">Overview</h1>
+
+<p>When it&rsquo;s comes to the SSL/TLS certificates, my mind get tensed and confuse. because it&rsquo;s very complex topic to debug and understand.</p>
+
+<p>So in this post, I&rsquo;ll try to simplify this thing using following break down:</p>
+
+<ul>
+<li>What is and Why SSL/TLS ?</li>
+<li>Different between SSL and TLS</li>
+<li>How deos SSL/TLS works ?</li>
+<li>Basics and terminologies of Certificates.</li>
+<li>Setting up own CA</li>
+<li>Simple HTTPS server</li>
+</ul>
+
+<h1 id="what-is-and-why-ssl-tls">What is and Why SSL/TLS ?</h1>
+
+<p><strong>Transport Layer Security</strong> (<strong>TLS</strong>)  and <strong>Secure Sockets Layer (SSL)</strong>  is the standard security technology for establishing an encrypted link between a server and a client. In typical example client can be browser and web server. This link ensures that all data passed between the web server and browsers remain private and integral.</p>
+
+<p>The SSL/TLS protocol aims primarily to provide <a href="https://en.wikipedia.org/wiki/Privacy">privacy</a> and <a href="https://en.wikipedia.org/wiki/Data_integrity">data integrity</a> between two communicating computer applications.</p>
+
+<h1 id="different-between-ssl-and-tls">Different between SSL and TLS</h1>
+
+<p>They are basically the same protocols, just different versions, SSL is an older and TLS is never one.</p>
+
+<p><strong>SSL Versions</strong></p>
+
+<ul>
+<li>SSL 1.0 newer released</li>
+<li>SSL 2.0 1995 - security flaws</li>
+<li>SSL 3.0 1996 - obsolete</li>
+</ul>
+
+<p><strong>TLS Versions</strong></p>
+
+<ul>
+<li>1.0 in 1999 - slight upgrades of SSL v3.0</li>
+<li>1.1 in 2005</li>
+<li>1.2 in 2008</li>
+<li>1.3 latest one</li>
+</ul>
+
+<h1 id="how-deos-ssl-tls-works">How deos SSL/TLS works ?</h1>
+
+<p>When Client and Server try to establish connection in TLS, it&rsquo;s called TLS handshake method.</p>
+
+<p><strong>Basic TLS handshake</strong></p>
+
+<p>A typical connection example follows:</p>
+
+<h3 id="step-1-client-hello">Step 1# Client Hello</h3>
+
+<ul>
+<li>Client says to server</li>
+<li>Hello!, Can I communicate securely through AES(Cipher)</li>
+<li>Clients send list of Cipher Suites which they supports in newer to older order</li>
+</ul>
+
+<h3 id="step-2-server-hello">Step 2# Server Hello</h3>
+
+<ul>
+<li>Server gets all the option from client and respond</li>
+<li>Oh hey! I also communicate securely through AES! Let&rsquo;s do that.</li>
+<li>So server decide which Cipher use for encryption from list of option provided by client</li>
+</ul>
+
+<h3 id="step-3-server-key-exchange">Step 3# Server Key Exchange</h3>
+
+<ul>
+<li>Then server send Digital certificates</li>
+<li>Digital certificate associate with domain name and Public key and other details.</li>
+<li>The porpose of this, is a proof to the client, the server say is actually who they are, using certificates.</li>
+<li>If you look at actual certificate, you will see root CA like Thawte/GeoTrust etc.</li>
+<li>Root CA are Trusted Third Party. A CA is responsible for the validation of certificate requests, issuing certificates, revocation of invalid certificates and publishing information about certificates which have been revoked.</li>
+<li>Trusted Root CA are preinstalled in Browser certs</li>
+</ul>
+
+<h3 id="step-4-server-hello-done">Step 4# Server Hello Done</h3>
+
+<ul>
+<li>The final message of server if everyting is OK.</li>
+<li>Server says to client, everything is OK, I&rsquo;m waiting for response</li>
+<li>a marker message (of length zero) which says that the server is finished, and the client should now talk.</li>
+</ul>
+
+<p>Everything upto now all in clear text, this all information till now is ok because it&rsquo;s public key. now they need to movie in secure connection. client/server will not use public/private key anymore. client will generate symetric key. so client and server will have same symetric key, so they both will encrypt/decrypt data.</p>
+
+<h3 id="step-5-client-key-exchange">Step 5# Client Key exchange</h3>
+
+<ul>
+<li>client generate random number</li>
+<li>encrypt random number using server public key</li>
+<li>if it&rsquo;s encrypt with server public key, then only the server can decrypt using server private key.</li>
+<li>finally client send master secret key in ecrypted to the server.</li>
+</ul>
+
+<h3 id="step-6-change-cipher-spec">Step 6# Change Cipher Spec</h3>
+
+<ul>
+<li>Both client/server now signal that they are going from insecure connection to secure connection that they both agreed on</li>
+</ul>
+
+<h3 id="step-7-encrypted-handshake">Step 7# Encrypted handshake</h3>
+
+<ul>
+<li>They both going to send each other encrypted messages</li>
+<li>and this kind of signals verify the key information they just created
+is correct.</li>
+<li>if anything goes wrong, that mean they won&rsquo;t be able to communicate with one another. because one can&rsquo;t decrypt the messages</li>
+</ul>
+
+<h2 id="what-s-next">What&rsquo;s next ?</h2>
+
+<p>In next part, we will see how to setup own CA and will generate public/private key to demonstrate with simple HTTPS server.</p>
+
+<hr />
+
+            </div>
+	    <div class="post-comments">
+               
+	       <button type="button" class="btn btn-default btn-lg"><a class="previous" href="http://www.linuxian.com/2017/12/kuberenetes-basics-concepts-pod-replicasets-and-deployment/"><span class="glyphicon glyphicon-arrow-left"></span> Previous Kuberenetes Basics concepts Pod, ReplicaSets and Deployment</a></button>
+               
+               
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
+
+<div class="text-center">Copyright © 2017 Rahul Patil</div>
+
+
+
+    </body>
