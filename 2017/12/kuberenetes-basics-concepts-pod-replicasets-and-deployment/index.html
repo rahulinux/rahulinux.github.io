@@ -292,7 +292,7 @@ nginx     <span style="color:#ae81ff">0</span>/1       ContainerCreating   <span
 
 <li><p>If you want to temparary run pod, let&rsquo;s say for cassandra access, then it&rsquo;s good using pod :</p></li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">  kubectl run -it  --restart=Never --rm  --image=cassandra:latest cassandra-cleanup -- cqlsh cassandra-svc-pod -u cassandra</code></pre></div>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-Shell" data-lang="Shell">  kubectl run -it  --restart<span style="color:#f92672">=</span>Never --rm  --image<span style="color:#f92672">=</span>cassandra:latest cassandra-cleanup -- cqlsh cassandra-svc-pod -u cassandra</code></pre></div>
 <p>​</p>
 
 <p>Now we understand the Pod is not suitable for our usecase, nginx app should be keep alive even after Node failure, so let&rsquo;s try ReplicaSets but before that we should know Labels and Selector</p>

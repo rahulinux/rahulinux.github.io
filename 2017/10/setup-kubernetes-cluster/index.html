@@ -227,20 +227,22 @@ gtag('config', 'UA-108824004-1');
 
 <h2 id="perquisite">Perquisite</h2>
 
-<pre><code>yum install python-pip git python-netaddr
-pip install ansible==2.3.0
+<pre><code>yum install python-pip git 
 </code></pre>
+
+<p>Since Kubernetes &gt;= 1.8, You need to disable Swap in all nodes.</p>
 
 <h2 id="download-the-kargo">Download the Kargo</h2>
 
 <pre><code>git clone https://github.com/kubernetes-incubator/kubespray
+cd kubespray
+sudo pip install -r requirements.txt
 </code></pre>
 
 <h2 id="configuring-the-static-inventory-file">Configuring the static inventory file</h2>
 
-<pre><code>cd kubespray
-cp inventory/inventory.example inventory/inventory
-vim inventory/inventory
+<pre><code>cp inventory/sample/hosts.ini inventory/hosts
+vim inventory/hosts
 
 # ## Configure 'ip' variable to bind kubernetes services on a
 # ## different ip than the default iface
@@ -254,6 +256,7 @@ node3 ansible_ssh_host=my-host03 ip=1.1.1.3
 [kube-master]
 node1
 node2
+node3
 
 [etcd]
 node1
@@ -272,23 +275,26 @@ kube-master
 
 <h2 id="test-connection">Test connection</h2>
 
-<pre><code>ansible -i inventory/inventory all -m shell -a 'uptime'
+<pre><code>ansible -i inventory/hosts all -m shell -a 'uptime'
 </code></pre>
 
 <h2 id="configure-variables">Configure variables</h2>
 
-<pre><code>vim inventory/group_vars/k8s-cluster.yml
-kube_api_pwd: 'changepassword'
+<pre><code>cp -a inventory/sample/group_vars inventory/group_vars
+vim inventory/group_vars/k8s-cluster.yml
+kube_basic_auth: true
 </code></pre>
+
+<p>It will generate random password and assign to admin user and it will store in  inventory/credentials/kube_user</p>
 
 <h2 id="installing-kubernetes">Installing Kubernetes</h2>
 
-<pre><code>ansible-playbook -i inventory/inventory cluster.yml -vv
+<pre><code>ansible-playbook -i inventory/hosts cluster.yml -vv --become
 </code></pre>
 
 <p>In case if you face any issue, you can run reset.yml playbook</p>
 
-<p>Once installation is finished, you can login to any node and check the status using following command.</p>
+<p>Once installation is finished, you can login to node1 and check the status using following command.</p>
 
 <pre><code>kubectl get nodes
 </code></pre>
