@@ -6,10 +6,22 @@
     <description>Recent content in Kubernetes on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 07 Dec 2017 22:17:31 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 24 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learn Kubernetes</title>
+      <link>http://www.linuxian.com/2018/02/learn-kubernetes/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/2018/02/learn-kubernetes/</guid>
+      <description>Introduction There are lots of content available for Kubernetes, but its very hard to get step by step and from basics to advance things.
+So I decided to put everything from my experiences in simple way where you will learn Kubernetes easily.
+Please note that this tutorial only to help you to get working on Kubernetes from DevOps and Administrator point of view.
+Feel free to comment below, if you want to add anything in this page.</description>
+    </item>
     
     <item>
       <title>Kuberenetes Basics concepts Pod, ReplicaSets and Deployment</title>

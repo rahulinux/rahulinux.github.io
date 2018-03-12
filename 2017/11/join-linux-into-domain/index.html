@@ -135,6 +135,11 @@ function hide (elements) {
 				
 				
 				<li >
+					<a href="/tutorials">~/tutorials</a>
+				</li>
+				
+				
+				<li >
 					<a href="/aboute-me">~/about_me</a>
 				</li>
 				
@@ -262,12 +267,12 @@ cd ansible-domain-join</code></pre></div>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yaml" data-lang="yaml">---
 - ad_server:
     ip: <span style="color:#ae81ff">172.31</span>.<span style="color:#ae81ff">61.1</span>
-    fqdn: etl-ad<span style="color:#ae81ff">01.</span>linuxian.local
+    fqdn: etl-ad01.linuxian.local
     user: myaduser
     pass: <span style="color:#e6db74">&#39;ChangeIt&#39;</span>
     domain: 
      - linuxian.local
-     - ec<span style="color:#ae81ff">2.</span>internal
+     - ec2.internal
     dns: 
      - <span style="color:#ae81ff">172.31</span>.<span style="color:#ae81ff">61.1</span>
      - <span style="color:#ae81ff">172.31</span>.<span style="color:#ae81ff">0.2</span></code></pre></div>

@@ -6,10 +6,22 @@
     <description>Recent content on The Linuxian</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 13 Feb 2018 00:06:40 +0100</lastBuildDate>
+    <lastBuildDate>Sat, 24 Feb 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://www.linuxian.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learn Kubernetes</title>
+      <link>http://www.linuxian.com/2018/02/learn-kubernetes/</link>
+      <pubDate>Sat, 24 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>http://www.linuxian.com/2018/02/learn-kubernetes/</guid>
+      <description>Introduction There are lots of content available for Kubernetes, but its very hard to get step by step and from basics to advance things.
+So I decided to put everything from my experiences in simple way where you will learn Kubernetes easily.
+Please note that this tutorial only to help you to get working on Kubernetes from DevOps and Administrator point of view.
+Feel free to comment below, if you want to add anything in this page.</description>
+    </item>
     
     <item>
       <title>Working with SSL/TLS - Part-02</title>
@@ -193,8 +205,8 @@ Features  scripting languages work primarily with text file. programmable editor
       <guid>http://www.linuxian.com/aboute-me/</guid>
       <description>
 Just a Simple guy with Linux experience..
-I simply like scripting,coding and helping others is a fulfilling way to stay up to date and give something back to the community and the web from which I learned so much.
-Currently Working as Big Data DevOps Engineer.
+I simply like scripting, coding and helping others is a fulfilling way to stay up to date and give something back to the community and the web from which I learned so much.
+Currently live in Amsterdan NL and Working as Big Data DevOps Engineer.
 echo &amp;#34;You reach me at :&amp;#34;; tr a-z@. n-za-m.@ &amp;lt;&amp;lt;&amp;lt; ybtvaenuhy90.tznvy@pbz   Linkedin GitHub GooglePlus Nixcraft  </description>
     </item>
     

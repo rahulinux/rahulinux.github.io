@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html>
 
-	<head>
-		<title> Kafka &middot; The Linuxian </title>
+    <head>
+        <title> Learn Kubernetes &middot; The Linuxian </title>
 
-		<meta content="Kafka - The Linuxian" property="og:title">
+        <meta content="Learn Kubernetes - The Linuxian" property="og:title">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="shortcut icon" href="http://www.linuxian.com/img/favicon.ico" type="image/x-icon" />
-<meta name="keywords" content="linuxian, linux, nix, devops, sre, technical, opensource, open source">
-<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - " property="og:description">
+<meta name="keywords" content="Kubernetes basics,kubernetes component,kubernetes guide,what is kubernetes,kubernetes architecture">
+<meta name="description" content="This is a purely technical blog concerning topics such as Linux,DevOps,Big Data,Cloud,Shell Scripting,Python and open source software. - Learn kubernetes step by step" property="og:description">
 <meta name="robots" content="index, follow">
 
 
@@ -93,12 +93,22 @@ function hide (elements) {
 }
 
     
+    $(document).ready(function() {
+        $(window).scroll(function(e){
+            var scrollTop = $(window).scrollTop();
+            var docHeight = $(document).height();
+            var winHeight = $(window).height();
+            var scrollPercent = (scrollTop) / (docHeight - winHeight);
+            var scrollPercentRounded = Math.round(scrollPercent*100);
+            if (scrollPercentRounded > 70 && scrollPercentRounded <     80) {
+                createSidePopup();
+            }
+        });
+    });
+    
 </script>
 
-	</head>
-
-	<body>
-		<header>
+        <header>
 <nav class="navbar navbar-default navbar-fixed-top navbar-inverse font-header">
 	<div class="container-fluid">
 		<div class="navbar-header">
@@ -149,38 +159,129 @@ gtag('config', 'UA-108824004-1');
 </script>
 </header>
 
-		<div class="container wrapper">
-			<div class="row">
-				<div class="col-xs-12 text-center">
-					<h1 id=>Kafka</h1>
-				</div>
-			</div>
-			<ul id="post-list">
-				
-				<li>
-					<div class="post-list-item">
-						<div class="post-header">
-							<h4 class="post-link"><a href="http://www.linuxian.com/2017/11/interact-kafka-using-python-kafka-client/">Interact Kafka using python Kafka client</a></h4>
-							<h4 class="post-date">Nov 12, 2017</h4>
-						</div>
-						<div class="post-summary"><p>In this tutorial you will learn how to interact Kafka using python module. this will help to you write your own ansible module to handle Kafka or monitoring script to check Kafka.
-There are two main libraries for kafka in python, pykafka and kafka-python, we will see pykafka.
-Install pykafka pip install pykafka Kafka configuration With all settings to run Kafka server, you need to make sure following entry should be enabled on your Kafka server.</p></div>
-						<div class="post-list-footer text-center">
-							<a href="http://www.linuxian.com/2017/11/interact-kafka-using-python-kafka-client/">Read More</a>
-						</div>
-					</div>
-				</li>
-				
+    </head>
 
-			</ul>
-			<div class="push"></div>
-		</div>
-		<footer class="footer text-center">
+    <body>
+        <div class="container wrapper">
+		<div>
+<div class="col-md-4 col-sm-6 small", style="float:right;padding-bottom: 10px;" >
+<script>
+  (function() {
+    var cx = '016366865894847407071:WMX92059528';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+</div>
+            <h1><a href="http://www.linuxian.com/2018/02/learn-kubernetes/">Learn Kubernetes</a></h1>
+		    </div>        
+	    <span class="taglist">
+  
+    <a href="http://www.linuxian.com/tags/docker">docker</a>
+  
+    <a href="http://www.linuxian.com/tags/containers">containers</a>
+  
+    <a href="http://www.linuxian.com/tags/kubernetes">kubernetes</a>
+  
+    <a href="http://www.linuxian.com/tags/microservice">microservice</a>
+  
+            
+        </span> 
+            <div class="post-content">
+
+
+	        
+                
+
+<h1 id="introduction">Introduction</h1>
+
+<hr />
+
+<p>There are lots of content available for Kubernetes, but its very hard to get step by step and from basics to advance things.</p>
+
+<p>So I decided to put everything from my experiences in simple way where you will learn Kubernetes easily.</p>
+
+<p>Please note that this tutorial only to help you to get working on Kubernetes from DevOps and Administrator point of view.</p>
+
+<p>Feel free to comment below, if you want to add anything in this page.</p>
+
+<h1 id="prerequisite">Prerequisite</h1>
+
+<hr />
+
+<ul>
+<li>Basic understanding of Linux and networking</li>
+<li>Docker basics</li>
+</ul>
+
+<hr />
+
+<h4 id="01-let-s-get-started">01. Let&rsquo;s get started</h4>
+
+<p>Its important to start with basics, components and terminologies of kubernetes. <a href="/2017/10/kubernetes-basics/">Read more</a>.</p>
+
+<hr />
+
+<h4 id="02-setup-kubernetes-cluster">02. Setup Kubernetes Cluster</h4>
+
+<p>Once you understand the basics, you can start your cluster in automated way. <a href="/2017/10/setup-kubernetes-cluster/">Read more</a></p>
+
+<hr />
+
+<h4 id="03-learn-to-deploy-application-into-kubernetes">03. Learn to deploy application into Kubernetes</h4>
+
+<p>In this tutorial, we will explore Pods, ReplicaSets and Deployment with its use caase and which one is best. <a href="/2017/12/kuberenetes-basics-concepts-pod-replicasets-and-deployment/">Read more</a></p>
+
+<hr />
+
+<h4 id="04-loadbalancer-and-service">04. LoadBalancer and Service</h4>
+
+<p>Comming soon&hellip;.</p>
+
+<hr />
+
+            </div>
+	    <div class="post-comments">
+               
+               
+	       <button type="button" class="btn btn-default btn-lg" onclick="createSidePopup()">Subscribe</button>
+            </div>
+	    <p></p>
+            
+            <div class="post-comments">
+                <div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "linuxian" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+            </div>
+            
+            <div class="push"></div>
+        </div>
+        <footer class="footer text-center">
 
 <div class="text-center">Copyright © 2017 Rahul Patil</div>
 
 
 
-	</body>
-</html>
+    </body>
